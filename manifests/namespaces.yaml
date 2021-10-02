@@ -18,3 +18,10 @@ metadata:
   name: pminkows-test
   annotations:
     argocd.argoproj.io/sync: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pminkows-cicd
+  annotations:
+    argocd.argoproj.io/sync: "true"

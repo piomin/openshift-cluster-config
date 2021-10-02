@@ -36,3 +36,16 @@ spec:
     requests.memory: 2Gi
     limits.cpu: '8'
     limits.memory: 8Gi
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pminkows-cicd-quota
+  namespace: pminkows-cicd
+spec:
+  hard:
+    pods: '6'
+    requests.cpu: '4'
+    requests.memory: 4Gi
+    limits.cpu: '10'
+    limits.memory: 12Gi
