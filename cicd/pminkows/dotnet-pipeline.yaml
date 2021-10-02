@@ -4,6 +4,16 @@ metadata:
   name: sample-dotnet-pipeline
   namespace: pminkows-cicd
 spec:
+  params:
+    - name: APP_VERSION
+      description: Version number of application
+      type: string
+    - name: DOTNET_VERSION
+      description: Version of .NET framework
+      type: string
+    - name: TESTS_DIR
+      description: The name of the directory with unit tests
+      type: string
   tasks:
     - name: git-clone
       params:
@@ -36,14 +46,14 @@ spec:
           value: >-
             registry.redhat.io/rhel8/buildah@sha256:6a68ece207bc5fd8db2dd5cc2d0b53136236fb5178eb5b71eebe5d07a3c33d13
         - name: VERSION
-          value: 5.0-ubi8
+          value: $(params.DOTNET_VERSION)
         - name: PATH_CONTEXT
           value: .
         - name: TLSVERIFY
           value: 'true'
         - name: IMAGE
           value: >-
-            image-registry.openshift-image-registry.svc:5000/piotr-cicd/sample-dotnetcore-ex
+            image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-dotnetcore-ex:$(params.APP_VERSION)
       runAfter:
         - dotnet-test
       taskRef:
@@ -56,9 +66,9 @@ spec:
       params:
         - name: DOTNET_IMAGE
           value: >-
-            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:5.0-ubi8
+            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:$(params.DOTNET_VERSION)
         - name: TEST_DIR
-          value: app.tests
+          value: $(params.TESTS_DIR)
       runAfter:
         - git-clone
       taskRef:
