@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: sample-dotnet-pipeline
+  namespace: pminkows-cicd
 spec:
   tasks:
     - name: git-clone
