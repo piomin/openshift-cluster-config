@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-dotnetcore-ex-deployment
+spec:
+  selector:
+    matchLabels:
+      app: sample-dotnetcore-ex
+  template:
+    metadata:
+      labels:
+        app: sample-dotnetcore-ex
+    spec:
+      containers:
+      - name: sample-dotnetcore-ex
+        image: image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-dotnetcore-ex:1.0
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080

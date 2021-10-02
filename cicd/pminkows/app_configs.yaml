@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: production
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-prod
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/prod
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: production
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-stage
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/stage
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: production
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-test
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/test
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
