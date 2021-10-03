@@ -67,10 +67,7 @@ rules:
     resources:
       - "*"
     verbs:
-      - Get
-      - List
-      - Watch
-      - Patch
+      - "*"
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
@@ -84,4 +81,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: argocd-argocd-application-controller
+    namespace: pminkows-cicd
+  - kind: ServiceAccount
+    name: argocd-argocd-server
     namespace: pminkows-cicd
