@@ -12,3 +12,48 @@ spec:
         cpu: 250m
         memory: 256Mi
       type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: pminkows-test-limitrange
+  namespace: pminkows-test
+spec:
+  limits:
+    - default:
+        memory: 512Mi
+        cpu: 500m
+      defaultRequest:
+        cpu: 250m
+        memory: 256Mi
+      type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: pminkows-stage-limitrange
+  namespace: pminkows-stage
+spec:
+  limits:
+    - default:
+        memory: 512Mi
+        cpu: 500m
+      defaultRequest:
+        cpu: 250m
+        memory: 256Mi
+      type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: pminkows-prod-limitrange
+  namespace: pminkows-prod
+spec:
+  limits:
+    - default:
+        memory: 512Mi
+        cpu: 500m
+      defaultRequest:
+        cpu: 250m
+        memory: 256Mi
+      type: Container
