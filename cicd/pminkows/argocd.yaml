@@ -80,7 +80,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: pminkows-test
+  name: pminkows-test-argocd-role
 subjects:
   - kind: ServiceAccount
     name: argocd-argocd-application-controller
