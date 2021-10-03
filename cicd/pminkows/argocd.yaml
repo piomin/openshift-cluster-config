@@ -55,3 +55,33 @@ spec:
       requests:
         cpu: 250m
         memory: 512Mi
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pminkows-test-argocd-role
+  namespace: pminkows-test
+rules:
+  - apiGroups:
+      - "*"
+    resources:
+      - "*"
+    verbs:
+      - Get
+      - List
+      - Watch
+      - Patch
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: pminkows-test-argocd-rolebinding
+  namespace: pminkows-test
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pminkows-test
+subjects:
+  - kind: ServiceAccount
+    name: argocd-argocd-application-controller
+    namespace: pminkows-cicd
