@@ -99,12 +99,39 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
-  name: pminkows-test-argocd-rolebinding
+  name: pminkows-cicd-argocd-rolebinding
   namespace: pminkows-cicd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: pminkows-cicd-argocd-role
+subjects:
+  - kind: ServiceAccount
+    name: argocd-argocd-application-controller
+    namespace: pminkows-cicd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pminkows-stage-argocd-role
+  namespace: pminkows-stage
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: pminkows-stage-argocd-rolebinding
+  namespace: pminkows-stage
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pminkows-stage-argocd-role
 subjects:
   - kind: ServiceAccount
     name: argocd-argocd-application-controller
