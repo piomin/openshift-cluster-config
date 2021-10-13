@@ -1,0 +1,83 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-kotlin-pipeline
+  namespace: pminkows-cicd
+spec:
+  finally:
+    - name: s2i-java-11
+      params:
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'true'
+        - name: MAVEN_ARGS_APPEND
+          value: ''
+        - name: MAVEN_CLEAR_REPO
+          value: 'false'
+        - name: MAVEN_MIRROR_URL
+          value: >-
+            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-kotlin-spring:1.0
+      taskRef:
+        kind: ClusterTask
+        name: s2i-java-11
+      workspaces:
+        - name: source
+          workspace: source-dir
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/piomin/sample-spring-kotlin-microservice.git'
+        - name: revision
+          value: s2i
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: >-
+            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:afc5d3f9efe26c7042635d43b8ffd09d67936e3d0b6b901dc08a33e20313d361
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: >-
+            gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
+        - name: GOALS
+          value:
+            - test
+        - name: MAVEN_MIRROR_URL
+          value: >-
+            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: source-dir
+        - name: maven-settings
+          workspace: maven-settings
+  workspaces:
+    - name: source-dir
+    - name: maven-settings
