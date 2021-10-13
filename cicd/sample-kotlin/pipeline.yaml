@@ -10,7 +10,7 @@ spec:
         - name: PATH_CONTEXT
           value: .
         - name: TLSVERIFY
-          value: 'true'
+          value: 'false'
         - name: MAVEN_ARGS_APPEND
           value: ''
         - name: MAVEN_CLEAR_REPO
@@ -39,14 +39,11 @@ spec:
         - name: depth
           value: '1'
         - name: sslVerify
-          value: 'true'
+          value: 'false'
         - name: deleteExisting
           value: 'true'
         - name: verbose
           value: 'true'
-        - name: gitInitImage
-          value: >-
-            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:afc5d3f9efe26c7042635d43b8ffd09d67936e3d0b6b901dc08a33e20313d361
       taskRef:
         kind: ClusterTask
         name: git-clone
