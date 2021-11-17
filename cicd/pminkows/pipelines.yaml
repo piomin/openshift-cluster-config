@@ -1,0 +1,37 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: nexus-registry-secret
+  namespace: pminkows-cicd
+data:
+  .dockerconfigjson: >-
+    eyJhdXRocyI6eyJodHRwOi8vcmVwby1zb25hdHlwZS1uZXh1cy1zZXJ2aWNlLnJlcG9zaXRvcnk6NTAwMyI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbjEyMyIsImF1dGgiOiJZV1J0YVc0NllXUnRhVzR4TWpNPSJ9fX0=
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-pipeline-service-account
+  namespace: openshift-gitops
+spec:
+  patches:
+    - id: patch1
+      patchTemplate: |
+        secrets:
+          - name: nexus-registry-secret
+      patchType: application/strategic-merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: v1
+          name: openshift-gitops
+          kind: Namespace
+        - apiVersion: v1
+          name: openshift-gitops-argocd-application-controller
+          namespace: openshift-gitops
+          kind: ServiceAccount
+      targetObjectRef:
+        apiVersion: v1
+        name: pipeline
+        namespace: pminkows-cicd
+        kind: ServiceAccount
+  serviceAccountRef:
+    name: openshift-gitops-argocd-application-controller
