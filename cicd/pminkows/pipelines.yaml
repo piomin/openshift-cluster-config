@@ -131,3 +131,111 @@ spec:
           workspace: shared-workspace
   workspaces:
     - name: shared-workspace
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: maven-settings
+  namespace: pminkows-cicd
+data:
+  settings.xml: >-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+
+    </settings>
+---
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: kotlin-pipeline-pvc
+  namespace: pminkows-cicd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: azure-immediate
+  volumeMode: Filesystem
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-kotlin-pipeline
+  namespace: pminkows-cicd
+spec:
+  finally:
+    - name: s2i-java-11
+      params:
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: MAVEN_ARGS_APPEND
+          value: ''
+        - name: MAVEN_CLEAR_REPO
+          value: 'false'
+        - name: MAVEN_MIRROR_URL
+          value: >-
+            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
+        - name: IMAGE
+          value: >-
+            repo-sonatype-nexus-service.repository:5003/pminkows/sample-kotlin-spring:1.0
+      taskRef:
+        kind: ClusterTask
+        name: s2i-java-11
+      workspaces:
+        - name: source
+          workspace: source-dir
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/piomin/sample-spring-kotlin-microservice.git'
+        - name: revision
+          value: s2i
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'false'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: >-
+            gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
+        - name: GOALS
+          value:
+            - test
+        - name: MAVEN_MIRROR_URL
+          value: >-
+            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: source-dir
+        - name: maven-settings
+          workspace: maven-settings
+  workspaces:
+    - name: source-dir
+    - name: maven-settings
