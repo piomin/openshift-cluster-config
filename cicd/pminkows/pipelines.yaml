@@ -144,6 +144,14 @@ data:
 
     </settings>
 ---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: sonar-properties
+  namespace: pminkows-cicd
+data:
+  sonar-project.properties: sonar.organization=piomin
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -180,7 +188,7 @@ spec:
             http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
         - name: IMAGE
           value: >-
-            quay.io/pminkows/sample-kotlin-spring:1.0
+            quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
       taskRef:
         kind: ClusterTask
         name: s2i-java-11
@@ -235,6 +243,38 @@ spec:
           workspace: source-dir
         - name: maven-settings
           workspace: maven-settings
+    - name: sonarqube
+      params:
+        - name: SONAR_HOST_URL
+          value: 'https://sonarcloud.io'
+        - name: SONAR_PROJECT_KEY
+          value: sample-spring-kotlin
+      runAfter:
+        - maven
+      taskRef:
+        kind: Task
+        name: sonarqube-scanner
+      workspaces:
+        - name: source-dir
+          workspace: source-dir
+        - name: sonar-settings
+          workspace: sonar-settings
+    - name: get-version
+      params:
+        - name: MAVEN_IMAGE
+          value: >-
+            gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - sonarqube
+      taskRef:
+        kind: Task
+        name: maven-get-project-version
+      workspaces:
+        - name: source
+          workspace: source-dir
   workspaces:
     - name: source-dir
     - name: maven-settings
+    - name: sonar-settings
