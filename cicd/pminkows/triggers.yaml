@@ -5,7 +5,7 @@ metadata:
   namespace: pminkows-cicd
 spec:
   params:
-    - default: master
+    - default: s2i
       description: The git revision
       name: git-revision
     - description: The git repository url
@@ -33,7 +33,7 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: example
+  name: sample-kotlin-spring
   namespace: pminkows-cicd
 spec:
   serviceAccountName: pipeline
@@ -44,3 +44,25 @@ spec:
       name: trigger-1
       template:
         ref: sample-kotlin-spring-trigger-template
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: el-sample-kotlin-spring
+  namespace: pminkows-cicd
+  labels:
+    app.kubernetes.io/instance: cicd-config
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: sample-kotlin-spring
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: el-example-pminkows-cicd.apps.qyt1tahi.eastus.aroapp.io
+  to:
+    kind: Service
+    name: el-sample-kotlin-spring
+    weight: 100
+  port:
+    targetPort: http-listener
+  wildcardPolicy: None
