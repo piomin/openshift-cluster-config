@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: sample-kotlin-spring-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: sample-kotlin-spring
