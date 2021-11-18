@@ -17,7 +17,7 @@ spec:
         generateName: sample-kotlin-spring-pipeline-run-
       spec:
         pipelineRef:
-          name: sample-kotlin-spring-pipeline
+          name: sample-kotlin-pipeline
         serviceAccountName: pipeline
         workspaces:
           - name: source-dir
