@@ -31,7 +31,8 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
-  initialSSHKnownHosts: { }
+  initialSSHKnownHosts: {}
+  applicationSet: {}
   rbac:
     defaultPolicy: ''
     policy: |
