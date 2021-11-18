@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/prod/sample-dotnetcore-ex
+    path: apps/pminkows/sample-dotnetcore-ex/prod
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -24,7 +24,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/stage/sample-dotnetcore-ex
+    path: apps/pminkows/sample-dotnetcore-ex/stage
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -41,7 +41,7 @@ spec:
   syncPolicy:
     automated: {}
   source:
-    path: apps/pminkows/test/sample-dotnetcore-ex
+    path: apps/pminkows/sample-dotnetcore-ex/test
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -56,7 +56,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/prod/sample-kotlin-spring
+    path: apps/pminkows/sample-kotlin-spring/prod
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -71,7 +71,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/stage/sample-kotlin-spring
+    path: apps/pminkows/sample-kotlin-spring/stage
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -88,6 +88,6 @@ spec:
   syncPolicy:
     automated: {}
   source:
-    path: apps/pminkows/test/sample-kotlin-spring
+    path: apps/pminkows/sample-kotlin-spring/test
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
