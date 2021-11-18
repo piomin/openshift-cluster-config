@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sample-dotnetcore-ex
-        image: image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-dotnetcore-ex:1.0
+        image: repo-sonatype-nexus-service.repository:5003/pminkows/sample-dotnetcore-ex:1.0
         resources:
           requests:
             memory: "32Mi"
