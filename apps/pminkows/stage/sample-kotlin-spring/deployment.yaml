@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-dotnetcore-ex-deployment
+  name: sample-kotlin-spring-deployment
 spec:
+  replicas: 2
   selector:
     matchLabels:
-      app: sample-dotnetcore-ex
+      app: sample-kotlin-spring
   template:
     metadata:
       labels:
-        app: sample-dotnetcore-ex
+        app: sample-kotlin-spring
     spec:
       containers:
-      - name: sample-dotnetcore-ex
-        image: image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-dotnetcore-ex:1.0
+      - name: sample-kotlin-spring
+        image: image-registry.openshift-image-registry.svc:5000/pminkows-cicd/sample-kotlin-spring:1.0
         resources:
           requests:
             memory: "32Mi"

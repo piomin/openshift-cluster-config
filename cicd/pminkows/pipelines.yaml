@@ -102,7 +102,7 @@ spec:
         - name: PATH_CONTEXT
           value: .
         - name: TLSVERIFY
-          value: 'true'
+          value: 'false'
         - name: IMAGE
           value: >-
             repo-sonatype-nexus-service.repository:5003/pminkows/sample-dotnetcore-ex:$(params.APP_VERSION)
@@ -143,7 +143,6 @@ data:
     <settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
 
     </settings>
----
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

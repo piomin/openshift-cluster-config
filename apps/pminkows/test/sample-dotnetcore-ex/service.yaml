@@ -21,7 +21,7 @@ metadata:
   annotations:
     openshift.io/host.generated: 'true'
 spec:
-  host: stock-kafka-streams.apps.qyt1tahi.eastus.aroapp.io
+  host: sample-dotnetcore-ex-pminkows-test.apps.qyt1tahi.eastus.aroapp.io
   to:
     kind: Service
     name: sample-dotnetcore-ex-service
