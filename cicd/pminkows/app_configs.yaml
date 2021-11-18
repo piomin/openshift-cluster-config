@@ -54,7 +54,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/prod/sample-spring-kotlin
+    path: apps/pminkows/prod/sample-kotlin-spring
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -69,7 +69,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/stage/sample-spring-kotlin
+    path: apps/pminkows/stage/sample-kotlin-spring
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -84,6 +84,6 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/stage/sample-spring-kotlin
+    path: apps/pminkows/stage/sample-kotlin-spring
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
