@@ -26,6 +26,9 @@ spec:
           - configMap:
               name: sonar-properties
             name: sonar-settings
+          - configMap:
+              name: maven-settings
+            name: maven-settings
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
