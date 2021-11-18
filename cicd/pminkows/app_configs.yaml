@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/prod
+    path: apps/pminkows/prod/sample-dotnetcore-ex
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -24,7 +24,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/stage
+    path: apps/pminkows/stage/sample-dotnetcore-ex
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
 ---
@@ -39,6 +39,51 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/test
+    path: apps/pminkows/test/sample-dotnetcore-ex
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-spring-kotlin-prod
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-prod
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/prod/sample-spring-kotlin
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-spring-kotlin-stage
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-stage
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/stage/sample-spring-kotlin
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-spring-kotlin-test
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-test
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows/stage/sample-spring-kotlin
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
