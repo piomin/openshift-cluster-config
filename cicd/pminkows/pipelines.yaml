@@ -1,11 +1,11 @@
 kind: Secret
 apiVersion: v1
 metadata:
-  name: nexus-registry-secret
+  name: quay-registry-secret
   namespace: pminkows-cicd
 data:
   .dockerconfigjson: >-
-    eyJhdXRocyI6eyJodHRwOi8vcmVwby1zb25hdHlwZS1uZXh1cy1zZXJ2aWNlLnJlcG9zaXRvcnk6NTAwMyI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbjEyMyIsImF1dGgiOiJZV1J0YVc0NllXUnRhVzR4TWpNPSJ9fX0=
+    eyJhdXRocyI6eyJodHRwczovL3F1YXkuaW8iOnsidXNlcm5hbWUiOiJwbWlua293cyIsInBhc3N3b3JkIjoiUGlvdF8xMjMiLCJhdXRoIjoiY0cxcGJtdHZkM002VUdsdmRGOHhNak09In19fQ==
 type: kubernetes.io/dockerconfigjson
 ---
 apiVersion: redhatcop.redhat.io/v1alpha1
@@ -18,7 +18,7 @@ spec:
     - id: patch1
       patchTemplate: |
         secrets:
-          - name: nexus-registry-secret
+          - name: quay-registry-secret
       patchType: application/strategic-merge-patch+json
       sourceObjectRefs:
         - apiVersion: v1
@@ -105,7 +105,7 @@ spec:
           value: 'false'
         - name: IMAGE
           value: >-
-            repo-sonatype-nexus-service.repository:5003/pminkows/sample-dotnetcore-ex:$(params.APP_VERSION)
+            quay.io/pminkows/sample-dotnetcore-ex:$(params.APP_VERSION)
       runAfter:
         - dotnet-test
       taskRef:
@@ -180,7 +180,7 @@ spec:
             http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
         - name: IMAGE
           value: >-
-            repo-sonatype-nexus-service.repository:5003/pminkows/sample-kotlin-spring:1.0
+            quay.io/pminkows/sample-kotlin-spring:1.0
       taskRef:
         kind: ClusterTask
         name: s2i-java-11

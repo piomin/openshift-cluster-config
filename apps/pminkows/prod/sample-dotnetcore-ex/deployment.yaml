@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sample-dotnetcore-ex
-        image: repo-sonatype-nexus-service.repository:5003/pminkows/sample-dotnetcore-ex:1.0
+        image: quay.io/pminkows/sample-dotnetcore-ex:1.0
         resources:
           requests:
             memory: "32Mi"

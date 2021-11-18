@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sample-kotlin-spring
-        image: repo-sonatype-nexus-service.repository:5003/pminkows/sample-kotlin-spring:1.0
+        image: quay.io/pminkows/sample-kotlin-spring:1.0
         resources:
           requests:
             memory: "32Mi"
