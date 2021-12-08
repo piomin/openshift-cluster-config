@@ -37,6 +37,7 @@ spec:
     defaultPolicy: ''
     policy: |
       g, system:cluster-admins, role:admin
+      g, pminkows-admins, role:admin
     scopes: '[groups]'
   ha:
     enabled: false
