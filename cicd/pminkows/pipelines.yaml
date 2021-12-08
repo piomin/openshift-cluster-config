@@ -5,7 +5,7 @@ metadata:
   namespace: pminkows-cicd
 data:
   .dockerconfigjson: >-
-    eyJhdXRocyI6eyJodHRwczovL3F1YXkuaW8iOnsidXNlcm5hbWUiOiJwbWlua293cyIsInBhc3N3b3JkIjoiUGlvdF8xMjMiLCJhdXRoIjoiY0cxcGJtdHZkM002VUdsdmRGOHhNak09In19fQ==
+    ewogICJhdXRocyI6IHsKICAgICJxdWF5LmlvIjogewogICAgICAiYXV0aCI6ICJjRzFwYm10dmQzTXJjR2x2YldsdU9reE9XVlpIUTFWRFZVeEhRakZTTlV0RU5FODNVVGt5TTBoSFFqQXpUVkZKU0ZCRlRsTkVUMVJKVjBOT1dUUTROVXRYTVVkSlJUbENValF6VUVKQ1MxVT0iLAogICAgICAiZW1haWwiOiAiIgogICAgfQogIH0KfQ==
 type: kubernetes.io/dockerconfigjson
 ---
 apiVersion: redhatcop.redhat.io/v1alpha1
