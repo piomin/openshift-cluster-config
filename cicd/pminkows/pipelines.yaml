@@ -176,7 +176,6 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: azure-immediate
   volumeMode: Filesystem
 ---
 apiVersion: tekton.dev/v1beta1
