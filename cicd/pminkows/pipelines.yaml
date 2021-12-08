@@ -203,7 +203,7 @@ spec:
             quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
       taskRef:
         kind: ClusterTask
-        name: s2i-java-11
+        name: s2i-java
       workspaces:
         - name: source
           workspace: source-dir
