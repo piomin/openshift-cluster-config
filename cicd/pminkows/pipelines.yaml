@@ -185,7 +185,7 @@ metadata:
   namespace: pminkows-cicd
 spec:
   finally:
-    - name: s2i-java-11
+    - name: s2i-java
       params:
         - name: PATH_CONTEXT
           value: .
