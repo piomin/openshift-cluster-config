@@ -44,7 +44,7 @@ metadata:
   namespace: pminkows-cicd
 spec:
   hard:
-    pods: '10'
+    pods: '15'
     requests.cpu: '4'
     requests.memory: 4Gi
     limits.cpu: '10'
