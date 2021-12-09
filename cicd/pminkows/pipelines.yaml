@@ -195,9 +195,6 @@ spec:
           value: ''
         - name: MAVEN_CLEAR_REPO
           value: 'false'
-        - name: MAVEN_MIRROR_URL
-          value: >-
-            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
         - name: IMAGE
           value: >-
             quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
