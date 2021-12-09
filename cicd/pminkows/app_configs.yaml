@@ -9,9 +9,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/sample-dotnetcore-ex/prod
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-dotnetcore-ex-prod.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -24,9 +27,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/sample-dotnetcore-ex/stage
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-dotnetcore-ex-stage.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -41,9 +47,12 @@ spec:
   syncPolicy:
     automated: {}
   source:
-    path: apps/pminkows/sample-dotnetcore-ex/test
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-dotnetcore-ex-test.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -56,9 +65,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/sample-kotlin-spring/prod
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-kotlin-spring-prod.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -71,9 +83,12 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: apps/pminkows/sample-kotlin-spring/stage
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-kotlin-spring-stage.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -88,6 +103,9 @@ spec:
   syncPolicy:
     automated: {}
   source:
-    path: apps/pminkows/sample-kotlin-spring/test
+    path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
+  helm:
+    valueFiles:
+      - values-sample-kotlin-spring-test.yaml

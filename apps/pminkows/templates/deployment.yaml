@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-kotlin-spring-deployment
+  name: {{ .Values.app.name }}-deployment
 spec:
-  replicas: 2
+  replicas: {{ .Values.app.replicas }}
   selector:
     matchLabels:
-      app: sample-kotlin-spring
+      app: {{ .Values.app.name }}
   template:
     metadata:
       labels:
-        app: sample-kotlin-spring
+        app: {{ .Values.app.name }}
     spec:
       containers:
-      - name: sample-kotlin-spring
-        image: quay.io/pminkows/sample-kotlin-spring:1.0
+      - name: {{ .Values.app.name }}
+        image: quay.io/pminkows/{{ .Values.app.image }}:{{ .Values.app.version }}
         resources:
           requests:
             memory: "32Mi"
