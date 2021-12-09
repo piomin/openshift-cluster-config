@@ -3,3 +3,6 @@ https://argo-cd.readthedocs.io/en/stable/faq/#why-are-resources-of-type-sealedse
 
 Use Kustomize for patching resource:
 https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+
+Secrets with ArgoCD:
+https://argo-cd.readthedocs.io/en/stable/operator-manual/secret-management/
