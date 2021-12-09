@@ -235,9 +235,6 @@ spec:
         - name: GOALS
           value:
             - test
-        - name: MAVEN_MIRROR_URL
-          value: >-
-            http://repo-sonatype-nexus-service.repository.svc:8081/repository/maven-central/
         - name: PROXY_PROTOCOL
           value: http
         - name: CONTEXT_DIR
