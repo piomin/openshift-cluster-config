@@ -12,9 +12,9 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-dotnetcore-ex-prod.yaml
+    helm:
+      valueFiles:
+        - values-sample-dotnetcore-ex-prod.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -30,9 +30,9 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-dotnetcore-ex-stage.yaml
+    helm:
+      valueFiles:
+        - values-sample-dotnetcore-ex-stage.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -50,9 +50,9 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-dotnetcore-ex-test.yaml
+    helm:
+      valueFiles:
+        - values-sample-dotnetcore-ex-test.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -68,9 +68,9 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-kotlin-spring-prod.yaml
+    helm:
+      valueFiles:
+        - values-sample-kotlin-spring-prod.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -86,9 +86,9 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-kotlin-spring-stage.yaml
+    helm:
+      valueFiles:
+        - values-sample-kotlin-spring-stage.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -106,6 +106,6 @@ spec:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
-  helm:
-    valueFiles:
-      - values-sample-kotlin-spring-test.yaml
+    helm:
+      valueFiles:
+        - values-sample-kotlin-spring-test.yaml
