@@ -1,5 +1,5 @@
 app:
   name: sample-dotnetcore-ex
   image: sample-dotnetcore-ex
-  version: 1.0
+  version: "1.0"
   replicas: 2
