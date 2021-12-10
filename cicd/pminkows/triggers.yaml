@@ -58,7 +58,6 @@ metadata:
   annotations:
     openshift.io/host.generated: 'true'
 spec:
-  host: el-example-pminkows-cicd.apps.qyt1tahi.eastus.aroapp.io
   to:
     kind: Service
     name: el-sample-kotlin-spring
