@@ -22,9 +22,9 @@ spec:
                   name: postgres
                   key: database-password
             - name: CHANGELOGFILE
-              value: changelog.sql
+              value: changeLog.sql
           volumeMounts:
-            - mountPath: /liquibase
+            - mountPath: /liquibase/changelog
               name: changelog
       volumes:
         - name: changelog
