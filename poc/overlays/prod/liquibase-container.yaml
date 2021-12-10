@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-spring-deployment
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: liquibase
+          image: docker.io/piomin/liquibase:latest
+          env:
+            - name: URL
+              value: jdbc:postgresql://postgres:5432/sampledb
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: database-user
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: database-password
+            - name: CHANGELOGFILE
+              value: changelog.sql
+          volumeMounts:
+            - mountPath: /liquibase
+              name: changelog
+      volumes:
+        - name: changelog
+          configMap:
+            name: changelog-cm

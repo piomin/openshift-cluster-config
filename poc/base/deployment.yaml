@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-spring-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-spring
+  template:
+    metadata:
+      labels:
+        app: sample-spring
+    spec:
+      containers:
+        - name: sample-spring
+          image: quay.io/pminkows/sample-spring:1.4.3
+          ports:
+            - containerPort: 8080

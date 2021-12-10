@@ -1,7 +1,0 @@
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  name: pipeline
-  namespace: pminkows-demo
-secrets:
-  - name: person-db
