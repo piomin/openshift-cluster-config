@@ -290,3 +290,98 @@ spec:
     - name: source-dir
     - name: maven-settings
     - name: sonar-settings
+---
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dotnet-multiproj-pipeline-pvc
+  namespace: pminkows-cicd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  volumeMode: Filesystem
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-dotnet-pipeline
+  namespace: pminkows-cicd
+spec:
+  params:
+    - name: APP_VERSION
+      description: Version number of application
+      type: string
+    - name: DOTNET_VERSION
+      description: Version of .NET framework
+      type: string
+    - name: TESTS_DIR
+      description: The name of the directory with unit tests
+      type: string
+    - name: APP_PROJECT
+      description: The file with project .csproj
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/piomin/web-api-2.git'
+        - name: revision
+          value: dotnet:5.0-ubi8
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+    - name: s2i-dotnet-multiproj
+      params:
+        - name: VERSION
+          value: $(params.DOTNET_VERSION)
+        - name: APP_PROJECT
+          value: web-api/web-api.csproj
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: >-
+            quay.io/pminkows/web-api-2:$(params.APP_VERSION)
+      runAfter:
+        - dotnet-test
+      taskRef:
+        kind: ClusterTask
+        name: s2i-dotnet
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: dotnet-test
+      params:
+        - name: DOTNET_IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:$(params.DOTNET_VERSION)
+        - name: TEST_DIR
+          value: $(params.TESTS_DIR)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: dotnet-test
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+  workspaces:
+    - name: shared-workspace
