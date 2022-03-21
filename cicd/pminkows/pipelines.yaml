@@ -349,7 +349,7 @@ spec:
         - name: VERSION
           value: $(params.DOTNET_VERSION)
         - name: APP_PROJECT
-          value: web-api/web-api.csproj
+          value: $(params.APP_PROJECT)
         - name: PATH_CONTEXT
           value: .
         - name: TLSVERIFY
