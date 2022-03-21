@@ -1,0 +1,5 @@
+app:
+  name: web-api-2
+  image: web-api-2
+  version: "1.0"
+  replicas: 1

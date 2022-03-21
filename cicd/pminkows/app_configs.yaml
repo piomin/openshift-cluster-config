@@ -109,3 +109,59 @@ spec:
     helm:
       valueFiles:
         - values-sample-kotlin-spring-test.yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-api-2-prod
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-prod
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-web-api-2-prod.yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-api-2-stage
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-stage
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-web-api-2-stage.yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web-api-2-test
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-test
+    server: 'https://kubernetes.default.svc'
+  project: default
+  syncPolicy:
+    automated: {}
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-web-api-2-test.yaml
