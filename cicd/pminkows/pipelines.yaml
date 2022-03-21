@@ -327,7 +327,7 @@ spec:
         - name: url
           value: 'https://github.com/piomin/web-api-2.git'
         - name: revision
-          value: dotnet:5.0-ubi8
+          value: master
         - name: submodules
           value: 'true'
         - name: depth
@@ -361,7 +361,7 @@ spec:
         - dotnet-test
       taskRef:
         kind: ClusterTask
-        name: s2i-dotnet
+        name: s2i-dotnet-multiproj
       workspaces:
         - name: source
           workspace: shared-workspace
