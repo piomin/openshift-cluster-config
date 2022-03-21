@@ -291,7 +291,6 @@ spec:
     - name: maven-settings
     - name: sonar-settings
 ---
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -308,7 +307,7 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: sample-dotnet-pipeline
+  name: sample-dotnet-multiproj-pipeline
   namespace: pminkows-cicd
 spec:
   params:

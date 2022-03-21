@@ -6,3 +6,10 @@ https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 
 Secrets with ArgoCD:
 https://argo-cd.readthedocs.io/en/stable/operator-manual/secret-management/
+
+# Step 1
+Add cluster-admin to the `openshift-gitops-argocd-application-controller`
+
+```shell
+oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
+```
