@@ -167,7 +167,10 @@ metadata:
   name: sonar-properties
   namespace: pminkows-cicd
 data:
-  sonar-project.properties: sonar.organization=piomin
+  sonar-project.properties: |
+    sonar.organization=piomin
+    sonar.login=f6b415dd54f74a7e3361976820544c2b138791d4
+    sonar.qualitygate.wait=true
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
