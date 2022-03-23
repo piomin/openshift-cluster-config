@@ -160,15 +160,12 @@ metadata:
     tekton.dev/tags: 's2i, dotnet, workspace'
   name: s2i-dotnet-multiproj
   labels:
-    app.kubernetes.io/version: '0.1'
+    app.kubernetes.io/version: '1.0'
     operator.tekton.dev/provider-type: piomin
 spec:
-  description: >-
-    s2i-dotnet task fetches a Git repository and builds and pushes a container
-    image using S2I and a .NET Core builder image.
+  description: s2i-dotnet .NET custom task for multi-project builds
   params:
-    - default: >-
-        registry.redhat.io/rhel8/buildah@sha256:e19cf23d5f1e0608f5a897f0a50448beb9f8387031cca49c7487ec71bd91c4d3
+    - default: registry.access.redhat.com/ubi8/buildah:latest
       description: The location of the buildah builder image.
       name: BUILDER_IMAGE
       type: string
@@ -185,9 +182,7 @@ spec:
       name: PATH_CONTEXT
       type: string
     - default: 'true'
-      description: >-
-        Verify the TLS on the registry endpoint (for push/pull to a non-TLS
-        registry)
+      description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
       name: TLSVERIFY
       type: string
     - description: Location of the repo where image has to be pushed
@@ -210,8 +205,7 @@ spec:
       env:
         - name: HOME
           value: /tekton/home
-      image: >-
-        registry.redhat.io/ocp-tools-4-tech-preview/source-to-image-rhel8@sha256:e518e05a730ae066e371a4bd36a5af9cedc8686fd04bd59648d20ea0a486d7e5
+      image: registry.redhat.io/ocp-tools-4-tech-preview/source-to-image-rhel8:v1.3.1
       name: generate
       volumeMounts:
         - mountPath: /gen-source
@@ -254,8 +248,7 @@ spec:
     - image: $(params.BUILDER_IMAGE)
       name: digest-to-results
       script: >-
-        cat $(workspaces.source.path)/image-digest | tee
-        /tekton/results/IMAGE_DIGEST
+        cat $(workspaces.source.path)/image-digest | tee /tekton/results/IMAGE_DIGEST
   volumes:
     - emptyDir: {}
       name: varlibcontainers
