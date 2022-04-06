@@ -413,5 +413,5 @@ spec:
   template:
     metadata:
       name: jira-token-secret
-      namespace: amq-demo
+      namespace: pminkows-cicd
     type: Opaque
