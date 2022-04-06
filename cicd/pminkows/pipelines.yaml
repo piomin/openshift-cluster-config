@@ -5,7 +5,7 @@ metadata:
   namespace: pminkows-cicd
 spec:
   encryptedData:
-    .dockerconfigjson: AgBpv8Y+2/vmev1rRGWwfcWwf6hhA7+W+s89Cy4Dip1SffcvildOrk2LAuZjxny5WjvGdenaVyWtfOF2+c2PFSbqn4I0Q/LGpKJRdFT1zlfEew6QwNwxCPZ5y1U6qpHfOtPAvmsLN6RLFy96uuwpMO4i6mzLaIPbJJQWAwnkiTROWqlfM+FekfEQGnzON5UOW/D8hmQUizdonnVDwAUePmcNcOhDY20M7CfumW6Rz3lBoR4A23vqv8tJ1AUMNK7vb2Iv/3sdv9x88n0ACmA8Cu/PrBFeSd4Wk754TZrvFGraBZl6rtK4ZRHIcS43Bj/wm0vntQhfCy9HzZV/e62OVGVakUClzftawYFdg4U3Xac0wHufuL71AFi41FP0uiEPiLOiwDb1toAEM/RNRrqTcZGPpLqI2gDklNaGlPtDIjw5O7mKB1O18/JW5Z+PiO1OGaIWr6YMmX/GdUHaIpk3lylviQXhjNaX/Z8s+5w26DTxAwoNQskUzHQQ+nYHO1ZxTgNhltU8v4PSaTJsEysadPRHvKh4K/XKuUufrhEV8dMiTIIRNCbeUjHcb2XRVkLpyIvEbvIDW/DJ13NZF2yV7LdOi4ovZUaQgpafh2DJ9pGm1NgR//yV5bGMTctxS3Uoonpv8y0JvXJBYvoB1A3MecRDOj13/m9L1M4vGF6DXb9f599cXl0n/5hSvWn4mh15aPYs6RH02xenfwFB0qlUphbu6Toyt0D/jHx2Pm9N3++rx56E7kH4gGA2uV/nlvlAfyGRiNezUXqOXgDB6rTRjy/9iQp03cjndfpYh9HjQcPzcl7QilMh5+YEllwcsmVEChm1Og+D4IuEvDr6GpK6MiStee+ce28RPedMdV8/UBsLHzBcXkdzoHK42enqUKxRX34fqXfkl+NXuGFPpzxbmn4qS87ucTNFyuEpuxXUttNysps3+Oexs3QPyAhm
+    .dockerconfigjson: AgBVaqkP6QDrtOKspv3IbXtILNaG6cohM78tmXXiXFoHUO+94JBdIJsqnW9OLrDOxbg9NAtgI/q2oIuYHzJ+8ReSFzxVOx23vfXsJiup5swYQ17YP8xqVFOZLPQXgHK4S0Q5HEqIqXtoPXe7P70Si6IDAxSFLk5m2scEpiOGf/x/YYO8megH015z4oyciKLB1ubrN7Me/79SyTrGzimwoZQovnI/D/r5VlngQULMg8oYAuZCJPTDcF1TwtpVHxXdRXYgUBhXEjzLp81FhSWNzG4qEwvZMMSDu5egAsns1EZHLQeJL7hDkGgQdUUrX7P4IOIv/X503pn1CVnvkEzLbMshTKfSZp6xu1HtzXtfsjZJTbsjXvidMfyVD5oJigd7HBRvmPa2K/1EGutHPB1fSE8BJVGCfKmIGqV35whYrQYn4gcTzr4CW2xXQKfEsU+JmumvLafKt9OYALJYkKV9dL6r2oUKYqGP9Kzl69fH0eclqkIDEOx+gJhmE51a36I4PQR2vgYhK8LGnGr5slwWbAXUAe0yct3phbW6QuA6vNOmMEBBPJWuKYZED8SFoxwKg4qg94K9/d+fq1OPRcMmzOnhdx1qs/RHOcNYI57rAbXAxlUGkf9hxweuehX9oIFw5O0y38pyDawLa/KomF+gj62CUzqQNiv3RfubBYvVXrd/am1ZMBG95UkI4vV750Yao9xKm54UH13agtk8B/PasEJ7wPVOR+ebdfFMOKkPUmB/t7T5Df7q3OlzfQuQG34gWJxzIX79tw+g8+9gdmOcxQ9yBAFPUYcoADiBZtkg/+4m9Ht5hrAxaMRJX+VFgU1lm7kJVPusVGTojMh5RCrrIGw5lXbv+UVqbLn7Bb42hYi+fV4JHyLEH+b6ltSAZns2fHpVJULi3l/k2Gvz8LSpdHMKNWg29TZLq+gtlhcAn/GtyeJfHPCx/DLGD+X7
   template:
     metadata:
       name: quay-registry-secret
@@ -287,6 +287,23 @@ spec:
       workspaces:
         - name: source
           workspace: source-dir
+    - name: jira-issue
+      params:
+        - name: token-secret-name
+          value: jira-token-secret
+        - name: project-key
+          value: PIOM
+        - name: username
+          value: piotr.minkowski@gmail.com
+        - name: url
+          value: piotrminkowski.atlassian.net
+        - name: title
+          value: $(tasks.get-version.results.version)
+      runAfter:
+        - get-version
+      taskRef:
+        kind: Task
+        name: send-to-jira
   workspaces:
     - name: source-dir
     - name: maven-settings
@@ -358,8 +375,7 @@ spec:
         - name: TLSVERIFY
           value: 'false'
         - name: IMAGE
-          value: >-
-            quay.io/pminkows/web-api-2:$(params.APP_VERSION)
+          value: quay.io/pminkows/web-api-2:$(params.APP_VERSION)
       runAfter:
         - dotnet-test
       taskRef:
@@ -385,3 +401,17 @@ spec:
           workspace: shared-workspace
   workspaces:
     - name: shared-workspace
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: jira-token-secret
+  namespace: pminkows-cicd
+spec:
+  encryptedData:
+    token: AgARTaoPqrknQpiBRfrGXT/JX9RaBpq2v/OslcZrGEOMbMCiL/TyGXL1FurqJiJXQrsqoZ1eQWorFFA2LUkaNTH4eGVmEgc3QfGBAIKGvzp1qOWD9j4n2YDQqIfA64UijFQtb2ELvugNaFwVNIt3bKjv9LQ/qIQzYRFTqf6czfZrihmZwVLGPEXGPXAN183h6/bgVYUJyXRWNfx78O5LC8Hc0OaFgMosXXwWQ/sRrgWqkJP99gHA+fpUp1brDJirlmtKSmdqlrqgNUKV/zOz16n22ln+C3WAEkv3AdulWcpiHcHnl4kATI84klsmkvcV5Qu3r8GeW3Mu4oRQKHIsZ8kMPm4u8azrQDdk4tUSxhIe/xE1vV4GhpHZC4n6/+YQrNpf1q7AIbgLZMYT5JKed2KvPCz6jSnhWotTO9xGu/MTGmDbSnCBKQL9yDJYyAAJgoWu9L4941yyBu25D5s1xCn96pqOZ82+R/GKKTa3DQnmHlxwh17fFX1W0ZJm8P+xFcBQQUEqlnqhy1zVnMVpzuGa2qIrO8R32xHVCtJO3spWdY7GYD/MwaUcIghQqnV/GIpvVSlXKlbBsdJ7FgcXP/V2iY8QrdCJzGl+gGTxBCNV9pWF3o6Bb8N78x1k8dxFX98KUYfUnMuhd5xQ+yz55S4Ns4QPf0x86j4FSrV1zhXr/hLK06lT2BBa6PZ/4EMruOQA4ZlDYqLAjjwJjUtFzBYFFUCoRR8gMQ0=
+  template:
+    metadata:
+      name: jira-token-secret
+      namespace: amq-demo
+    type: Opaque

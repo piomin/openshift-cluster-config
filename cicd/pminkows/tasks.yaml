@@ -257,4 +257,52 @@ spec:
   workspaces:
     - mountPath: /workspace/source
       name: source
-
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: send-to-jira
+  labels:
+    app.kubernetes.io/version: "1.0"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+spec:
+  description: These task creates issue in jira.
+  params:
+    - name: title
+      type: string
+      description: Title of issue
+    - name: project-key
+      type: string
+      description: A key of JIRA project
+    - name: token-secret-name
+      type: string
+      description: JIRA token
+    - name: username
+      type: string
+      description: JIRA login
+    - name: url
+      type: string
+      description: JIRA address
+  steps:
+    - name: post
+      image: docker.io/curlimages/curl:latest
+      script: |
+        #!/bin/sh
+        JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"issuetype\":{\"name\":\"Task\"}}}"
+        echo $MESSAGE | sed -e 's/\"/\\\\"/g'
+        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN}
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(params.token-secret-name)
+              key: token
+        - name: USERNAME
+          value: $(params.username)
+        - name: URL
+          value: $(params.url)
+        - name: TITLE
+          value: $(params.title)
+        - name: PROJECT_KEY
+          value: $(params.project-key)
