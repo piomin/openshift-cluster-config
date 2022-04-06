@@ -262,6 +262,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: send-to-jira
+  namespace: pminkows-cicd
   labels:
     app.kubernetes.io/version: "1.0"
   annotations:
