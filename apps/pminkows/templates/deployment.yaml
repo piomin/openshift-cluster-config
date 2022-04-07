@@ -24,10 +24,3 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
-        volumeMounts:
-          - mountPath: /app
-            name: certificate-secret
-      volumes:
-        - name: certificate-secret-volume
-          secret:
-            secretName: web-api-cert-secret
