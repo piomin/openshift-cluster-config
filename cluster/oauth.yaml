@@ -1,0 +1,15 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    - name: githubidp
+      mappingMethod: claim
+      type: GitHub
+      github:
+        clientID: 05c38f31aa7cab389bee
+        clientSecret:
+          name: github-rosa-secret
+        organizations:
+          - openshift-access
