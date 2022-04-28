@@ -4,9 +4,9 @@ metadata:
   name: pminkows-access
   namespace: pminkows-cicd
 subjects:
-  - kind: User
+  - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: pminkows
+    name: app-owners
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -18,9 +18,9 @@ metadata:
   name: pminkows-access
   namespace: pminkows-prod
 subjects:
-  - kind: User
+  - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: pminkows
+    name: app-owners
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -32,9 +32,9 @@ metadata:
   name: pminkows-access
   namespace: pminkows-stage
 subjects:
-  - kind: User
+  - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: pminkows
+    name: app-owners
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -46,17 +46,10 @@ metadata:
   name: pminkows-access
   namespace: pminkows-test
 subjects:
-  - kind: User
+  - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: pminkows
+    name: app-owners
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: admin
----
-apiVersion: user.openshift.io/v1
-kind: Group
-metadata:
-  name: pminkows-admins
-users:
-  - pminkows
