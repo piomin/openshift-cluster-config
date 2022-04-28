@@ -6,7 +6,7 @@ metadata:
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
-  project: default
+  project: cluster
   source:
     path: manifests
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
@@ -15,7 +15,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: default
+  name: cluster
   namespace: openshift-gitops
 spec:
   clusterResourceWhitelist:
