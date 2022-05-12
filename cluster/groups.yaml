@@ -11,6 +11,7 @@ metadata:
   name: cicd-admins
 users:
   - piomin
+  - user1
 ---
 kind: Group
 apiVersion: user.openshift.io/v1
@@ -18,6 +19,7 @@ metadata:
   name: app-owners
 users:
   - pminkows
+  - user2
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
