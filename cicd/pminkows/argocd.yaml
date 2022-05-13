@@ -23,31 +23,41 @@ spec:
       enabled: true
     service:
       type: ''
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  initialSSHKnownHosts: {}
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, system:cluster-admins, role:admin
+    scopes: '[groups]'
   repo:
     resources:
       limits:
-        cpu: 500m
-        memory: 512Mi
+        cpu: '1'
+        memory: 1Gi
       requests:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 250m
+        memory: 256Mi
   dex:
     openShiftOAuth: true
     resources:
       limits:
-        cpu: 250m
+        cpu: 500m
         memory: 256Mi
       requests:
-        cpu: 100m
+        cpu: 250m
         memory: 128Mi
-  initialSSHKnownHosts: {}
-  applicationSet: {}
-  rbac:
-    defaultPolicy: ''
-    policy: |
-      g, cluster-admins, role:admin
-      g, app-owners, role:admin
-    scopes: '[groups]'
   ha:
     enabled: false
     resources:
@@ -58,20 +68,22 @@ spec:
         cpu: 250m
         memory: 128Mi
   tls:
-    ca: { }
+    ca: {}
   redis:
     resources:
       limits:
-        cpu: 250m
+        cpu: 500m
         memory: 256Mi
       requests:
-        cpu: 100m
+        cpu: 250m
         memory: 128Mi
   controller:
+    processors: {}
     resources:
       limits:
-        cpu: 500m
-        memory: 1Gi
+        cpu: '2'
+        memory: 2Gi
       requests:
         cpu: 250m
-        memory: 512Mi
+        memory: 1Gi
+    sharding: {}
