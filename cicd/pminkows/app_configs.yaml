@@ -1,4 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: pminkows-cicd
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Deployment
+    - group: '*'
+      kind: Service
+    - group: '*'
+      kind: Route
+  destinations:
+    - namespace: '*'
+      server: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: Deployment
+    - group: '*'
+      kind: Service
+    - group: '*'
+      kind: Route
+  sourceRepos:
+    - '*'
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sample-dotnetcore-ex-prod
