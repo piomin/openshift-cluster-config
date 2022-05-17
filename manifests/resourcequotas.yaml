@@ -47,5 +47,5 @@ spec:
     pods: '20'
     requests.cpu: '4'
     requests.memory: 4Gi
-    limits.cpu: '15'
+    limits.cpu: '20'
     limits.memory: 20Gi
