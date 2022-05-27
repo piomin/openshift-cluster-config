@@ -1,0 +1,10 @@
+app:
+  name: sample-kotlin-spring
+  image: sample-kotlin-spring
+  version: "1.4.5"
+  replicas: 1
+
+image:
+  repository: 'pminkows/sample-kotlin-spring'
+  tag: 1.4.5
+  registry: quay.io
