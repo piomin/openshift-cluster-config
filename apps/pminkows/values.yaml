@@ -1,0 +1,5 @@
+app:
+  name: sample-kotlin-spring
+  image: sample-kotlin-spring
+  version: "1.4.2"
+  replicas: 1
