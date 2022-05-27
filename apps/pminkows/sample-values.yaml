@@ -1,4 +1,0 @@
-image:
-  repository: 'pminkows/sample-spring-boot-on-kubernetes'
-  tag: 8cd22fa5-3-12
-  registry: quay.io
