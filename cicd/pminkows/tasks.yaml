@@ -90,7 +90,7 @@ spec:
       name: SONAR_PROJECT_KEY
       type: string
   steps:
-    - image: 'registry.access.redhat.com/ubi8/ubi-minimal:8.2'
+    - image: 'registry.access.redhat.com/ubi8/ubi-minimal:8.6'
       name: sonar-properties-create
       resources: {}
       script: >
