@@ -15,12 +15,5 @@ spec:
       containers:
       - name: {{ .Values.app.name }}
         image: quay.io/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-        resources:
-          requests:
-            memory: "32Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
         ports:
         - containerPort: 8080
