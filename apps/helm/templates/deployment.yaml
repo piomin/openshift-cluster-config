@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.app.name }}
-        image: quay.io/pminkows/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: quay.io/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         resources:
           requests:
             memory: "32Mi"
