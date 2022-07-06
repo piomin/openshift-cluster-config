@@ -26,5 +26,5 @@ spec:
       volumes:
         - name: app-volume
           persistentVolumeClaim:
-            claimName: {{ .Values.app.name }}-claim
+            claimName: sample-kotlin-spring-claim
 #{{- end }}
