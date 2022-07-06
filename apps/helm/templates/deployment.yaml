@@ -17,11 +17,11 @@ spec:
         image: quay.io/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: 8080
-{{- if $.Values.persistence.enabled -}}
-        volumeMounts:
-        - mountPath: {{ .Values.persistence.mountPath }}
-          name: app-volume
-{{- end }}
+#{{- if $.Values.persistence.enabled -}}
+#        volumeMounts:
+#          - mountPath: {{ .Values.persistence.mountPath }}
+#            name: {{ .Values.app.name }}-volume
+#{{- end }}
 {{- if $.Values.persistence.enabled -}}
       volumes:
       - name: app-volume
