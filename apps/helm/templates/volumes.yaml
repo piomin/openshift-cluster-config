@@ -7,7 +7,6 @@ spec:
   accessModes:
 {{ toYaml .Values.persistence.accessModes | indent 4 }}
   volumeMode: Filesystem
-  storageClassName: default
   resources:
     requests:
       storage: {{ .Values.persistence.size }}
