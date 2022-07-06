@@ -16,13 +16,21 @@ spec:
       - name: {{ .Values.app.name }}
         image: quay.io/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-        - containerPort: 8080
+          - containerPort: 8080
         volumeMounts:
-        - mountPath: /app/vol
-          name: app-vol
-{{- if $.Values.persistence.enabled -}}
+          - mountPath: /app/vol
+            name: app-vol
       volumes:
-      - name: app-vol
-        persistentVolumeClaim:
-          claimName: {{ .Values.app.name }}-claim
-{{- end }}
+        - name: app-vol
+          persistentVolumeClaim:
+            claimName: sample-kotlin-spring-claim
+
+#        volumeMounts:
+#        - mountPath: /app/vol
+#          name: app-vol
+#{{- if $.Values.persistence.enabled -}}
+#      volumes:
+#      - name: app-vol
+#        persistentVolumeClaim:
+#          claimName: {{ .Values.app.name }}-claim
+#{{- end }}
