@@ -24,7 +24,7 @@ spec:
 #{{- end }}
 #{{- if $.Values.persistence.enabled -}}
       volumes:
-        - name: {{ .Values.app.name }}-volume
+        - name: app-volume
           persistentVolumeClaim:
             claimName: {{ .Values.app.name }}-claim
 #{{- end }}
