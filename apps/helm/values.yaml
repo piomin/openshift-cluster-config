@@ -6,3 +6,10 @@ image:
   repository: 'pminkows/sample-kotlin-spring'
   tag: 1.4.2
   registry: quay.io
+
+persistence:
+  enabled: true
+  mountPath: /tmp/app
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce

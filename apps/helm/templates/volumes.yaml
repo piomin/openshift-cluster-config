@@ -1,0 +1,14 @@
+{{- if .Values.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.app.name }}-claim
+spec:
+  accessModes:
+{{ toYaml .Values.persistence.accessModes | indent 4 }}
+  volumeMode: Filesystem
+  storageClassName: default
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+{{- end }}
