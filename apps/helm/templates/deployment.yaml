@@ -18,9 +18,9 @@ spec:
         ports:
         - containerPort: 8080
 #{{- if $.Values.persistence.enabled -}}
-#        volumeMounts:
-#          - mountPath: {{ .Values.persistence.mountPath }}
-#            name: {{ .Values.app.name }}-volume
+        volumeMounts:
+        - mountPath: /tmp/app
+          name: app-volume
 #{{- end }}
 {{- if $.Values.persistence.enabled -}}
       volumes:
