@@ -20,11 +20,11 @@ spec:
         volumeMounts:
           - mountPath: /app/vol
             name: app-vol
-      {{- if $.Values.persistence.enabled }}
+      {{- if .Values.persistence.enabled }}
       volumes:
         - name: app-vol
           persistentVolumeClaim:
-            claimName: sample-kotlin-spring-claim
+            claimName: {{ .Values.app.name }}-claim
       {{- end }}
 #        volumeMounts:
 #        - mountPath: /app/vol
