@@ -24,7 +24,7 @@ spec:
 #{{- end }}
 #{{- if $.Values.persistence.enabled -}}
       volumes:
-        - name: app-volume
-          persistentVolumeClaim:
-            claimName: sample-kotlin-spring-claim
+      - name: app-volume
+        persistentVolumeClaim:
+          claimName: sample-kotlin-spring-claim
 #{{- end }}
