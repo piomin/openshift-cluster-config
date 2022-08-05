@@ -17,6 +17,9 @@ spec:
         image: quay.io/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
           - containerPort: 8080
+        env:
+          - name: PASS
+            value: {{ .Values.password }}
         {{- if .Values.persistence.enabled }}
         volumeMounts:
           - mountPath: /app/vol
