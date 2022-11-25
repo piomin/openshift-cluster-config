@@ -1,0 +1,32 @@
+{{- $shortProviders := dict "Google" "GCP" "Azure" "Azure" "Amazon" "AWS" -}}
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: {{ .Values.clusterName }}
+  namespace: {{ .Values.clusterName }}
+  labels:
+    cloud: {{ get $shortProviders .Values.provider }}
+    region: {{ .Values.region }}
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+spec:
+  baseDomain: {{ .Values.baseDomain }}
+  clusterName: {{ .Values.clusterName }}
+  controlPlaneConfig:
+    servingCertificates: {}
+  installAttemptsLimit: 1
+  installed: false
+  platform:
+    gcp:
+      credentialsSecretRef:
+        name: gcp-1-gcp-creds
+      region: europe-west1
+  provisioning:
+    installConfigSecretRef:
+      name: gcp-1-install-config
+    sshPrivateKeySecretRef:
+      name: gcp-1-ssh-private-key
+    imageSetRef:
+      name: img4.11.16-x86-64-appsub
+  pullSecretRef:
+    name: gcp-1-pull-secret
