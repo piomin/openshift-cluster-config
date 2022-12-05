@@ -19,14 +19,14 @@ spec:
   platform:
     gcp:
       credentialsSecretRef:
-        name: gcp-1-gcp-creds
+        name: {{ .Values.clusterName }}-gcp-creds
       region: europe-west1
   provisioning:
     installConfigSecretRef:
-      name: gcp-1-install-config
+      name: {{ .Values.clusterName }}-install-config
     sshPrivateKeySecretRef:
-      name: gcp-1-ssh-private-key
+      name: {{ .Values.clusterName }}-ssh-private-key
     imageSetRef:
       name: img4.11.16-x86-64-appsub
   pullSecretRef:
-    name: gcp-1-pull-secret
+    name: {{ .Values.clusterName }}-pull-secret
