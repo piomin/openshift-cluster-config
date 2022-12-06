@@ -1,7 +1,7 @@
 app:
   name: quarkus-kafka-processor
   image: quarkus-kafka-processor
-  version: "1.0"
+  version: "latest"
   replicas: 1
   registry: docker.io/piomin
   envs:

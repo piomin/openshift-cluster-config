@@ -1,7 +1,7 @@
 app:
   name: quarkus-kafka-producer
   image: quarkus-kafka-producer
-  version: "1.0"
+  version: "latest"
   replicas: 1
   registry: docker.io/piomin
   envs:
