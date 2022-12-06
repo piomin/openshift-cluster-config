@@ -7,4 +7,4 @@ app:
 image:
   repository: 'pminkows/sample-kotlin-spring'
   tag: 1.4.21
-  registry: quay.io
+  registry: quay.io/pminkows

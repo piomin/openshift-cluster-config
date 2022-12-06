@@ -3,6 +3,10 @@ app:
   image: sample-kotlin-spring
   version: "1.4.5"
   replicas: 1
+  registry: quay.io/pminkows
+  envs:
+    - name: test1
+      value: hello1
 
 image:
   repository: 'pminkows/sample-kotlin-spring'

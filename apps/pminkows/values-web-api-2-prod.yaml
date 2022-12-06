@@ -3,3 +3,4 @@ app:
   image: web-api-2
   version: "1.0"
   replicas: 2
+  registry: quay.io/pminkows

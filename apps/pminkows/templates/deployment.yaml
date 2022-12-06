@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.app.name }}
-        image: quay.io/pminkows/{{ .Values.app.image }}:{{ .Values.app.version }}
+        image: {{ .Values.app.registry }}/{{ .Values.app.image }}:{{ .Values.app.version }}
         resources:
           requests:
             memory: "32Mi"
@@ -22,5 +22,12 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "500m"
+        {{- if .Values.app.envs }}
+        env:
+          {{- range .Values.app.envs }}
+          - name: {{ .name }}
+            value: {{ .value }}
+          {{- end }}
+        {{- end }}
         ports:
         - containerPort: 8080

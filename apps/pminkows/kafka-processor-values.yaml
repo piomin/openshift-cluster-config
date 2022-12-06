@@ -1,0 +1,9 @@
+app:
+  name: quarkus-kafka-processor
+  image: quarkus-kafka-processor
+  version: "1.0"
+  replicas: 1
+  registry: docker.io/piomin
+  envs:
+    - name: KAFKA_BOOTSTRAP_SERVERS
+      value: my-cluster-kafka-bootstrap.kafka:9092
