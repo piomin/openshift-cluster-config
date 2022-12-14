@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: sample-app
-        image: quay.io/pminkows/sample-kotlin-spring:1.0
+        image: quay.io/pminkows/sample-kotlin-spring:1.4.30
         ports:
         - containerPort: 8080
           name: http
