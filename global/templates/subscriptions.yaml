@@ -5,11 +5,10 @@ metadata:
   name: {{ .name }}
   namespace: {{ .namespace }}
 spec:
-  channel: stable
-  installPlanApproval: Manual
+  channel: {{ .channel }}
+  installPlanApproval: Automatic
   name: {{ .name }}
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: {{ .name }}.v{{ .version }}
 ---
 {{- end }}
