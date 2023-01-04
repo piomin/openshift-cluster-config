@@ -3,7 +3,8 @@ kind: ClusterVersion
 metadata:
   name: version
 spec:
-  channel: stable-4.9
+  channel: {{ .Values.channel }}
+  clusterID: {{ .Values.id }}
   desiredUpdate:
-    version: 4.9.53
+    version: {{ .Values.version }}
     force: true
