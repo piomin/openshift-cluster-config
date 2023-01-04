@@ -1,0 +1,4 @@
+subscriptions:
+  - name: amq-streams
+    namespace: amq-streams
+    version: 2.1.0
