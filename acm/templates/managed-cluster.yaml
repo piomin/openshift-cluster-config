@@ -6,7 +6,7 @@ metadata:
     region: {{ .Values.region }}
     name: {{ .Values.clusterName }}
     vendor: OpenShift
-    cluster.open-cluster-management.io/clusterset: 'default'
+    cluster.open-cluster-management.io/clusterset: {{ .Values.managedSet }}
   name: {{ .Values.clusterName }}
 spec:
   hubAcceptsClient: true
