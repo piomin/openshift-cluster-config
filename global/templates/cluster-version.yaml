@@ -2,7 +2,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
   name: patch-cluster-version
-  namespace: openshift-gitops
+  namespace: resource-locker-operator
 spec:
   patches:
     - id: patch1
@@ -17,5 +17,3 @@ spec:
         apiVersion: config.openshift.io/v1
         name: version
         kind: ClusterVersion
-  serviceAccountRef:
-    name: openshift-gitops-argocd-application-controller
