@@ -1,14 +1,3 @@
-#apiVersion: config.openshift.io/v1
-#kind: ClusterVersion
-#metadata:
-#  name: version
-#spec:
-#  channel: {{ .Values.channel }}
-#  clusterID: {{ .Values.id }}
-#  desiredUpdate:
-#    version: {{ .Values.version }}
-#    force: true
-#---
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
