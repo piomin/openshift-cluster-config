@@ -18,10 +18,11 @@ spec:
   patches:
     - id: patch1
       patchTemplate: |
-        channel: {{ .Values.channel }}
-        desiredUpdate:
-          version: {{ .Values.version }}
-          force: true
+        spec:
+          channel: {{ .Values.channel }}
+          desiredUpdate:
+            version: {{ .Values.version }}
+            force: true
       patchType: application/strategic-merge-patch+json
       sourceObjectRefs:
         - apiVersion: v1
