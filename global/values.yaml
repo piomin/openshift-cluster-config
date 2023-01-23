@@ -4,9 +4,16 @@ subscriptions:
   - name: kiali-ossm
     namespace: openshift-operators
     channel: stable
+    source: redhat-operators
   - name: servicemeshoperator
     namespace: openshift-operators
     channel: stable
+    source: redhat-operators
   - name: amq-streams
     namespace: openshift-operators
     channel: stable
+    source: redhat-operators
+  - name: resource-locker-operator
+    namespace: resource-locker-operator
+    channel: alpha
+    source: community-operators

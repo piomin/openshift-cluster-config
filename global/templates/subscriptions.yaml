@@ -8,7 +8,7 @@ spec:
   channel: {{ .channel }}
   installPlanApproval: Automatic
   name: {{ .name }}
-  source: redhat-operators
+  source: {{ .source }}
   sourceNamespace: openshift-marketplace
 ---
 {{- if ne .namespace "openshift-operators" }}
@@ -16,6 +16,13 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ .namespace }}
+---
+apiVersion: operators.coreos.com/v1alpha2
+kind: OperatorGroup
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace }}
+spec: {}
 ---
 {{- end }}
 {{- end }}
