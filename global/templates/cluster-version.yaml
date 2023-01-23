@@ -23,15 +23,7 @@ spec:
           desiredUpdate:
             version: {{ .Values.version }}
             force: true
-      patchType: application/strategic-merge-patch+json
-      sourceObjectRefs:
-        - apiVersion: v1
-          name: openshift-gitops
-          kind: Namespace
-        - apiVersion: v1
-          name: openshift-gitops-argocd-application-controller
-          namespace: openshift-gitops
-          kind: ServiceAccount
+      patchType: application/merge-patch+json
       targetObjectRef:
         apiVersion: config.openshift.io/v1
         name: version
