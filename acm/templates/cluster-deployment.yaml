@@ -1,4 +1,9 @@
 {{- $shortProviders := dict "Google" "GCP" "Azure" "Azure" "Amazon" "AWS" -}}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.clusterName }}
+---
 apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
 metadata:
