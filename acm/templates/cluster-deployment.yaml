@@ -13,7 +13,7 @@ metadata:
     cloud: {{ get $shortProviders .Values.provider }}
     region: {{ .Values.region }}
     vendor: OpenShift
-    cluster.open-cluster-management.io/clusterset: 'default'
+    cluster.open-cluster-management.io/clusterset: {{ .Values.managedSet }}
 spec:
   baseDomain: {{ .Values.baseDomain }}
   clusterName: {{ .Values.clusterName }}
@@ -32,6 +32,7 @@ spec:
     sshPrivateKeySecretRef:
       name: {{ .Values.clusterName }}-ssh-private-key
     imageSetRef:
-      name: img4.11.16-x86-64-appsub
+      name: img4.10.47-x86-64-appsub
+      #img4.11.16-x86-64-appsub
   pullSecretRef:
     name: {{ .Values.clusterName }}-pull-secret
