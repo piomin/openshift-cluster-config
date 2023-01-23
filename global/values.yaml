@@ -10,3 +10,6 @@ subscriptions:
   - name: servicemeshoperator
     namespace: openshift-operators
     channel: stable
+  - name: amq-streams
+    namespace: openshift-operators
+    channel: stable
