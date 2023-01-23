@@ -4,9 +4,6 @@ subscriptions:
   - name: kiali-ossm
     namespace: openshift-operators
     channel: stable
-  - name: jaeger-product
-    namespace: openshift-distributed-tracing
-    channel: stable
   - name: servicemeshoperator
     namespace: openshift-operators
     channel: stable
