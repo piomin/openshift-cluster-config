@@ -1,6 +1,6 @@
 app:
   name: sample-kotlin-spring
   image: sample-kotlin-spring
-  version: "1.4.32"
+  version: "1.4.33"
   replicas: 1
   registry: quay.io/pminkows
