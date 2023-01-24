@@ -1,4 +1,5 @@
 {{- $shortProviders := dict "Google" "GCP" "Azure" "Azure" "Amazon" "AWS" -}}
+{{- $shortProvidersLowercase := dict "Google" "gcp" "Azure" "azure" "Amazon" "aws" -}}
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -22,9 +23,9 @@ spec:
   installAttemptsLimit: 1
   installed: false
   platform:
-    gcp:
+    {{ get $shortProvidersLowercase .Values.provider }}:
       credentialsSecretRef:
-        name: {{ .Values.clusterName }}-gcp-creds
+        name: {{ .Values.clusterName }}-{{ get $shortProvidersLowercase .Values.provider }}-creds
       region: europe-west1
   provisioning:
     installConfigSecretRef:
