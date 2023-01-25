@@ -9,7 +9,7 @@ stringData:
     apiVersion: v1
     metadata:
       name: {{ .Values.clusterName }}
-    baseDomain: {{ .Values.domain }}
+    baseDomain: {{ .Values.baseDomain }}
     controlPlane:
       hyperthreading: Enabled
       name: master
