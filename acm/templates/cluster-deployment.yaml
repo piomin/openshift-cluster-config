@@ -33,7 +33,6 @@ spec:
     sshPrivateKeySecretRef:
       name: {{ .Values.clusterName }}-ssh-private-key
     imageSetRef:
-      name: img4.10.47-x86-64-appsub
-      #img4.11.16-x86-64-appsub
+      name: img{{ .Values.version }}-x86-64-appsub
   pullSecretRef:
     name: {{ .Values.clusterName }}-pull-secret

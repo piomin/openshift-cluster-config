@@ -5,3 +5,4 @@ provider: Amazon
 workerType: m5.xlarge
 workerReplicas: 3
 managedSet: all-demo
+version: 4.10.50
