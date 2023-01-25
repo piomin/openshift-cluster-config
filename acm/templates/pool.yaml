@@ -1,4 +1,3 @@
-{{- $shortProvidersLowercase := dict "Google" "gcp" "Azure" "azure" "Amazon" "aws" -}}
 apiVersion: hive.openshift.io/v1
 kind: MachinePool
 metadata:
@@ -9,6 +8,16 @@ spec:
     name: {{ .Values.clusterName }}
   name: worker
   platform:
-    {{ get $shortProvidersLowercase .Values.provider }}:
+    {{- if eq .Values.provider "Amazon" }}
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 100
+        type: io1
       type: {{ .Values.workerType }}
+    {{- end }}
+    {{- if eq .Values.provider "Google" }}
+    gcp:
+      type: {{ .Values.workerType }}
+    {{- end }}
   replicas: {{ .Values.workerReplicas }}
