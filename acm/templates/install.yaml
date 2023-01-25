@@ -31,18 +31,19 @@ stringData:
       - hyperthreading: Enabled
         name: 'worker'
         replicas: {{ .Values.workerReplicas }}
-        {{- if eq .Values.provider "Google" }}
-        gcp:
-          type: {{ .Values.workerType }}
-        {{- end }}
-        {{- if eq .Values.provider "Amazon" }}
-        aws:
-          rootVolume:
-            iops: 4000
-            size: 100
-            type: io1
-          type: {{ .Values.workerType }}
-        {{- end }}
+        platform:
+          {{- if eq .Values.provider "Google" }}
+          gcp:
+            type: {{ .Values.workerType }}
+          {{- end }}
+          {{- if eq .Values.provider "Amazon" }}
+          aws:
+            rootVolume:
+              iops: 4000
+              size: 100
+              type: io1
+            type: {{ .Values.workerType }}
+          {{- end }}
     networking:
       networkType: OpenShiftSDN
       clusterNetwork:
