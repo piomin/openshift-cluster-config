@@ -33,5 +33,5 @@ spec:
     storage:
       type: persistent-claim
       deleteClaim: true
-      size: 1Gi
+      size: 2Gi
     replicas: 3

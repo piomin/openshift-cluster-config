@@ -4,6 +4,11 @@ metadata:
   name: {{ .Values.clusterName }}-worker
   namespace: {{ .Values.clusterName }}
 spec:
+  {{- if eq .Values.autoscaling true }}
+  autoscaling:
+    maxReplicas: {{ .Values.autoscalingTarget }}
+    minReplicas: 3
+  {{- end }}
   clusterDeploymentRef:
     name: {{ .Values.clusterName }}
   name: worker

@@ -1,0 +1,47 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: cpu-killer
+    app.kubernetes.io/version: 1.0-SNAPSHOT
+  name: cpu-killer
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "3"
+        autoscaling.knative.dev/class: hpa.autoscaling.knative.dev
+        autoscaling.knative.dev/metric: cpu
+        autoscaling.knative.dev/target-utilization-percentage: "80"
+      labels:
+        app.kubernetes.io/name: cpu-killer
+        app.kubernetes.io/version: 1.0-SNAPSHOT
+    spec:
+      containers:
+        - env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: my-cluster-kafka-bootstrap.kafka:9092
+            - name: JAVA_APP_JAR
+              value: /deployments/quarkus-run.jar
+          image: quay.io/pminkows/cpu-killer:1.0-SNAPSHOT
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: cpu-killer
+          ports:
+            - containerPort: 8080
+              name: http1
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 2000m
+            requests:
+              cpu: 500m

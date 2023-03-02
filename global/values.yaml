@@ -17,3 +17,7 @@ subscriptions:
     namespace: resource-locker-operator
     channel: alpha
     source: community-operators
+  - name: serverless-operator
+    namespace: openshift-serverless
+    channel: stable
+    source: redhat-operators
