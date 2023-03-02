@@ -20,7 +20,7 @@ metadata:
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
-  generateName: {{ .name }}-
+  name: {{ .name }}
   namespace: {{ .namespace }}
 spec: {}
 ---
