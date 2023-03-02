@@ -9,6 +9,9 @@ spec:
     maxReplicas: {{ .Values.autoscalingTarget }}
     minReplicas: 3
   {{- end }}
+  {{- if eq .Values.autoscaling false }}
+  replicas: {{ .Values.workerReplicas }}
+  {{- end }}
   clusterDeploymentRef:
     name: {{ .Values.clusterName }}
   name: worker
@@ -25,4 +28,3 @@ spec:
     gcp:
       type: {{ .Values.workerType }}
     {{- end }}
-  replicas: {{ .Values.workerReplicas }}
