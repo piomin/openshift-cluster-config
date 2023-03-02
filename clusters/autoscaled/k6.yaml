@@ -55,9 +55,9 @@ spec:
             - "k6"
             - "run"
             - "--vus"
-            - "5"
+            - "3"
             - "--duration"
-            - "600s"
+            - "720s"
             - "/tests/load-test.js"
           volumeMounts:
             - mountPath: /tests
