@@ -9,10 +9,10 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/minScale: "3"
+        autoscaling.knative.dev/minScale: "1"
         autoscaling.knative.dev/class: hpa.autoscaling.knative.dev
         autoscaling.knative.dev/metric: cpu
-        autoscaling.knative.dev/target-utilization-percentage: "95"
+        autoscaling.knative.dev/target-utilization-percentage: "90"
       labels:
         app.kubernetes.io/name: cpu-killer
         app.kubernetes.io/version: 1.0-SNAPSHOT
