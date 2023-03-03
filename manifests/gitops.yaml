@@ -34,7 +34,7 @@ spec:
         requeueAfterSeconds: 180
   template:
     metadata:
-      name: 'config-{{name}}'
+      name: 'cluster-init-{{name}}'
     spec:
       destination:
         server: '{{server}}'
@@ -64,7 +64,7 @@ spec:
         requeueAfterSeconds: 180
   template:
     metadata:
-      name: 'demo-config-{{name}}'
+      name: 'demo-init-{{name}}'
     spec:
       destination:
         server: '{{server}}'

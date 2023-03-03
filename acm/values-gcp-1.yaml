@@ -5,6 +5,6 @@ project: openshift-366120
 provider: Google
 workerType: n1-standard-4
 workerReplicas: 3
-managedSet: all-demo
+managedSet: demo-global
 version: 4.10.47
 autoscaling: false
