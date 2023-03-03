@@ -87,11 +87,27 @@ spec:
   project: acm
   source:
     helm:
-      parameters:
-        - name: version
-          value: 4.10.53
       valueFiles:
         - values-aws-1.yaml
+    path: acm
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gcp-1
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+  project: acm
+  source:
+    helm:
+      valueFiles:
+        - values-gcp-1.yaml
     path: acm
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
     targetRevision: HEAD
