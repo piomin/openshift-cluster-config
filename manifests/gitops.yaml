@@ -99,7 +99,7 @@ spec:
 apiVersion: cluster.open-cluster-management.io/v1beta2
 kind: ManagedClusterSetBinding
 metadata:
-  name: demo
+  name: demo-global
   namespace: openshift-gitops
 spec:
   clusterSet: demo-global
