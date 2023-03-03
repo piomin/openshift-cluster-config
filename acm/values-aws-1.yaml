@@ -6,5 +6,5 @@ workerType: m5.xlarge
 workerReplicas: 3
 managedSet: demo-global
 version: 4.10.53
-autoscaling: false
-#autoscalingTarget: 7
+autoscaling: true
+autoscalingTarget: 7
