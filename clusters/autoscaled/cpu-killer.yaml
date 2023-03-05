@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/minScale: "2"
         autoscaling.knative.dev/class: hpa.autoscaling.knative.dev
         autoscaling.knative.dev/metric: cpu
         autoscaling.knative.dev/target-utilization-percentage: "90"
