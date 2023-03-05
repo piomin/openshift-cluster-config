@@ -7,4 +7,4 @@ workerReplicas: 3
 managedSet: demo-global
 version: 4.10.52
 autoscaling: false
-#autoscalingTarget: 7
+autoscalingTarget: 7
