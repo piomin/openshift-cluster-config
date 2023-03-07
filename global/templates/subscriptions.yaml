@@ -4,6 +4,8 @@ kind: Subscription
 metadata:
   name: {{ .name }}
   namespace: {{ .namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   channel: {{ .channel }}
   installPlanApproval: Automatic
@@ -16,12 +18,16 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ .namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 ---
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
   name: {{ .name }}
   namespace: {{ .namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec: {}
 ---
 {{- end }}
