@@ -1,0 +1,11 @@
+{{- if eq .Values.knative.enabled true }}
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeServing
+metadata:
+  name: knative-serving
+  namespace: knative-serving
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec: {}
+{{- end }}

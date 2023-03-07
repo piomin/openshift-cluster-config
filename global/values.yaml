@@ -21,3 +21,8 @@ subscriptions:
     namespace: openshift-serverless
     channel: stable
     source: redhat-operators
+knative:
+  enabled: true
+kafka:
+  enabled: true
+  dedicatedNode: false
