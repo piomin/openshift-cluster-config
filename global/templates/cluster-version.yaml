@@ -20,6 +20,7 @@ metadata:
   namespace: resource-locker-operator
   annotations:
     argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   patches:
     - id: patch1
