@@ -127,7 +127,8 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   syncPolicy:
-    automated: {}
+    automated:
+      selfHeal: true
   source:
     path: apps/pminkows
     repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
