@@ -5,7 +5,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   patches:
-    - id: patch1
+    patchPipelineAccount:
       patchTemplate: |
         secrets:
           - name: quay-registry-secret

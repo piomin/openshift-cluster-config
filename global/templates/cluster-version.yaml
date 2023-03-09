@@ -23,7 +23,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   patches:
-    - id: patch1
+    patchClusterVersion:
       patchTemplate: |
         spec:
           channel: {{ .Values.channel }}
