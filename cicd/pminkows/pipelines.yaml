@@ -1,5 +1,5 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-pipeline-service-account
   namespace: openshift-gitops

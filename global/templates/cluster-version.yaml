@@ -1,20 +1,20 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: resource-locker-role-binding
+  name: patch-operator-role-binding
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: resource-locker-operator
+    namespace: patch-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 ---
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-cluster-version
   namespace: resource-locker-operator

@@ -13,8 +13,8 @@ subscriptions:
     namespace: openshift-operators
     channel: stable
     source: redhat-operators
-  - name: resource-locker-operator
-    namespace: resource-locker-operator
+  - name: patch-operator
+    namespace: patch-operator
     channel: alpha
     source: community-operators
   - name: serverless-operator
