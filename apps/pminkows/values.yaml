@@ -3,6 +3,7 @@ app:
   image: sample-kotlin-spring
   version: "1.4.2"
   replicas: 1
+  port: 8080
 
 image:
   repository: 'pminkows/sample-kotlin-spring'

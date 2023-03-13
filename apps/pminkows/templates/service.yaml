@@ -7,5 +7,5 @@ spec:
   selector:
     app: {{ .Values.app.name }}
   ports:
-  - port: 8080
+  - port: {{ .Values.app.port | default 8080 }}
     name: http-port

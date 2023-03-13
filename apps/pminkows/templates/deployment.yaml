@@ -30,4 +30,4 @@ spec:
           {{- end }}
         {{- end }}
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.app.port | default 8080 }}

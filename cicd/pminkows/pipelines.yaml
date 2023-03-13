@@ -413,3 +413,149 @@ spec:
           workspace: shared-workspace
   workspaces:
     - name: shared-workspace
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: node-pipeline-pvc
+  namespace: pminkows-cicd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  volumeMode: Filesystem
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-react-pipeline
+  namespace: pminkows-cicd
+spec:
+  params:
+    - name: APP_VERSION
+      description: Version number of application
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: https://github.com/piomin/sample-react-microfrontend.git
+        - name: revision
+          value: ""
+        - name: refspec
+          value: ""
+        - name: submodules
+          value: "true"
+        - name: depth
+          value: "1"
+        - name: sslVerify
+          value: "false"
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ""
+        - name: sparseCheckoutDirectories
+          value: ""
+        - name: deleteExisting
+          value: "true"
+        - name: httpProxy
+          value: ""
+        - name: httpsProxy
+          value: ""
+        - name: noProxy
+          value: ""
+        - name: verbose
+          value: "true"
+        - name: gitInitImage
+          value: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:6c3980b3d28c8fb92b17466f5654d5f484ab893f1673ec8f29e49c0d03f8aca9
+        - name: userHome
+          value: /tekton/home
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: sonarqube-scanner
+      params:
+        - name: SONAR_HOST_URL
+          value: https://sonarcloud.io
+        - name: SONAR_PROJECT_KEY
+          value: piomin_sample-node-react
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: sonarqube-scanner
+      workspaces:
+        - name: source-dir
+          workspace: source-dir
+        - name: sonar-settings
+          workspace: sonar-settings
+    - name: s2i-nodejs
+      params:
+        - name: VERSION
+          value: latest
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: "false"
+        - name: IMAGE
+          value: quay.io/pminkows/sample-node-react:$(params.APP_VERSION)
+        - name: BUILDER_IMAGE
+          value: registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
+        - name: SKIP_PUSH
+          value: "false"
+        - name: ENV_VARS
+          value: []
+      runAfter:
+        - sonarqube-scanner
+      taskRef:
+        kind: ClusterTask
+        name: s2i-nodejs
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: rhacs-image-scan
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-node-react:$(params.APP_VERSION)
+        - name: output_format
+          value: json
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - s2i-nodejs
+      taskRef:
+        kind: Task
+        name: rhacs-image-scan
+    - name: rhacs-image-check
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-node-react:$(params.APP_VERSION)
+        - name: output_format
+          value: table
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - rhacs-image-scan
+      taskRef:
+        kind: Task
+        name: rhacs-image-check
+  workspaces:
+    - name: source-dir
+    - name: sonar-settings

@@ -143,7 +143,7 @@ spec:
     - command:
         - sonar-scanner
       image: >-
-        docker.io/sonarsource/sonar-scanner-cli:4.5@sha256:b8c95a37025f3c13162118cd55761ea0b2a13d1837f9deec51b7b6d82c52040a
+        docker.io/sonarsource/sonar-scanner-cli:4.8@sha256:2738c49cbab0b93d9d6a74223349eb557c24948d0d1aed3976b14ea164603e44
       name: sonar-scan
       resources: {}
       workingDir: $(workspaces.source-dir.path)

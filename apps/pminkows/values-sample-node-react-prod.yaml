@@ -1,0 +1,10 @@
+app:
+  name: sample-node-react
+  image: sample-node-react
+  version: "1.0"
+  replicas: 2
+  registry: quay.io/pminkows
+  port: 3000
+  envs:
+    - name: BACKEND_URL
+      value: sample-kotlin-spring-service
