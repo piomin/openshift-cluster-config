@@ -235,7 +235,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sample-react-node-test
+  name: sample-react-node-prod
   namespace: pminkows-cicd
 spec:
   destination:
