@@ -23,9 +23,9 @@ spec:
           - name: source-dir
             persistentVolumeClaim:
               claimName: kotlin-pipeline-pvc
-          - configMap:
-              name: sonar-properties
-            name: sonar-settings
+          - name: sonar-settings
+            secret:
+              secretName: sonarqube-secret-token
           - configMap:
               name: maven-settings
             name: maven-settings
