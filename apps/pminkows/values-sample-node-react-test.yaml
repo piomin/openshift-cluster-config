@@ -1,7 +1,7 @@
 app:
   name: sample-node-react
   image: sample-node-react
-  version: "1.0"
+  version: "1.2"
   replicas: 1
   registry: quay.io/pminkows
   port: 3000

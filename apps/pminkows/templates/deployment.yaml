@@ -17,11 +17,11 @@ spec:
         image: {{ .Values.app.registry }}/{{ .Values.app.image }}:{{ .Values.app.version }}
         resources:
           requests:
-            memory: "32Mi"
+            memory: "128Mi"
             cpu: "100m"
           limits:
-            memory: "256Mi"
-            cpu: "500m"
+            memory: "1024Mi"
+            cpu: "1000m"
         {{- if .Values.app.envs }}
         env:
           {{- range .Values.app.envs }}
