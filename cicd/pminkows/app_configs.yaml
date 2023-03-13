@@ -194,38 +194,97 @@ spec:
         - values-web-api-2-test.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: Application
 metadata:
-  name: sample-node-react
+  name: sample-react-node-test
   namespace: pminkows-cicd
 spec:
-  generators:
-    - list:
-        elements:
-          - env: test
-            autoSync: true
-            dest: https://kubernetes.default.svc
-          - env: stage
-            autoSync: false
-            dest: https://kubernetes.default.svc
-          - env: prod
-            autoSync: false
-            dest: https://api.emarq830.eastus.aroapp.io:6443
-  template:
-    metadata:
-      name: 'sample-react-node-{{env}}'
-      namespace: pminkows-cicd
-    spec:
-      destination:
-        server: '{{dest}}'
-      project: default
-      source:
-        path: apps/pminkows
-        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-        targetRevision: HEAD
-        helm:
-          valueFiles:
-            - values-sample-node-react-{{env}}.yaml
-      syncPolicy:
-        automated:
-          selfHeal: true
+  destination:
+    namespace: pminkows-test
+    server: 'https://kubernetes.default.svc'
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-sample-node-react-test.yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-react-node-stage
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-stage
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-sample-node-react-stage.yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-react-node-test
+  namespace: pminkows-cicd
+spec:
+  destination:
+    namespace: pminkows-prod
+    server: 'https://api.emarq830.eastus.aroapp.io:6443'
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+  source:
+    path: apps/pminkows
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-sample-node-react-prod.yaml
+#apiVersion: argoproj.io/v1alpha1
+#kind: ApplicationSet
+#metadata:
+#  name: sample-node-react
+#  namespace: pminkows-cicd
+#spec:
+#  generators:
+#    - list:
+#        elements:
+#          - env: test
+#            autoSync: true
+#            dest: https://kubernetes.default.svc
+#          - env: stage
+#            autoSync: false
+#            dest: https://kubernetes.default.svc
+#          - env: prod
+#            autoSync: false
+#            dest: https://api.emarq830.eastus.aroapp.io:6443
+#  template:
+#    metadata:
+#      name: 'sample-react-node-{{env}}'
+#      namespace: pminkows-cicd
+#    spec:
+#      destination:
+#        server: '{{dest}}'
+#      project: default
+#      source:
+#        path: apps/pminkows
+#        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#        targetRevision: HEAD
+#        helm:
+#          valueFiles:
+#            - values-sample-node-react-{{env}}.yaml
+#      syncPolicy:
+#        automated:
+#          selfHeal: true
