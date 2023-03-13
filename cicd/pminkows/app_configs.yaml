@@ -214,6 +214,7 @@ spec:
   template:
     metadata:
       name: 'sample-react-node-{{env}}'
+      namespace: pminkows-cicd
     spec:
       destination:
         server: '{{dest}}'
