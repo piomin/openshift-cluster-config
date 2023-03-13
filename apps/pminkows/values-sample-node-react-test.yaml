@@ -6,5 +6,5 @@ app:
   registry: quay.io/pminkows
   port: 3000
   envs:
-    - name: BACKEND_URL
-      value: sample-kotlin-spring-service
+    - name: REACT_APP_BACKEND_URL
+      value: sample-kotlin-spring-service:8080
