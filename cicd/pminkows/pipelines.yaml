@@ -166,26 +166,6 @@ metadata:
   name: sample-kotlin-pipeline
   namespace: pminkows-cicd
 spec:
-  finally:
-    - name: s2i-java
-      params:
-        - name: PATH_CONTEXT
-          value: .
-        - name: TLSVERIFY
-          value: 'false'
-        - name: MAVEN_ARGS_APPEND
-          value: ''
-        - name: MAVEN_CLEAR_REPO
-          value: 'false'
-        - name: IMAGE
-          value: >-
-            quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
-      taskRef:
-        kind: ClusterTask
-        name: s2i-java
-      workspaces:
-        - name: source
-          workspace: source-dir
   tasks:
     - name: git-clone
       params:
@@ -279,6 +259,63 @@ spec:
       taskRef:
         kind: Task
         name: send-to-jira
+    - name: s2i-java
+      params:
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: MAVEN_CLEAR_REPO
+          value: 'false'
+        - name: IMAGE
+          value: >-
+            quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+      runAfter:
+        - jira-issue
+      taskRef:
+        kind: ClusterTask
+        name: s2i-java
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: rhacs-image-scan
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+        - name: output_format
+          value: json
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - s2i-java
+      taskRef:
+        kind: Task
+        name: rhacs-image-scan
+    - name: rhacs-image-check
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+        - name: output_format
+          value: table
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - rhacs-image-scan
+      taskRef:
+        kind: Task
+        name: rhacs-image-check
   workspaces:
     - name: source-dir
     - name: maven-settings
