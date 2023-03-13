@@ -7,4 +7,4 @@ app:
   port: 3000
   envs:
     - name: REACT_APP_BACKEND_URL
-      value: sample-kotlin-spring-service:8080
+      value: sample-kotlin-spring-route-pminkows-test.apps.ocp-test.ncfgm.gcp.redhatworkshops.io
