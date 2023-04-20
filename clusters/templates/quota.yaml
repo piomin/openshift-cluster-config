@@ -1,0 +1,16 @@
+{{- range .Values.projects }}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: default-quota
+  namespace: {{ .name }}
+spec:
+  hard:
+    pods: {{ .pods | default "5" }}
+    requests.cpu: {{ .cpuRequest | default "2" }}
+    requests.memory: {{ .memoryRequest | default "2Gi" }}
+    limits.cpu: {{ .cpuLimit | default "8" }}
+    limits.memory: {{ .memoryLimit | default "8Gi" }}
+---
+{{- end}}

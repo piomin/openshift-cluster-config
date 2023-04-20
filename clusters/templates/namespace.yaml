@@ -1,0 +1,11 @@
+{{- range .Values.projects }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .name }}
+  {{- if .managedBy }}
+  labels:
+    argocd.argoproj.io/managed-by: {{ .managedBy }}
+  {{- end }}
+{{- end }}

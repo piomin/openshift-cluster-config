@@ -1,0 +1,43 @@
+suite: test main
+values:
+  - ./values/test.yaml
+templates:
+  - templates/limitrange.yaml
+chart:
+  version: 1.0.0+test
+  appVersion: 1.0
+tests:
+  - it: limitrange defaults
+    template: templates/limitrange.yaml
+    documentIndex: 0
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: test1
+      - equal:
+          path: spec.limits[0].default.memory
+          value: 512Mi
+      - equal:
+          path: spec.limits[0].default.cpu
+          value: 500m
+      - isKind:
+          of: LimitRange
+      - isAPIVersion:
+          of: v1
+  - it: limitrange not-defaults
+    template: templates/limitrange.yaml
+    documentIndex: 1
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: test2
+      - equal:
+          path: spec.limits[0].default.memory
+          value: 1512Mi
+      - equal:
+          path: spec.limits[0].default.cpu
+          value: 1500m
+      - isKind:
+          of: LimitRange
+      - isAPIVersion:
+          of: v1

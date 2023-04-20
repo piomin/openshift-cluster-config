@@ -1,0 +1,29 @@
+projects:
+  - name: pminkows-test
+    managedBy: pminkows-cicd
+    group: app-owners
+  - name: pminkows-stage
+    managedBy: pminkows-cicd
+    group: app-owners
+  - name: pminkows-prod
+    managedBy: pminkows-cicd
+    group: app-owners
+    quotas:
+      pods: '8'
+      requests.memory: 4Gi
+      limits.memory: 10Gi
+  - name: pminkows-cicd
+    group: app-owners
+    quotas:
+      pods: '20'
+      requests.cpu: '4'
+      requests.memory: 4Gi
+      limits.cpu: '20'
+      limits.memory: 20Gi
+    default:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi

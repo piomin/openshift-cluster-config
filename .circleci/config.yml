@@ -1,0 +1,23 @@
+version: 2.1
+
+orbs:
+  helm: circleci/helm@2.0.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2023.04
+    steps:
+      - checkout
+      - helm/install-helm-client
+      - run:
+          name: Install Helm unit-test
+          command: helm plugin install https://github.com/helm-unittest/helm-unittest
+      - run:
+          name: Run unit tests
+          command: helm unittest clusters/*
+
+workflows:
+  helm_test:
+    jobs:
+      - build
