@@ -1,4 +1,6 @@
-# Demo for OpenShift Cluster Configuration
+# Demo for OpenShift Cluster Configuration [![Twitter](https://img.shields.io/twitter/follow/piotr_minkowski.svg?style=social&logo=twitter&label=Follow%20Me)](https://twitter.com/piotr_minkowski)
+
+[![CircleCI](https://circleci.com/gh/piomin/openshift-cluster-config.svg?style=svg)](https://circleci.com/gh/piomin/openshift-cluster-config)
 
 This configuration can be automatically applied to the OpenShift cluster by Argo CD.
 
@@ -83,6 +85,31 @@ spec:
 ```
 
 3. xxx
+
+## Scenario 2: Install and Configure Operators on the local cluster
+
+Create ArgoCD `Application` that automatically manages existing operators and CRDs on the local cluster
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-config
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: global
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  syncPolicy:
+    automated:
+      selfHeal: true
+```
 
 Why `SealedSecret` stays in Progressing status:
 https://argo-cd.readthedocs.io/en/stable/faq/#why-are-resources-of-type-sealedsecret-stuck-in-the-progressing-state
