@@ -5,7 +5,6 @@ metadata:
   name: kafka
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka

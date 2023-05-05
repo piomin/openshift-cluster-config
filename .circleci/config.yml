@@ -14,8 +14,11 @@ jobs:
           name: Install Helm unit-test
           command: helm plugin install https://github.com/helm-unittest/helm-unittest
       - run:
-          name: Run unit tests
+          name: Run unit tests (1)
           command: helm unittest clusters
+      - run:
+          name: Run unit tests (2)
+          command: helm unittest global
 
 workflows:
   helm_test:

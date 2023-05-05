@@ -1,0 +1,9 @@
+subscriptions:
+  - name: test1
+    namespace: openshift-operators
+    channel: ch1
+    source: src1
+  - name: test2
+    namespace: custom-ns
+    channel: ch2
+    source: src2
