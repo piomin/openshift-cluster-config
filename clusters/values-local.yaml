@@ -10,16 +10,16 @@ projects:
     group: app-owners
     quotas:
       pods: '8'
-      memoryRequest: 4Gi
-      memoryLimit: 10Gi
+      requests.memory: 4Gi
+      limits.memory: 10Gi
   - name: pminkows-cicd
     group: app-owners
     quotas:
       pods: '20'
-      cpuRequest: '4'
-      memoryRequest: 4Gi
-      cpuLimit: '20'
-      memoryLimit: 20Gi
+      requests.cpu: '4'
+      requests.memory: 4Gi
+      limits.cpu: '20'
+      limits.memory: 20Gi
     default:
       limits:
         cpu: 500m
