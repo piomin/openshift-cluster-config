@@ -8,9 +8,9 @@ metadata:
 spec:
   hard:
     pods: {{ .pods | default "20" }}
-    requests.cpu: {{ .quotas.requests.cpu | default "4" }}
+    requests.cpu: {{ .cpuRequest | default "4" }}
     requests.memory: {{ .memoryRequest | default "4Gi" }}
     limits.cpu: {{ .cpuLimit | default "20" }}
     limits.memory: {{ .memoryLimit | default "20Gi" }}
 ---
-{{- end }}
+{{- end}}
