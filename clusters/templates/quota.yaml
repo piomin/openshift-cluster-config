@@ -7,10 +7,10 @@ metadata:
   namespace: {{ .name }}
 spec:
   hard:
-    pods: {{ .pods | default "5" }}
-    requests.cpu: {{ .cpuRequest | default "2" }}
-    requests.memory: {{ .memoryRequest | default "2Gi" }}
-    limits.cpu: {{ .cpuLimit | default "8" }}
-    limits.memory: {{ .memoryLimit | default "8Gi" }}
+    pods: {{ .pods | default "20" }}
+    requests.cpu: {{ .cpuRequest | default "4" }}
+    requests.memory: {{ .memoryRequest | default "4Gi" }}
+    limits.cpu: {{ .cpuLimit | default "20" }}
+    limits.memory: {{ .memoryLimit | default "20Gi" }}
 ---
 {{- end}}
