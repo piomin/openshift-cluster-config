@@ -3,5 +3,5 @@ projects:
     group: app-owners
     quotas:
       pods: '8'
-      requests.memory: 4Gi
-      limits.memory: 10Gi
+      memoryRequest: 4Gi
+      memoryLimit: 10Gi
