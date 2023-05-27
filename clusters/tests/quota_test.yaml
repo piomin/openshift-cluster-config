@@ -1,0 +1,61 @@
+suite: test main
+values:
+  - ./values/test.yaml
+templates:
+  - templates/quota.yaml
+chart:
+  version: 1.0.0+test
+  appVersion: 1.0
+tests:
+  - it: quota defaults
+    template: templates/quota.yaml
+    documentIndex: 0
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: test1
+      - equal:
+          path: spec.hard.pods
+          value: 10
+      - equal:
+          path: spec.hard.requests.cpu
+          value: 2
+      - equal:
+          path: spec.hard.requests.memory
+          value: 2Gi
+      - equal:
+          path: spec.hard.limits.cpu
+          value: 8
+      - equal:
+          path: spec.hard.limits.memory
+          value: 8Gi
+      - isKind:
+          of: ResourceQuota
+      - isAPIVersion:
+          of: v1
+  - it: quota not-defaults
+    template: templates/quota.yaml
+    documentIndex: 1
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: test2
+      - equal:
+          path: spec.hard.pods
+          value: 20
+      - equal:
+          path: spec.hard.requests.cpu
+          value: 4
+      - equal:
+          path: spec.hard.requests.memory
+          value: 4Gi
+      - equal:
+          path: spec.hard.limits.cpu
+          value: 20
+      - equal:
+          path: spec.hard.limits.memory
+          value: 20Gi
+      - isKind:
+          of: ResourceQuota
+      - isAPIVersion:
+          of: v1
