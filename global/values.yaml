@@ -21,6 +21,10 @@ subscriptions:
     namespace: openshift-serverless
     channel: stable
     source: redhat-operators
+acs:
+  enabled: false
+sealedsecrets:
+  enabled: false
 knative:
   enabled: true
 kafka:
