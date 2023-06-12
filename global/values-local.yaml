@@ -15,3 +15,7 @@ subscriptions:
     source: community-operators
 acs:
   enabled: true
+knative:
+  enabled: false
+kafka:
+  enabled: false
