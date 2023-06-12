@@ -4,6 +4,7 @@ metadata:
   name: cluster-admins
 users:
   - opentlc-mgr
+  - admin
 ---
 kind: Group
 apiVersion: user.openshift.io/v1
