@@ -25,6 +25,8 @@ acs:
   enabled: false
 sealedsecrets:
   enabled: false
+gitops:
+  enabled: false
 knative:
   enabled: true
 kafka:
