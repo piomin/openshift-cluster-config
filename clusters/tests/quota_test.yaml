@@ -18,16 +18,16 @@ tests:
           path: spec.hard.pods
           value: 10
       - equal:
-          path: spec.hard.requests.cpu
+          path: spec.hard["requests.cpu"]
           value: 2
       - equal:
-          path: spec.hard.requests.memory
+          path: spec.hard["requests.memory"]
           value: 2Gi
       - equal:
-          path: spec.hard.limits.cpu
+          path: spec.hard["limits.cpu"]
           value: 8
       - equal:
-          path: spec.hard.limits.memory
+          path: spec.hard["limits.memory"]
           value: 8Gi
       - isKind:
           of: ResourceQuota
@@ -44,16 +44,16 @@ tests:
           path: spec.hard.pods
           value: 20
       - equal:
-          path: spec.hard.requests.cpu
+          path: spec.hard["requests.cpu"]
           value: 4
       - equal:
-          path: spec.hard.requests.memory
+          path: spec.hard["requests.memory"]
           value: 4Gi
       - equal:
-          path: spec.hard.limits.cpu
+          path: spec.hard["limits.cpu"]
           value: 20
       - equal:
-          path: spec.hard.limits.memory
+          path: spec.hard["limits.memory"]
           value: 20Gi
       - isKind:
           of: ResourceQuota
