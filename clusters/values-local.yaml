@@ -22,8 +22,8 @@ projects:
       memoryLimit: 20Gi
     default:
       limits:
-        cpu: 500m
-        memory: 512Mi
+        cpu: 1500m
+        memory: 2Gi
       requests:
         cpu: 250m
         memory: 256Mi
