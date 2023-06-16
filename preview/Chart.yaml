@@ -1,0 +1,6 @@
+apiVersion: v2
+name: preview-ocp-helm-template
+description: A Helm chart for OpenShift projects
+type: application
+version: 1.0.0
+appVersion: "1.0"
