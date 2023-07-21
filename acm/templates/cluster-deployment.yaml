@@ -21,7 +21,6 @@ spec:
   controlPlaneConfig:
     servingCertificates: {}
   installAttemptsLimit: 1
-  installed: false
   platform:
     {{ get $shortProvidersLowercase .Values.provider }}:
       credentialsSecretRef:
