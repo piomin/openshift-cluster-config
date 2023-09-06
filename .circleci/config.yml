@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/base:2023.07
+      - image: cimg/base:2023.09
     steps:
       - checkout
       - helm/install-helm-client
