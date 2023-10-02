@@ -5,3 +5,4 @@ projects:
       pods: '8'
       memoryRequest: 4Gi
       memoryLimit: 10Gi
+cicdOwner: false
