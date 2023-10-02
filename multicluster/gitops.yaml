@@ -72,6 +72,9 @@ spec:
         server: '{{server}}'
       project: acm
       source:
+        helm:
+          valueFiles:
+            - values-remote.yaml
         path: clusters/all
         repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
         targetRevision: master
