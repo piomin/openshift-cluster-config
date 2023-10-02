@@ -54,7 +54,7 @@ spec:
         port: 9093
         type: internal
         tls: true
-    version: 3.2.3
+    version: 3.5.0
     replicas: 3
   entityOperator:
     {{- if eq .Values.kafka.dedicatedNode true }}
