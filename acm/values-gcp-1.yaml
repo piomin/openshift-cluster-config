@@ -6,5 +6,5 @@ provider: Google
 workerType: n1-standard-4
 workerReplicas: 3
 managedSet: demo-global
-version: 4.10.47
+version: 4.12.25
 autoscaling: false

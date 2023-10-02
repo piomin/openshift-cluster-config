@@ -5,6 +5,6 @@ provider: Amazon
 workerType: m5.xlarge
 workerReplicas: 3
 managedSet: demo-global
-version: 4.10.52
+version: 4.12.25
 autoscaling: false
 autoscalingTarget: 7
