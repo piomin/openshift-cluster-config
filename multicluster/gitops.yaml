@@ -75,7 +75,7 @@ spec:
         helm:
           valueFiles:
             - values-remote.yaml
-        path: clusters/all
+        path: clusters
         repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
         targetRevision: master
 ---
