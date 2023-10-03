@@ -166,13 +166,18 @@ metadata:
   name: sample-kotlin-pipeline
   namespace: pminkows-cicd
 spec:
+  params:
+    - description: branch
+      name: git-revision
+      type: string
+      default: s2i
   tasks:
     - name: git-clone
       params:
         - name: url
           value: 'https://github.com/piomin/sample-spring-kotlin-microservice.git'
         - name: revision
-          value: s2i
+          value: $(params.git-revision)
         - name: submodules
           value: 'true'
         - name: depth

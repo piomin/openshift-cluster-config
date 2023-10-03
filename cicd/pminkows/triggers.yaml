@@ -16,6 +16,9 @@ spec:
       metadata:
         generateName: sample-kotlin-spring-pipeline-run-
       spec:
+        params:
+          - name: git-revision
+            value: $(tt.params.git-revision)
         pipelineRef:
           name: sample-kotlin-pipeline
         serviceAccountName: pipeline
