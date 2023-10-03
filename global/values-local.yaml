@@ -1,5 +1,5 @@
 channel: stable-4.12
-version: 4.12.20
+version: 4.12.35
 subscriptions:
   - name: rhacs-operator
     namespace: rhacs-operator
