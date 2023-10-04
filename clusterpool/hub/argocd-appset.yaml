@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-init
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  generators:
+    - clusterDecisionResource:
+        configMapRef: acm-placement
+        labelSelector:
+          matchLabels:
+            cluster.open-cluster-management.io/placement: interconnect
+        requeueAfterSeconds: 180
+  template:
+    metadata:
+      name: 'cluster-init-{{name}}'
+    spec:
+      destination:
+        server: '{{server}}'
+      project: default
+      source:
+        path: clusterpool/managed
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        targetRevision: master
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -1,0 +1,61 @@
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSet
+metadata:
+  name: interconnect
+spec: {}
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: demo-global
+  namespace: openshift-gitops
+spec:
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchExpressions:
+            - key: vendor
+              operator: In
+              values:
+                - OpenShift
+---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: argo-acm-importer
+  namespace: openshift-gitops
+spec:
+  argoServer:
+    argoNamespace: openshift-gitops
+    cluster: openshift-gitops
+  placementRef:
+    apiVersion: cluster.open-cluster-management.io/v1beta1
+    kind: Placement
+    name: demo-global
+    namespace: openshift-gitops
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterPool
+metadata:
+  name: aws
+  namespace: aws
+  labels:
+    cloud: AWS
+    cluster.open-cluster-management.io/clusterset: interconnect
+    region: us-east-1
+    vendor: OpenShift
+spec:
+  baseDomain: openshiftcorp.click
+  imageSetRef:
+    name: img4.12.36-multi-appsub
+  installConfigSecretTemplateRef:
+    name: aws-install-config
+  platform:
+    aws:
+      credentialsSecretRef:
+        name: aws-aws-creds
+      region: us-east-1
+  pullSecretRef:
+    name: aws-pull-secret
+  size: 1
+  runningCount: 0

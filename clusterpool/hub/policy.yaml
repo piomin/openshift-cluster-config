@@ -1,0 +1,50 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kyverno:create-claim
+  labels:
+    app.kubernetes.io/component: background-controller
+    app.kubernetes.io/instance: kyverno
+    app.kubernetes.io/part-of: kyverno
+rules:
+  - verbs:
+      - create
+      - patch
+      - update
+      - delete
+    apiGroups:
+      - hive.openshift.io
+    resources:
+      - clusterclaims
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: aws
+spec:
+  background: true
+  generateExisting: true
+  rules:
+    - generate:
+        apiVersion: hive.openshift.io/v1
+        data:
+          spec:
+            clusterPoolName: aws
+        kind: ClusterClaim
+        name: aws
+        namespace: aws
+        synchronize: true
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment/scale
+      preconditions:
+        all:
+          - key: '{{request.object.spec.replicas}}'
+            operator: Equals
+            value: 4
+          - key: '{{request.object.metadata.name}}'
+            operator: Equals
+            value: sample-kotlin-spring-deployment
+  validationFailureAction: Audit
