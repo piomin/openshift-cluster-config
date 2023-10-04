@@ -111,6 +111,26 @@ spec:
       selfHeal: true
 ```
 
+## Scenario 3 - Interconnect/ClusterPool
+Create Argo CD `Application` for the hub cluster:
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-pool-config
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: clusterpool/hub
+    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+```
+
 Why `SealedSecret` stays in Progressing status:
 https://argo-cd.readthedocs.io/en/stable/faq/#why-are-resources-of-type-sealedsecret-stuck-in-the-progressing-state
 
@@ -120,12 +140,3 @@ https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 Secrets with ArgoCD:
 https://argo-cd.readthedocs.io/en/stable/operator-manual/secret-management/
 
-# Step 1
-Add cluster-admin to the `openshift-gitops-argocd-application-controller`
-
-```shell
-oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
-```
-
-Argo CD as a cluster config tool:
-https://github.com/argoproj/argo-cd/issues/5886

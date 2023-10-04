@@ -19,6 +19,7 @@ spec:
     spec:
       destination:
         server: '{{server}}'
+        namespace: interconnect
       project: default
       source:
         path: clusterpool/managed

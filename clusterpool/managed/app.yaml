@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/instance: sample-spring-kotlin-test
+    app.kubernetes.io/instance: sample-kotlin-spring
   annotations:
-    skupper.io/address: sample-kotlin-spring-microservice
+    skupper.io/address: sample-kotlin-spring
     skupper.io/port: '8080'
     skupper.io/proxy: http
-  name: sample-kotlin-spring-deployment
+  name: sample-kotlin-spring
 spec:
   replicas: 1
   selector:
@@ -35,8 +35,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: sample-spring-kotlin-test
-  name: sample-kotlin-spring-service
+    app.kubernetes.io/instance: sample-kotlin-spring
+  name: sample-kotlin-spring
 spec:
   ports:
     - name: http-port
@@ -51,13 +51,13 @@ metadata:
   labels:
     app: sample-kotlin-spring
     app.kubernetes.io/component: sample-kotlin-spring
-    app.kubernetes.io/instance: sample-spring-kotlin-test
-  name: sample-kotlin-spring-route
+    app.kubernetes.io/instance: sample-spring-kotlin
+  name: sample-kotlin-spring
 spec:
   port:
     targetPort: http-port
   to:
     kind: Service
-    name: sample-kotlin-spring-service
+    name: sample-kotlin-spring
     weight: 100
   wildcardPolicy: None

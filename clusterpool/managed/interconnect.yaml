@@ -16,4 +16,3 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: skupper-site
-  namespace: pminkows-stage
