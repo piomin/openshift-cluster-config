@@ -45,7 +45,7 @@ metadata:
     region: us-east-1
     vendor: OpenShift
 spec:
-  baseDomain: openshiftcorp.click
+  baseDomain: sandbox449.opentlc.com
   imageSetRef:
     name: img4.12.36-multi-appsub
   installConfigSecretTemplateRef:
@@ -58,4 +58,31 @@ spec:
   pullSecretRef:
     name: aws-pull-secret
   size: 1
-  runningCount: 0
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-install-config
+  namespace: aws
+type: Opaque
+data:
+  install-config.yaml: YXBpVmVyc2lvbjogdjEKbWV0YWRhdGE6CiAgbmFtZTogJ2F3cycKYmFzZURvbWFpbjogc2FuZGJveDQ0OS5vcGVudGxjLmNvbQpjb250cm9sUGxhbmU6CiAgaHlwZXJ0aHJlYWRpbmc6IEVuYWJsZWQKICBuYW1lOiBtYXN0ZXIKICByZXBsaWNhczogMwogIHBsYXRmb3JtOgogICAgYXdzOgogICAgICByb290Vm9sdW1lOgogICAgICAgIGlvcHM6IDQwMDAKICAgICAgICBzaXplOiAxMDAKICAgICAgICB0eXBlOiBpbzEKICAgICAgdHlwZTogbTUueGxhcmdlCmNvbXB1dGU6Ci0gaHlwZXJ0aHJlYWRpbmc6IEVuYWJsZWQKICBuYW1lOiAnd29ya2VyJwogIHJlcGxpY2FzOiAzCiAgcGxhdGZvcm06CiAgICBhd3M6CiAgICAgIHJvb3RWb2x1bWU6CiAgICAgICAgaW9wczogMjAwMAogICAgICAgIHNpemU6IDEwMAogICAgICAgIHR5cGU6IGlvMQogICAgICB0eXBlOiBtNS54bGFyZ2UKbmV0d29ya2luZzoKICBuZXR3b3JrVHlwZTogT1ZOS3ViZXJuZXRlcwogIGNsdXN0ZXJOZXR3b3JrOgogIC0gY2lkcjogMTAuMTI4LjAuMC8xNAogICAgaG9zdFByZWZpeDogMjMKICBtYWNoaW5lTmV0d29yazoKICAtIGNpZHI6IDEwLjAuMC4wLzE2CiAgc2VydmljZU5ldHdvcms6CiAgLSAxNzIuMzAuMC4wLzE2CnBsYXRmb3JtOgogIGF3czoKICAgIHJlZ2lvbjogdXMtZWFzdC0xCnB1bGxTZWNyZXQ6ICIiICMgc2tpcCwgaGl2ZSB3aWxsIGluamVjdCBiYXNlZCBvbiBpdCdzIHNlY3JldHMKc3NoS2V5OiB8LQogICAgc3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUtBbFFmVGU2U3VJOC9TYVdPVFVnOUV3TmN2cysxMTQ4RWRCV2NTZlB6NDQgcG1pbmtvd3NAcG1pbmtvd3MtbWFjCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-pull-secret
+  namespace: aws
+stringData:
+  .dockerconfigjson: # injected on create
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: aws-aws-creds
+  namespace: aws
+stringData:
+  aws_access_key_id: AKIA6NINWML3IX7HFBWG
+  aws_secret_access_key: # injected on create
