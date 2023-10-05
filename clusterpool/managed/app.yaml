@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: sample-kotlin-spring
   annotations:
-    skupper.io/address: sample-kotlin-spring
+    skupper.io/address: sample-kotlin-spring-lb
     skupper.io/port: '8080'
     skupper.io/proxy: http
   name: sample-kotlin-spring
