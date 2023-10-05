@@ -34,6 +34,11 @@ spec:
     name: interconnect
     namespace: openshift-gitops
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aws
+---
 apiVersion: hive.openshift.io/v1
 kind: ClusterPool
 metadata:
