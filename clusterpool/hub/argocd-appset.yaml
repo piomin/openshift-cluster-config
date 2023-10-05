@@ -17,6 +17,11 @@ spec:
     metadata:
       name: 'cluster-init-{{name}}'
     spec:
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
       destination:
         server: '{{server}}'
         namespace: interconnect

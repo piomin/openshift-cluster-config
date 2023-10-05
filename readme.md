@@ -119,6 +119,11 @@ kind: Application
 metadata:
   name: cluster-pool-config
 spec:
+  ignoreDifferences:
+    - group: '*'
+      kind: Secret
+      jsonPointers:
+        - /metadata/labels
   destination:
     server: 'https://kubernetes.default.svc'
   project: default
