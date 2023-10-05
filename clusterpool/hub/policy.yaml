@@ -46,5 +46,5 @@ spec:
             value: 4
           - key: '{{request.object.metadata.name}}'
             operator: Equals
-            value: sample-kotlin-spring-deployment
+            value: sample-kotlin-spring
   validationFailureAction: Audit
