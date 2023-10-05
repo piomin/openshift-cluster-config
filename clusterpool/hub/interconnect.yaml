@@ -8,6 +8,8 @@ kind: Secret
 metadata:
   labels:
     skupper.io/type: connection-token-request
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
   name: token-req
   namespace: interconnect
   
