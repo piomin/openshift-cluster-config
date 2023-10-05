@@ -7,7 +7,7 @@ spec: {}
 apiVersion: cluster.open-cluster-management.io/v1beta2
 kind: ManagedClusterSetBinding
 metadata:
-  name: demo-global
+  name: interconnect
   namespace: interconnect
 spec:
   clusterSet: interconnect
