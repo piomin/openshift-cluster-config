@@ -4,6 +4,14 @@ metadata:
   name: interconnect
 spec: {}
 ---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: demo-global
+  namespace: interconnect
+spec:
+  clusterSet: interconnect
+---
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
