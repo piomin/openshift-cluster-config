@@ -5,11 +5,12 @@ orbs:
 
 jobs:
   build:
-    docker:
-      - image: cimg/base:2023.09
+    executor:
+      name: docker/machine
+      image: ubuntu-2204:2022.04.2
     steps:
       - checkout
-#      - helm/install-helm-client
+      - helm/install-helm-client
       - helm/install-helm-plugin:
           helm_plugin_url: https://github.com/helm-unittest/helm-unittest
       - run:
