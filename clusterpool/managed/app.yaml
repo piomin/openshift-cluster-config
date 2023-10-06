@@ -4,12 +4,12 @@ metadata:
   labels:
     app.kubernetes.io/instance: sample-kotlin-spring
   annotations:
-    skupper.io/address: sample-kotlin-spring-lb
+    skupper.io/address: sample-kotlin-spring
     skupper.io/port: '8080'
     skupper.io/proxy: http
   name: sample-kotlin-spring
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: sample-kotlin-spring
@@ -30,20 +30,6 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/instance: sample-kotlin-spring
-  name: sample-kotlin-spring
-spec:
-  ports:
-    - name: http-port
-      port: 8080
-  selector:
-    app: sample-kotlin-spring
-  type: ClusterIP
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
