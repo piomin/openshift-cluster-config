@@ -41,7 +41,7 @@ metadata:
   name: sample-kotlin-spring
 spec:
   port:
-    targetPort: http-port
+    targetPort: port8080
   to:
     kind: Service
     name: sample-kotlin-spring
