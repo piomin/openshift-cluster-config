@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  helm: circleci/helm@2.0.1
+  helm: circleci/helm@3.0.0
 
 jobs:
   build:
@@ -9,10 +9,9 @@ jobs:
       - image: cimg/base:2023.09
     steps:
       - checkout
-      - helm/install-helm-client
-      - run:
-          name: Install Helm unit-test
-          command: helm plugin install https://github.com/helm-unittest/helm-unittest
+      - helm/install_helm_client
+      - helm/install_helm_plugin:
+          helm_plugin_url: https://github.com/helm-unittest/helm-unittest
       - run:
           name: Run unit tests (1)
           command: helm unittest clusters
