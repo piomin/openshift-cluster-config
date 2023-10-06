@@ -10,8 +10,8 @@ jobs:
       image: ubuntu-2204:2022.04.2
     steps:
       - checkout
-      - helm/install-helm-client
-      - helm/install-helm-plugin:
+      - helm/install_helm_client
+      - helm/install_helm_plugin:
           helm_plugin_url: https://github.com/helm-unittest/helm-unittest
       - run:
           name: Run unit tests (1)
