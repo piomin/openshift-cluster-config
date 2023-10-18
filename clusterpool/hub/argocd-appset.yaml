@@ -31,7 +31,7 @@ spec:
         repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
         targetRevision: master
       syncPolicy:
-        automated:
-          selfHeal: true
+#        automated:
+#          selfHeal: true
         syncOptions:
           - CreateNamespace=true

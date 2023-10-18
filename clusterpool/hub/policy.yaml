@@ -25,16 +25,7 @@ spec:
   background: true
   generateExisting: true
   rules:
-    - generate:
-        apiVersion: hive.openshift.io/v1
-        data:
-          spec:
-            clusterPoolName: aws
-        kind: ClusterClaim
-        name: aws
-        namespace: aws
-        synchronize: true
-      match:
+    - match:
         any:
           - resources:
               kinds:
@@ -47,4 +38,13 @@ spec:
           - key: '{{request.object.metadata.name}}'
             operator: Equals
             value: sample-kotlin-spring
+      generate:
+        apiVersion: hive.openshift.io/v1
+        data:
+          spec:
+            clusterPoolName: aws
+        kind: ClusterClaim
+        name: aws
+        namespace: aws
+        synchronize: true
   validationFailureAction: Audit

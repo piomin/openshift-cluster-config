@@ -19,7 +19,7 @@ spec:
         app: sample-kotlin-spring
     spec:
       containers:
-        - image: 'quay.io/pminkows/sample-kotlin-spring:1.4.39'
+        - image: 'quay.io/pminkows/sample-kotlin-spring:1.5.1.1'
           name: sample-kotlin-spring
           ports:
             - containerPort: 8080
