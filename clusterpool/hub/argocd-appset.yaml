@@ -1,4 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: clusterpool
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - name: '*'
+      namespace: '*'
+      server: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  sourceRepos:
+    - '*'
+---
+apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: cluster-init
@@ -25,7 +44,7 @@ spec:
       destination:
         server: '{{server}}'
         namespace: interconnect
-      project: default
+      project: clusterpool
       source:
         path: clusterpool/managed
         repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
