@@ -23,7 +23,6 @@ metadata:
   name: token-req
   namespace: interconnect
   labels:
-    argocd.argoproj.io/instance: cluster-pool-config
     skupper.io/type: connection-token
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
