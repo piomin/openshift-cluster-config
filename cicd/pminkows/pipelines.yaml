@@ -196,9 +196,6 @@ spec:
           workspace: source-dir
     - name: maven
       params:
-        - name: MAVEN_IMAGE
-          value: >-
-            gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
         - name: GOALS
           value:
             - test
@@ -234,9 +231,6 @@ spec:
           workspace: sonar-settings
     - name: get-version
       params:
-        - name: MAVEN_IMAGE
-          value: >-
-            gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
         - name: CONTEXT_DIR
           value: .
       runAfter:
@@ -349,9 +343,6 @@ spec:
     - name: APP_VERSION
       description: Version number of application
       type: string
-    - name: DOTNET_VERSION
-      description: Version of .NET framework
-      type: string
     - name: TESTS_DIR
       description: The name of the directory with unit tests
       type: string
@@ -384,7 +375,7 @@ spec:
     - name: s2i-dotnet-multiproj
       params:
         - name: VERSION
-          value: $(params.DOTNET_VERSION)
+          value: latest
         - name: APP_PROJECT
           value: $(params.APP_PROJECT)
         - name: PATH_CONTEXT
@@ -405,7 +396,7 @@ spec:
       params:
         - name: DOTNET_IMAGE
           value: >-
-            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:$(params.DOTNET_VERSION)
+            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:$(params.VERSION)
         - name: TEST_DIR
           value: $(params.TESTS_DIR)
       runAfter:

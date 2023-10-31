@@ -6,7 +6,7 @@ metadata:
 spec:
   params:
     - default: >-
-        image-registry.openshift-image-registry.svc:5000/openshift/dotnet:5.0-ubi8
+        image-registry.openshift-image-registry.svc:5000/openshift/dotnet:latest
       description: Dotnet image
       name: DOTNET_IMAGE
       type: string
@@ -35,7 +35,7 @@ metadata:
 spec:
   params:
     - default: >-
-        gcr.io/cloud-builders/mvn@sha256:57523fc43394d6d9d2414ee8d1c85ed7a13460cbb268c3cd16d28cfb3859e641
+        image-registry.openshift-image-registry.svc:5000/openshift/java:latest
       description: Maven base image
       name: MAVEN_IMAGE
       type: string
@@ -169,7 +169,7 @@ spec:
       description: The location of the buildah builder image.
       name: BUILDER_IMAGE
       type: string
-    - default: 3.1-ubi8
+    - default: latest
       description: The tag of .NET imagestream for .NET version
       name: VERSION
       type: string
