@@ -396,7 +396,7 @@ spec:
       params:
         - name: DOTNET_IMAGE
           value: >-
-            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:$(params.VERSION)
+            image-registry.openshift-image-registry.svc:5000/openshift/dotnet:latest
         - name: TEST_DIR
           value: $(params.TESTS_DIR)
       runAfter:
