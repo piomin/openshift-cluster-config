@@ -541,8 +541,8 @@ spec:
       script: |
         #!/bin/sh
         echo ${FILE_NAME}
-        echo ${ISSUE_KEY}
-        curl -X POST -H 'X-Atlassian-Token: no-check' --form 'file=@"roxctl-stdout"' https://${URL}/rest/api/2/issue/${ISSUE_KEY}/attachments -u ${USERNAME}:${TOKEN}
+        ISSUE=$(echo ${ISSUE_KEY} | xargs)
+        curl -X POST -H 'X-Atlassian-Token: no-check' --form 'file=@"roxctl-stdout"' https://${URL}/rest/api/2/issue/${ISSUE}/attachments -u ${USERNAME}:${TOKEN}
       env:
         - name: TOKEN
           valueFrom:
