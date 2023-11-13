@@ -315,6 +315,25 @@ spec:
       taskRef:
         kind: Task
         name: rhacs-image-check
+    - name: jira-report
+      params:
+        - name: token-secret-name
+          value: jira-token-secret
+        - name: project-key
+          value: PIOM
+        - name: username
+          value: piotr.minkowski@gmail.com
+        - name: url
+          value: piotrminkowski.atlassian.net
+        - name: title
+          value: $(tasks.get-version.results.version)-report
+        - name: content
+          value: $(tasks.rhacs-image-check.results.check_output)
+      runAfter:
+        - rhacs-image-check
+      taskRef:
+        kind: Task
+        name: send-to-jira
   workspaces:
     - name: source-dir
     - name: maven-settings

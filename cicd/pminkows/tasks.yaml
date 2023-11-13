@@ -285,12 +285,16 @@ spec:
     - name: url
       type: string
       description: JIRA address
+    - name: content
+      type: string
+      description: JIRA description
+      default: ''
   steps:
     - name: post
       image: docker.io/curlimages/curl:latest
       script: |
         #!/bin/sh
-        JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"issuetype\":{\"name\":\"Task\"}}}"
+        JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"description\":\"${CONTENT}\",\"issuetype\":{\"name\":\"Task\"}}}"
         echo $MESSAGE | sed -e 's/\"/\\\\"/g'
         curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN}
       env:
@@ -307,6 +311,8 @@ spec:
           value: $(params.title)
         - name: PROJECT_KEY
           value: $(params.project-key)
+        - name: CONTENT
+          value: $(params.content)
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
