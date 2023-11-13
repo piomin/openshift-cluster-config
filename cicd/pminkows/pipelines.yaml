@@ -258,6 +258,9 @@ spec:
       taskRef:
         kind: Task
         name: send-to-jira
+      workspaces:
+        - name: source
+          workspace: source-dir
     - name: s2i-java
       params:
         - name: PATH_CONTEXT
@@ -296,6 +299,9 @@ spec:
       taskRef:
         kind: Task
         name: rhacs-image-scan
+      workspaces:
+        - name: source
+          workspace: source-dir
     - name: rhacs-image-check
       params:
         - name: rox_central_endpoint
@@ -332,6 +338,9 @@ spec:
       taskRef:
         kind: Task
         name: add-jira-attachment
+      workspaces:
+        - name: source
+          workspace: source-dir
   workspaces:
     - name: source-dir
     - name: maven-settings

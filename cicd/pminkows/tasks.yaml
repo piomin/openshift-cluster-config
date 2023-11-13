@@ -294,7 +294,7 @@ spec:
       name: issue-id
   steps:
     - name: post
-      image: docker.io/curlimages/curl:latest
+      image: docker.io/badouralix/curl-jq:latest
       script: |
         #!/bin/sh
         JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"description\":\"${CONTENT}\",\"issuetype\":{\"name\":\"Task\"}}}"
@@ -537,7 +537,7 @@ spec:
       description: issue key
   steps:
     - name: post
-      image: docker.io/curlimages/curl:latest
+      image: docker.io/badouralix/curl-jq:latest
       script: |
         #!/bin/sh
         echo ${FILE_NAME}
