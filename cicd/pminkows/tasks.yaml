@@ -289,14 +289,17 @@ spec:
       type: string
       description: JIRA description
       default: ''
+  results:
+    - description: The issue id
+      name: issue-id
   steps:
     - name: post
       image: docker.io/curlimages/curl:latest
       script: |
         #!/bin/sh
         JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"description\":\"${CONTENT}\",\"issuetype\":{\"name\":\"Task\"}}}"
-        echo $MESSAGE | sed -e 's/\"/\\\\"/g'
-        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN}
+        echo $JSON | sed -e 's/\"/\\\\"/g'
+        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN} | jq .id -r | tee results.issue-id.path
       env:
         - name: TOKEN
           valueFrom:
@@ -470,9 +473,6 @@ spec:
         and registry.
       name: insecure-skip-tls-verify
       type: string
-  results:
-    - description: Scan report
-      name: report
   steps:
     - args:
         - image
@@ -505,5 +505,58 @@ spec:
       image: $(params.rox_image)
       name: rox-image-scan
       resources: {}
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: add-jira-attachment
+  namespace: pminkows-cicd
+  labels:
+    app.kubernetes.io/version: "1.0"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+spec:
+  description: These task creates issue in jira.
+  params:
+    - name: token-secret-name
+      type: string
+      description: JIRA token
+    - name: username
+      type: string
+      description: JIRA login
+    - name: url
+      type: string
+      description: JIRA address
+    - name: file-name
+      type: string
+      description: attachment name
+    - name: issue-key
+      type: string
+      description: issue key
+  steps:
+    - name: post
+      image: docker.io/curlimages/curl:latest
+      script: |
+        #!/bin/sh
+        echo ${FILE_NAME}
+        echo ${ISSUE_KEY}
+        curl -X POST -H 'X-Atlassian-Token: no-check' --form 'file=@"roxctl-stdout"' https://${URL}/rest/api/2/issue/${ISSUE_KEY}/attachments -u ${USERNAME}:${TOKEN}
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(params.token-secret-name)
+              key: token
+        - name: USERNAME
+          value: $(params.username)
+        - name: URL
+          value: $(params.url)
+        - name: ISSUE_KEY
+          value: $(params.issue-key)
+        - name: FILE_NAME
+          value: $(params.file-name)
+      workingDir: $(workspaces.source.path)
   workspaces:
     - name: source

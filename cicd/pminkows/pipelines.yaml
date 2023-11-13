@@ -311,7 +311,7 @@ spec:
         - name: insecure-skip-tls-verify
           value: 'true'
       runAfter:
-        - rhacs-image-scan
+        - jira-report
       taskRef:
         kind: Task
         name: rhacs-image-check
@@ -319,21 +319,19 @@ spec:
       params:
         - name: token-secret-name
           value: jira-token-secret
-        - name: project-key
-          value: PIOM
         - name: username
           value: piotr.minkowski@gmail.com
         - name: url
           value: piotrminkowski.atlassian.net
-        - name: title
-          value: $(tasks.get-version.results.version)-report
-        - name: content
-          value: $(tasks.rhacs-image-check.results.check_output)
+        - name: file-name
+          value: roxctl-stdout
+        - name: issue-key
+          value: $(tasks.jira-issue.results.issue-id)
       runAfter:
-        - rhacs-image-check
+        - rhacs-image-scan
       taskRef:
         kind: Task
-        name: send-to-jira
+        name: add-jira-attachment
   workspaces:
     - name: source-dir
     - name: maven-settings
