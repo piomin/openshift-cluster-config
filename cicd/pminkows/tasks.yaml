@@ -299,7 +299,7 @@ spec:
         #!/bin/sh
         JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"description\":\"${CONTENT}\",\"issuetype\":{\"name\":\"Task\"}}}"
         echo $JSON | sed -e 's/\"/\\\\"/g'
-        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN} | jq .id -r | tee $(results.issue-id.path)
+        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN} | jq .id -r | xargs | tee $(results.issue-id.path)
       env:
         - name: TOKEN
           valueFrom:
@@ -541,8 +541,8 @@ spec:
       script: |
         #!/bin/sh
         echo ${FILE_NAME}
-        ISSUE=$(echo ${ISSUE_KEY} | xargs)
-        curl -X POST -H 'X-Atlassian-Token: no-check' --form 'file=@"roxctl-stdout"' https://${URL}/rest/api/2/issue/${ISSUE}/attachments -u ${USERNAME}:${TOKEN}
+        echo ${ISSUE_KEY}
+        curl -X POST -H 'X-Atlassian-Token: no-check' --form 'file=@"roxctl-stdout"' https://${URL}/rest/api/2/issue/${ISSUE_KEY}/attachments -u ${USERNAME}:${TOKEN}
       env:
         - name: TOKEN
           valueFrom:
