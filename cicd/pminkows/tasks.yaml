@@ -470,6 +470,9 @@ spec:
         and registry.
       name: insecure-skip-tls-verify
       type: string
+  results:
+    - description: Scan report
+      name: report
   steps:
     - args:
         - image
@@ -478,6 +481,8 @@ spec:
         - '--insecure-skip-tls-verify=$(INSECURE)'
         - '--output=$(OUTPUT)'
         - '--image=$(IMAGE)'
+      stdoutConfig:
+        path: $(workspaces.source.path)/roxctl-stdout
       env:
         - name: HOME
           value: /tekton/home
@@ -500,3 +505,5 @@ spec:
       image: $(params.rox_image)
       name: rox-image-scan
       resources: {}
+  workspaces:
+    - name: source
