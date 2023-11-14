@@ -316,6 +316,8 @@ spec:
           value: $(params.project-key)
         - name: CONTENT
           value: $(params.content)
+  workspaces:
+    - name: source
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
