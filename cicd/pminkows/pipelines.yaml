@@ -208,11 +208,42 @@ spec:
       taskRef:
         kind: ClusterTask
         name: maven
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
         - name: maven-settings
           workspace: maven-settings
+    - name: s2i-java-preview
+      params:
+        - name: PATH_CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: MAVEN_CLEAR_REPO
+          value: 'false'
+        - name: IMAGE
+          value: >-
+            quay.io/pminkows/sample-kotlin-spring:$(tasks.git-clone.results.commit)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: s2i-java
+      when:
+        - input: $(params.git-revision)
+          operator: notin
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
     - name: sonarqube
       params:
         - name: SONAR_HOST_URL
@@ -224,6 +255,12 @@ spec:
       taskRef:
         kind: Task
         name: sonarqube-scanner
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source-dir
           workspace: source-dir
@@ -238,6 +275,12 @@ spec:
       taskRef:
         kind: Task
         name: maven-get-project-version
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
@@ -258,6 +301,12 @@ spec:
       taskRef:
         kind: Task
         name: send-to-jira
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
@@ -277,6 +326,12 @@ spec:
       taskRef:
         kind: ClusterTask
         name: s2i-java
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
@@ -299,6 +354,12 @@ spec:
       taskRef:
         kind: Task
         name: rhacs-image-scan
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
@@ -321,6 +382,12 @@ spec:
       taskRef:
         kind: Task
         name: rhacs-image-check
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
     - name: jira-report
       params:
         - name: token-secret-name
@@ -338,6 +405,12 @@ spec:
       taskRef:
         kind: Task
         name: add-jira-attachment
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
       workspaces:
         - name: source
           workspace: source-dir
