@@ -60,6 +60,7 @@ spec:
         requests:
           cpu: 250m
           memory: 128Mi
+    provider: dex
   ha:
     enabled: false
     resources:
