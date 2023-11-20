@@ -71,7 +71,6 @@ spec:
   pullSecretRef:
     name: aws-pull-secret
   size: 1
-  runningCount: 0
 ---
 apiVersion: v1
 kind: Secret
