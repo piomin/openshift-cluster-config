@@ -34,7 +34,7 @@ spec:
         requeueAfterSeconds: 180
   template:
     metadata:
-      name: 'cluster-init-{{name}}'
+      name: 'cluster-pool-init-{{name}}'
     spec:
       ignoreDifferences:
         - group: apps
