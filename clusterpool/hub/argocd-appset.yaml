@@ -20,7 +20,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: cluster-init
+  name: cluster-pool-init
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-wave: "3"
