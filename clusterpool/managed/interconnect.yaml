@@ -46,3 +46,50 @@ data:
   tls.key: >-
     LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBdHhybVRoTDlYTm9tSHl2ZzQ4VDBMRkpoQkxpZTBXbjhiSFhMcXBjcDA1YW5lQStoCm1kS0RpeXdSTzNqeml2c01HVlZ4eGdIbnlLOGZ3aWRoVG1xV1FBL0dzQWVGWGxCUzBnemdUV09KcTlhbEZPdUUKbWdjcWRpVGNsL0I3REczaGN6OFNqMWtnbVZLV2ZHNVRPNnEvZ2xGdUxhdXlOOTdkUjdxVng0aHErOHFtSzFORwpIZVdKWXVrNHdjbGVsQW5mL1Rxa1NGdk1kMzRPYnBvQkFvWmNwWmd6WnZhZVF0WEFkYUtTWE9kV1FueGI1WndFCkZpbk1FdERlbE1qV043am5BaUtmTTRJY1p6RUV5WmpTK0ord3EzVUdLaUpNeEtjTk1FdHV1NG1wamtJc3RhWjQKNlhOWHUwQXFjWjF3aU44UHlYc0FkaTBtKzlKK1c0TFIzSlVPTFFJREFRQUJBb0lCQVFDVy9lU3F2emdWQ0lObApNdzdKWkpHaHR2RHdMcm93b0VDYXcreUdLUTlCdnpzc1kxOTBkRWNyVGRTTUFXcDcwaGVoRUhlNHU3dUNIditHCllHajZmQ1NZZ1NucjROZlc5VS9HalAydWM0V0VvWVVTSWtEL3J5Y1JzOFlBdVRzTy9kRnE4cmtBWXBQaU8xdUQKRW9zcWFkeHd2MnVtMTY0b0tteTVDS0VZb0dMd2JEK2VwUkdaVHRWREJ3TFU0Z0h1dUVqTXNZejRldCtsSW5icgp6UnJsRXU4aXFYREZYaEtVQzBOUGZkNXBIeDc5WUhmTTltVU15T1Z3bTRlb2pTaUN5dDJyb2JSVE04bC83QkJTCmN5N3FkS01FK1p5ZmxhcDJ3S2ZtaCtibStsSTNKOHNxSE1RMjZNU2swUVphSFBoK0hPeWVKbk1zSUZTb25MMloKV09yWDRSa2hBb0dCQU9BbmhCVzlKTVpsYzdEZktlVDhWMGFDWGtXY3NtOHpOcElVSlpoUDV0ejQ5L2dQZlRWcApaUmNjbEVWcjMrL1ZxTU00cERyb1ZDY3FLVVFSU04wQy9xRnZ1a3BXcHI0YXJrczZNN1NtK0tjS3RpbDYzNEgxCnk3Rklzd1N1bDRUdm0rd1pCZVNLL3UxNVNjQWtTKy9Rb0ZpUldha0VpMGF4d0RpdG1mYytRdmI1QW9HQkFORWUKYkZBbG9qRDZlVGk0dGdUaWFhK0dvRFBSM2JBemx5TTdFbnB6ZUhoSUpiZXdJd2Y4dnRhNWRqaDdpM25KbDlwWAptMWdHdGxGS0dWbmtQVGhFKzYxNWxycjFoRnh5dGkwNFk0R1IwNG9IcjdYY0IxUXRtdXMrbE0xNXNqWkZxNCtlCnc1TWlWN3JvRWhleGdQUno4enUrdllnNDhvZGVBeHA1R0R5cVNWblZBb0dBVTVhSXkrNS9vemc3M3k0cEdrbjcKWmNEQjFPV3RLSWlKaGduYlJ5UXNyQ1J2bStKeXg1TW83bWhxNWtSbStySExRQm1FTEs5c2lqcFByeUZlOFlQbgpYbDRpc3d3REhBc3BDY2FIZDR0NFdCcEhlY3BuUkxoYklCNURHN0Ric2VnRVZoT3l2ZG9UWEkwSk1veVdnTFJrCnh3SlUxQkZzdW8wWWFFcGNpdlY5MVVrQ2dZRUF3NGc5NE1iL20rcG9OSWhKOGRFKzN0ZnpyZUI2K0VtVTlXVkQKeHVsM2FJaVZjK2NuS2szQ3A0WXNxMjJob2RQRXdHMFFITVBSNzdwb2Ird0E3ajlhVVArUzErZS94cTJmK0RKMApvRytaSzhRNklNTEd1NGdWQmdlekhWbkFNQXorK01DTHdHVHBRU1BEM3hHak1XL0ZyRVNTZGZCQm5oOWlxWHMzCkZXcG9RYTBDZ1lFQTJYdzFteEJFdE1weHYwWkdDcVp2WTNZdHdscy9uZi92bmxRUnR1d1o5aEVsVWdST3hib3IKZzFYWXJrVlA5V2NXNXFSd3JtelgvSW9kZlVYeXE4TW5pZ25WeXg2RVdCRnFOb0lTWG1ZYUowVjBtSG5DbjF5awpndmFDd2o2OXFtSjRmYnV2SmZxN3hWb2d5UGx5RFU1bkxMV3p0NXB3S1RLVGRqdE9kSWV6NGZrPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
 type: Opaque
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    release: prometheus-operator
+  name: sample-kotlin-spring
+  namespace: interconnect
+spec:
+  podMetricsEndpoints:
+    - interval: 30s
+      path: /actuator/prometheus
+      targetPort: 8080
+  selector:
+    matchLabels:
+      app: sample-kotlin-spring
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: interconnect-read
+  namespace: interconnect
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - ''
+    resources:
+      - endpoints
+      - services
+      - pods
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: interconnect-prometheus-k8s-read-binding
+  namespace: interconnect
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-k8s
+    namespace: openshift-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: interconnect-read
