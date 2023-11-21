@@ -12,6 +12,13 @@ spec:
   source: redhat-operators
   sourceNamespace: openshift-marketplace
 ---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: interconnect
+  labels:
+    openshift.io/cluster-monitoring: "true"
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
