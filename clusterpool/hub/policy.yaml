@@ -45,6 +45,6 @@ spec:
             clusterPoolName: aws
         kind: ClusterClaim
         name: aws
-#        namespace: aws
+        namespace: aws
         synchronize: true
   validationFailureAction: Audit
