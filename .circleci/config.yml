@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  helm: circleci/helm@3.0.0
+  helm: circleci/helm@3.0.1
 
 jobs:
   build:
