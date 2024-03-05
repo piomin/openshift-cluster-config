@@ -5,6 +5,7 @@ metadata:
 users:
   - opentlc-mgr
   - admin
+  - tech-admin
 ---
 kind: Group
 apiVersion: user.openshift.io/v1
