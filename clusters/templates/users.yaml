@@ -15,7 +15,6 @@ metadata:
   namespace: openshift-authentication
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: 'Prune=false,Delete=false'
 type: Opaque
 ---
 apiVersion: config.openshift.io/v1
@@ -34,3 +33,32 @@ spec:
       htpasswd:
         fileData:
           name: htpass-secret
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: patch-generated-secret
+  namespace: openshift-gitops
+spec:
+  patches:
+    patchPipelineAccount:
+      patchTemplate: |
+        metadata:
+          annotations:
+            argocd.argoproj.io/compare-options: IgnoreExtraneous
+      patchType: application/strategic-merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: v1
+          name: openshift-gitops
+          kind: Namespace
+        - apiVersion: v1
+          name: openshift-gitops-argocd-application-controller
+          namespace: openshift-gitops
+          kind: ServiceAccount
+      targetObjectRef:
+        apiVersion: v1
+        name: v4-0-config-user-idp-0-file-data
+        namespace: openshift-authentication
+        kind: Secret
+  serviceAccountRef:
+    name: openshift-gitops-argocd-application-controller
