@@ -25,65 +25,113 @@ spec:
     - '*'
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: sample-dotnetcore-ex-prod
-  namespace: pminkows-cicd
+  name: sample-dotnetcore-ex
 spec:
-  destination:
-    namespace: pminkows-prod
-    server: 'https://api.emarq830.eastus.aroapp.io:6443'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-dotnetcore-ex-prod.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sample-dotnetcore-ex-stage
-  namespace: pminkows-cicd
-spec:
-  destination:
-    namespace: pminkows-stage
-    server: 'https://kubernetes.default.svc'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-dotnetcore-ex-stage.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sample-dotnetcore-ex-test
-  namespace: pminkows-cicd
-spec:
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas
-  destination:
-    namespace: pminkows-test
-    server: 'https://kubernetes.default.svc'
-  project: default
-  syncPolicy:
-    automated: {}
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-dotnetcore-ex-test.yaml
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - env: test
+            local: true
+            autoSync: true
+          - env: stage
+            local: true
+            autoSync: false
+          - env: prod
+            local: false
+            autoSync: false
+  template:
+    metadata:
+      name: sample-dotnetcore-ex-{{ .env }}
+    spec:
+      destination:
+        namespace: pminkows-{{ .env }}
+        server: 'https://kubernetes.default.svc'
+      project: default
+      source:
+        path: apps/pminkows
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        targetRevision: HEAD
+        helm:
+          valueFiles:
+            - values-sample-dotnetcore-ex-{{ .env }}.yaml
+  templatePatch:
+    spec:
+      destination:
+      {{- if .local }}
+        server: 'https://kubernetes.default.svc'
+      {{- else }}
+        server: 'https://api.piomin.eastus.aroapp.io:6443'
+      {{- end }}
+    {{- if .autoSync }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+    {{- end }}
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-dotnetcore-ex-prod
+#  namespace: pminkows-cicd
+#spec:
+#  destination:
+#    namespace: pminkows-prod
+#    server: 'https://api.emarq830.eastus.aroapp.io:6443'
+#  project: default
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-dotnetcore-ex-prod.yaml
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-dotnetcore-ex-stage
+#  namespace: pminkows-cicd
+#spec:
+#  destination:
+#    namespace: pminkows-stage
+#    server: 'https://kubernetes.default.svc'
+#  project: default
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-dotnetcore-ex-stage.yaml
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-dotnetcore-ex-test
+#  namespace: pminkows-cicd
+#spec:
+#  ignoreDifferences:
+#    - group: apps
+#      kind: Deployment
+#      jsonPointers:
+#        - /spec/replicas
+#  destination:
+#    namespace: pminkows-test
+#    server: 'https://kubernetes.default.svc'
+#  project: default
+#  syncPolicy:
+#    automated: {}
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-dotnetcore-ex-test.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
