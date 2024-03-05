@@ -1,3 +1,4 @@
+{{- if .Values.addUsers }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -53,3 +54,4 @@ spec:
         kind: Secret
   serviceAccountRef:
     name: openshift-gitops-argocd-application-controller
+{{- end }}

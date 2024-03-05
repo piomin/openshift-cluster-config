@@ -28,3 +28,4 @@ projects:
         cpu: 250m
         memory: 256Mi
 cicdOwner: true
+addUsers: true
