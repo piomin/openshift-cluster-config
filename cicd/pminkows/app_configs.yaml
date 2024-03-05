@@ -79,6 +79,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: prod
+    application: sample-dotnetcore-ex
 spec:
   destination:
     namespace: pminkows-prod
@@ -99,6 +100,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: stage
+    application: sample-dotnetcore-ex
 spec:
   destination:
     namespace: pminkows-stage
@@ -119,6 +121,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: test
+    application: sample-dotnetcore-ex
 spec:
   ignoreDifferences:
     - group: apps
@@ -146,6 +149,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: prod
+    application: sample-spring-kotlin
 spec:
   destination:
     namespace: pminkows-prod
@@ -166,6 +170,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: stage
+    application: sample-spring-kotlin
 spec:
   destination:
     namespace: pminkows-stage
@@ -186,6 +191,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: test
+    application: sample-spring-kotlin
 spec:
   ignoreDifferences:
     - group: apps
@@ -214,6 +220,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: prod
+    application: web-api-2
 spec:
   destination:
     namespace: pminkows-prod
@@ -234,6 +241,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: stage
+    application: web-api-2
 spec:
   destination:
     namespace: pminkows-stage
@@ -254,6 +262,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: test
+    application: web-api-2
 spec:
   ignoreDifferences:
     - group: apps
@@ -281,6 +290,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: test
+    application: sample-react-node
 spec:
   ignoreDifferences:
     - group: apps
@@ -309,6 +319,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: stage
+    application: sample-react-node
 spec:
   destination:
     namespace: pminkows-stage
@@ -329,6 +340,7 @@ metadata:
   namespace: pminkows-cicd
   labels:
     environment: prod
+    application: sample-react-node
 spec:
   destination:
     namespace: pminkows-prod
