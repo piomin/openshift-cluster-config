@@ -31,17 +31,17 @@ metadata:
 spec:
   goTemplate: true
   generators:
-    - list:
-        elements:
-          - env: test
-            local: true
-            autoSync: true
-          - env: stage
-            local: true
-            autoSync: false
-          - env: prod
-            local: false
-            autoSync: false
+  - list:
+      elements:
+      - env: test
+        local: true
+        autoSync: true
+      - env: stage
+        local: true
+        autoSync: false
+      - env: prod
+        local: false
+        autoSync: false
   template:
     metadata:
       name: sample-dotnetcore-ex-{{ .env }}
