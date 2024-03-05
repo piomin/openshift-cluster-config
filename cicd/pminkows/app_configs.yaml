@@ -57,7 +57,7 @@ spec:
 #        helm:
 #          valueFiles:
 #            - values-sample-dotnetcore-ex-{{ .env }}.yaml
-#  templatePatch:
+#  templatePatch: |
 #    spec:
 #      destination:
 #      {{- if .local }}
@@ -77,6 +77,8 @@ kind: Application
 metadata:
   name: sample-dotnetcore-ex-prod
   namespace: pminkows-cicd
+  labels:
+    environment: prod
 spec:
   destination:
     namespace: pminkows-prod
@@ -95,6 +97,8 @@ kind: Application
 metadata:
   name: sample-dotnetcore-ex-stage
   namespace: pminkows-cicd
+  labels:
+    environment: stage
 spec:
   destination:
     namespace: pminkows-stage
@@ -113,6 +117,8 @@ kind: Application
 metadata:
   name: sample-dotnetcore-ex-test
   namespace: pminkows-cicd
+  labels:
+    environment: test
 spec:
   ignoreDifferences:
     - group: apps
@@ -138,6 +144,8 @@ kind: Application
 metadata:
   name: sample-spring-kotlin-prod
   namespace: pminkows-cicd
+  labels:
+    environment: prod
 spec:
   destination:
     namespace: pminkows-prod
@@ -156,6 +164,8 @@ kind: Application
 metadata:
   name: sample-spring-kotlin-stage
   namespace: pminkows-cicd
+  labels:
+    environment: stage
 spec:
   destination:
     namespace: pminkows-stage
@@ -174,6 +184,8 @@ kind: Application
 metadata:
   name: sample-spring-kotlin-test
   namespace: pminkows-cicd
+  labels:
+    environment: test
 spec:
   ignoreDifferences:
     - group: apps
@@ -200,6 +212,8 @@ kind: Application
 metadata:
   name: web-api-2-prod
   namespace: pminkows-cicd
+  labels:
+    environment: prod
 spec:
   destination:
     namespace: pminkows-prod
@@ -218,6 +232,8 @@ kind: Application
 metadata:
   name: web-api-2-stage
   namespace: pminkows-cicd
+  labels:
+    environment: stage
 spec:
   destination:
     namespace: pminkows-stage
@@ -236,6 +252,8 @@ kind: Application
 metadata:
   name: web-api-2-test
   namespace: pminkows-cicd
+  labels:
+    environment: test
 spec:
   ignoreDifferences:
     - group: apps
@@ -261,6 +279,8 @@ kind: Application
 metadata:
   name: sample-react-node-test
   namespace: pminkows-cicd
+  labels:
+    environment: test
 spec:
   ignoreDifferences:
     - group: apps
@@ -287,6 +307,8 @@ kind: Application
 metadata:
   name: sample-react-node-stage
   namespace: pminkows-cicd
+  labels:
+    environment: stage
 spec:
   destination:
     namespace: pminkows-stage
@@ -305,6 +327,8 @@ kind: Application
 metadata:
   name: sample-react-node-prod
   namespace: pminkows-cicd
+  labels:
+    environment: prod
 spec:
   destination:
     namespace: pminkows-prod
@@ -320,39 +344,3 @@ spec:
     helm:
       valueFiles:
         - values-sample-node-react-prod.yaml
-#apiVersion: argoproj.io/v1alpha1
-#kind: ApplicationSet
-#metadata:
-#  name: sample-node-react
-#  namespace: pminkows-cicd
-#spec:
-#  generators:
-#    - list:
-#        elements:
-#          - env: test
-#            autoSync: true
-#            dest: https://kubernetes.default.svc
-#          - env: stage
-#            autoSync: false
-#            dest: https://kubernetes.default.svc
-#          - env: prod
-#            autoSync: false
-#            dest: https://api.emarq830.eastus.aroapp.io:6443
-#  template:
-#    metadata:
-#      name: 'sample-react-node-{{env}}'
-#      namespace: pminkows-cicd
-#    spec:
-#      destination:
-#        server: '{{dest}}'
-#      project: default
-#      source:
-#        path: apps/pminkows
-#        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-#        targetRevision: HEAD
-#        helm:
-#          valueFiles:
-#            - values-sample-node-react-{{env}}.yaml
-#      syncPolicy:
-#        automated:
-#          selfHeal: true
