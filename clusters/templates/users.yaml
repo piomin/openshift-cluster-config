@@ -7,6 +7,17 @@ data:
   htpasswd: dXNlcjE6JDJ5JDA1JHo2d05sQmhrNGlJLnQ0ZjJCSm1lV3VwYXpnQllwWWExb3pTNlR5Q1M4L3lrQ01XNDlLWENtCnVzZXIyOiQyeSQwNSRzRVh5RWRHby5tWmtTNDNlbnlHc0V1aC9aSWF3VnJiRmlwak1CYnVyNjQxZ2pCWlRjVHAwZQp1c2VyMzokMnkkMDUkMlU4cmx0WW5XQzZvcHRrQ1ZoZFpudXFMd1hTeXAyUGdkclNaTG84Q2pLU2ZveTRhNDhXUUMKdXNlcjQ6JDJ5JDA1JHFZSHV5bVlwSTVtYjAwdnAvS0IyWi43L3JRN2hCaHltckhLWnFneHNsQWpRSGowaE9JdlNTCnVzZXI1OiQyeSQwNSRYU3hLd2F2UHJsMjhtbGhpS21xRm9PQ1lzcE5OZmJ1TW9qVmlmQ1lZOEkwcUVSdjk1ZFpwdQpwbWlua293czokMnkkMDUkRVVUVzVRQjJQTnp5enhSWXFJazczT2pqNjJjajhGWEc1d2pBQUcwUWQ0NjE2UEMzUmJJTGkKdGVjaC1hZG1pbjokMnkkMDUkSG9rMHlqWWs0cjJkYThvSDFic0RuZXFQTDQzcGVJVzFsdFhXN1VWSlM5YkRjcjlUeFlSZmk=
 type: Opaque
 ---
+apiVersion: v1
+data: {}
+kind: Secret
+metadata:
+  name: v4-0-config-user-idp-0-file-data
+  namespace: openshift-authentication
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: 'Prune=false,Delete=false'
+type: Opaque
+---
 apiVersion: config.openshift.io/v1
 kind: OAuth
 metadata:
