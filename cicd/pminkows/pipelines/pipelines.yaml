@@ -632,6 +632,9 @@ spec:
       taskRef:
         kind: Task
         name: rhacs-image-scan
+      workspaces:
+        - name: source
+          workspace: source-dir
     - name: rhacs-image-check
       params:
         - name: rox_central_endpoint
