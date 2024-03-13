@@ -66,6 +66,41 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
+  name: nodejs-get-project-version
+  namespace: pminkows-cicd
+spec:
+  params:
+    - default: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/nodejs:latest
+      description: Nodejs base image
+      name: NODEJS_IMAGE
+      type: string
+    - default: .
+      description: >-
+        The context directory within the repository for sources on which we want
+        to execute maven goals.
+      name: CONTEXT_DIR
+      type: string
+  results:
+    - description: Project version read from package.json
+      name: version
+  steps:
+    - image: $(params.NODEJS_IMAGE)
+      name: npm-command
+      resources: {}
+      script: >
+        #!/usr/bin/env bash
+
+        VERSION=$(cat package.json | jq -r '.version')
+
+        echo -n $VERSION | tee $(results.version.path)
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
   name: sonarqube-scanner
   namespace: pminkows-cicd
   labels:

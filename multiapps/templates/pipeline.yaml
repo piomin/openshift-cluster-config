@@ -1,0 +1,162 @@
+{{- $builders := dict "java" "maven" "nodejs" "npm" -}}
+{{- range .Values.apps }}
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: {{ .name }}-pipeline
+spec:
+  params:
+    - description: branch
+      name: git-revision
+      type: string
+      default: master
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/piomin/{{ .name }}.git'
+        - name: revision
+          value: $(params.git-revision)
+        - name: sslVerify
+          value: 'false'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: s2i-java-preview
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: >-
+            quay.io/pminkows/{{ .name }}:$(tasks.git-clone.results.commit)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: s2i-{{ .type }}
+      when:
+        - input: $(params.git-revision)
+          operator: notin
+          values:
+            - master
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: sonarqube
+      params:
+        - name: SONAR_HOST_URL
+          value: 'https://sonarcloud.io'
+        - name: SONAR_PROJECT_KEY
+          value: {{ .name }}
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: sonarqube-scanner
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+      workspaces:
+        - name: source-dir
+          workspace: source-dir
+        - name: sonar-settings
+          workspace: sonar-settings
+    - name: get-version
+      params:
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - sonarqube
+      taskRef:
+        kind: Task
+        name: {{ get $builders .type }}-get-project-version
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: jira-issue
+      params:
+        - name: token-secret-name
+          value: jira-token-secret
+        - name: project-key
+          value: PIOM
+        - name: username
+          value: piotr.minkowski@gmail.com
+        - name: url
+          value: piotrminkowski.atlassian.net
+        - name: title
+          value: $(tasks.get-version.results.version)
+      runAfter:
+        - get-version
+      taskRef:
+        kind: Task
+        name: send-to-jira
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: s2i-{{ .type }}
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: >-
+            quay.io/pminkows/{{ .name }}:$(tasks.get-version.results.version)
+      runAfter:
+        - jira-issue
+      taskRef:
+        kind: ClusterTask
+        name: s2i-{{ .type }}
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: rhacs-image-scan
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:latest'
+        - name: image
+          value: quay.io/pminkows/{{ .name }}:$(tasks.get-version.results.version)
+        - name: output_format
+          value: json
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - s2i-{{ .type }}
+      taskRef:
+        kind: Task
+        name: rhacs-image-scan
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+      workspaces:
+        - name: source
+          workspace: source-dir
+  workspaces:
+    - name: source-dir
+    - name: sonar-settings
+{{- end }}

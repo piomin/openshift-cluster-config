@@ -1,0 +1,5 @@
+apps:
+  - name: sample-spring-kotlin-microservice
+    type: java
+  - name: sample-react-microfrontend
+    type: nodejs
