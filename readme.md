@@ -136,6 +136,41 @@ spec:
       selfHeal: true
 ```
 
+## Scenario 4 - Multi Apps
+Create Argo CD `ApplicationSet`:
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps-generator
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+        directories:
+          - path: multiapps/config/*
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        revision: HEAD
+  template:
+    metadata:
+      name: '{{path.basename}}-creator'
+    spec:
+      destination:
+        namespace: '{{path.basename}}'
+        server: 'https://kubernetes.default.svc'
+      project: default
+      source:
+        helm:
+          valueFiles:
+            - 'config/{{path.basename}}/values.yaml'
+        path: multiapps
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        targetRevision: HEAD
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+```
+
 Why `SealedSecret` stays in Progressing status:
 https://argo-cd.readthedocs.io/en/stable/faq/#why-are-resources-of-type-sealedsecret-stuck-in-the-progressing-state
 
