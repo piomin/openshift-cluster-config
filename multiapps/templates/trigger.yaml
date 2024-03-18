@@ -1,0 +1,68 @@
+{{- range .Values.apps }}
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: {{ .name }}-trigger-template
+spec:
+  params:
+    - default: master
+      description: The git revision
+      name: git-revision
+    - description: The git repository url
+      name: git-repo-url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: {{ .name }}-pipeline-run-
+      spec:
+        params:
+          - name: git-revision
+            value: $(tt.params.git-revision)
+        pipelineRef:
+          name: {{ .name }}-pipeline
+        serviceAccountName: pipeline
+        workspaces:
+          - volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: sonar-settings
+            secret:
+              secretName: sonarqube-secret-token
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: {{ .name }}-listener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: ClusterTriggerBinding
+          ref: github-push
+      name: trigger-1
+      template:
+        ref: {{ .name }}-trigger-template
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .name }}-webhook
+  labels:
+    eventlistener: {{ .name }}-listener
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  to:
+    kind: Service
+    name: el-{{ .name }}-listener
+    weight: 100
+  port:
+    targetPort: http-listener
+  wildcardPolicy: None
+{{- end }}

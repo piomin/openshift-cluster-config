@@ -1,0 +1,311 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: maven-get-project-version
+spec:
+  params:
+    - default: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/java:latest
+      description: Maven base image
+      name: MAVEN_IMAGE
+      type: string
+    - default: .
+      description: >-
+        The context directory within the repository for sources on which we want
+        to execute maven goals.
+      name: CONTEXT_DIR
+      type: string
+  results:
+    - description: Project version read from pom.xml
+      name: version
+  steps:
+    - image: $(params.MAVEN_IMAGE)
+      name: mvn-command
+      resources: {}
+      script: >
+        #!/usr/bin/env bash
+
+        VERSION=$(/usr/bin/mvn help:evaluate -Dexpression=project.version -q
+        -DforceStdout)
+
+        echo -n $VERSION | tee $(results.version.path)
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nodejs-get-project-version
+spec:
+  params:
+    - default: >-
+        image-registry.openshift-image-registry.svc:5000/openshift/nodejs:latest
+      description: Nodejs base image
+      name: NODEJS_IMAGE
+      type: string
+    - default: .
+      description: >-
+        The context directory within the repository for sources on which we want
+        to execute maven goals.
+      name: CONTEXT_DIR
+      type: string
+  results:
+    - description: Project version read from package.json
+      name: version
+  steps:
+    - image: $(params.NODEJS_IMAGE)
+      name: npm-command
+      resources: {}
+      script: >
+        #!/usr/bin/env bash
+
+        VERSION=$(cat package.json | jq -r '.version')
+
+        echo -n $VERSION | tee $(results.version.path)
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sonarqube-scanner
+  labels:
+    app.kubernetes.io/version: '0.1'
+spec:
+  description: >-
+    The following task can be used to perform static analysis on the source code
+    provided the SonarQube server is hosted
+
+    SonarQube is the leading tool for continuously inspecting the Code Quality
+    and Security of your codebases, all while empowering development teams.
+    Analyze over 25 popular programming languages including C#, VB.Net,
+    JavaScript, TypeScript and C++. It detects bugs, vulnerabilities and code
+    smells across project branches and pull requests.
+  params:
+    - default: ''
+      description: Host URL where the sonarqube server is running
+      name: SONAR_HOST_URL
+      type: string
+    - default: ''
+      description: Project's unique key
+      name: SONAR_PROJECT_KEY
+      type: string
+  steps:
+    - image: 'registry.access.redhat.com/ubi8/ubi-minimal:8.6'
+      name: sonar-properties-create
+      resources: {}
+      script: >
+        #!/usr/bin/env bash
+
+
+        replaceValues() {
+          filename=$1
+          thekey=$2
+          newvalue=$3
+
+          if ! grep -R "^[#]*\s*${thekey}=.*" $filename >/dev/null; then
+            echo "APPENDING because '${thekey}' not found"
+            echo "" >>$filename
+            echo "$thekey=$newvalue" >>$filename
+          else
+            echo "SETTING because '${thekey}' found already"
+            sed -ir "s|^[#]*\s*${thekey}=.*|$thekey=$newvalue|" $filename
+          fi
+        }
+
+
+        if [[ -f $(workspaces.sonar-settings.path)/sonar-project.properties ]];
+        then
+          echo "using user provided sonar-project.properties file"
+          cp $(workspaces.sonar-settings.path)/sonar-project.properties $(workspaces.source-dir.path)/sonar-project.properties
+          ls -la $(workspaces.source-dir.path)
+        fi
+
+
+        if [[ -f $(workspaces.source-dir.path)/sonar-project.properties ]]; then
+          if [[ -n "$(params.SONAR_HOST_URL)" ]]; then
+            replaceValues $(workspaces.source-dir.path)/sonar-project.properties sonar.host.url $(params.SONAR_HOST_URL)
+          fi
+          if [[ -n "$(params.SONAR_PROJECT_KEY)" ]]; then
+            replaceValues $(workspaces.source-dir.path)/sonar-project.properties sonar.projectKey $(params.SONAR_PROJECT_KEY)
+          fi
+        else
+          touch sonar-project.properties
+          echo "sonar.projectKey=$(params.SONAR_PROJECT_KEY)" >> sonar-project.properties
+          echo "sonar.host.url=$(params.SONAR_HOST_URL)" >> sonar-project.properties
+          echo "sonar.sources=." >> sonar-project.properties
+        fi
+
+
+        echo "---------------------------"
+
+        cat $(workspaces.source-dir.path)/sonar-project.properties
+      workingDir: $(workspaces.source-dir.path)
+    - command:
+        - sonar-scanner
+      image: >-
+        docker.io/sonarsource/sonar-scanner-cli:latest
+      name: sonar-scan
+      resources: {}
+      workingDir: $(workspaces.source-dir.path)
+  workspaces:
+    - name: source-dir
+    - name: sonar-settings
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: send-to-jira
+  labels:
+    app.kubernetes.io/version: "1.0"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+spec:
+  description: These task creates issue in jira.
+  params:
+    - name: title
+      type: string
+      description: Title of issue
+    - name: project-key
+      type: string
+      description: A key of JIRA project
+    - name: token-secret-name
+      type: string
+      description: JIRA token
+    - name: username
+      type: string
+      description: JIRA login
+    - name: url
+      type: string
+      description: JIRA address
+    - name: content
+      type: string
+      description: JIRA description
+      default: ''
+  results:
+    - description: The issue id
+      name: issue-id
+  steps:
+    - name: post
+      image: docker.io/badouralix/curl-jq:latest
+      script: |
+        #!/bin/sh
+        JSON="{\"fields\":{\"project\":{\"key\":\"${PROJECT_KEY}\"},\"summary\":\"${TITLE}\",\"description\":\"${CONTENT}\",\"issuetype\":{\"name\":\"Task\"}}}"
+        echo $JSON | sed -e 's/\"/\\\\"/g'
+        curl -X POST -H 'Content-Type: application/json' -d "${JSON}" https://${URL}/rest/api/2/issue -u ${USERNAME}:${TOKEN} | jq .id -r | tee $(results.issue-id.path)
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(params.token-secret-name)
+              key: token
+        - name: USERNAME
+          value: $(params.username)
+        - name: URL
+          value: $(params.url)
+        - name: TITLE
+          value: $(params.title)
+        - name: PROJECT_KEY
+          value: $(params.project-key)
+        - name: CONTENT
+          value: $(params.content)
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    tekton.dev/categories: Security
+    tekton.dev/displayName: Scan an image for vulnerabilities with Red Hat Advanced Cluster Security
+    tekton.dev/pipelines.minVersion: 0.18.0
+    tekton.dev/platforms: linux/amd64
+    tekton.dev/tags: security
+  name: rhacs-image-scan
+  labels:
+    app.kubernetes.io/version: '3.71'
+spec:
+  description: >-
+    Scan an image with Red Hat Advanced Cluster Security.
+
+    This task allows you to return full vulnerability scan results for an image
+    in CSV, Table, or JSON formats. The companion rhacs-image-check task checks
+    an image against build-time policies.
+  params:
+    - default: rox-central-endpoint
+      description: >-
+        Name of secret containing the address:port tuple for RHACS Stackrox
+        Central.
+      name: rox_central_endpoint
+      type: string
+    - default: rox-api-token
+      description: >-
+        Name of secret containing the RHACS StackRox API token with CI
+        permissions.
+      name: rox_api_token
+      type: string
+    - default: 'quay.io/stackrox-io/roxctl:3.71.0'
+      description: Image providing the roxctl tool.
+      name: rox_image
+      type: string
+    - default: $(params.IMAGE)
+      description: >
+        Full name of image to scan.
+
+
+        SHA 256 digest may be included to ensure scan of sequental runs with
+        same tag.
+
+        Examples: 'gcr.io/rox/sample:5.0-rc1', '$(params.IMAGE)',
+        '$(params.IMAGE)@$(tasks.buildah.results.IMAGE_DIGEST)'
+      name: image
+      type: string
+    - default: json
+      description: Results output format (json | csv | table)
+      name: output_format
+      type: string
+    - default: 'false'
+      description: >
+        Do not verify TLS certificates.
+
+
+        When set to "true", skip verifying the TLS certs of the Central endpoint
+        and registry.
+      name: insecure-skip-tls-verify
+      type: string
+  steps:
+    - args:
+        - image
+        - scan
+        - '--endpoint=$(ROX_CENTRAL_ENDPOINT)'
+        - '--insecure-skip-tls-verify=$(INSECURE)'
+        - '--output=$(OUTPUT)'
+        - '--image=$(IMAGE)'
+      stdoutConfig:
+        path: $(workspaces.source.path)/roxctl-stdout
+      env:
+        - name: HOME
+          value: /tekton/home
+        - name: IMAGE
+          value: $(params.image)
+        - name: INSECURE
+          value: $(params.insecure-skip-tls-verify)
+        - name: OUTPUT
+          value: $(params.output_format)
+        - name: ROX_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: rox_api_token
+              name: $(params.rox_api_token)
+        - name: ROX_CENTRAL_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              key: rox_central_endpoint
+              name: $(params.rox_central_endpoint)
+      image: $(params.rox_image)
+      name: rox-image-scan
+      resources: {}
+  workspaces:
+    - name: source
