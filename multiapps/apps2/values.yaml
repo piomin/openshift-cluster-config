@@ -1,0 +1,3 @@
+apps:
+  - name: sample-spring-boot-web
+    type: java
