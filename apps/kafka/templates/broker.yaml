@@ -41,5 +41,5 @@ spec:
   zookeeper:
     storage:
       type: persistent-claim
-      class: 10Gi
+      size: 10Gi
     replicas: 3
