@@ -42,4 +42,4 @@ spec:
     storage:
       type: persistent-claim
       size: 10Gi
-    replicas: 3
+    replicas: {{ .Values.broker.nodes }}
