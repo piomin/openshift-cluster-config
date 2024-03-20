@@ -1,0 +1,45 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    config:
+      offsets.topic.replication.factor: {{ .Values.broker.replication }}
+      transaction.state.log.replication.factor: {{ .Values.broker.replication }}
+      transaction.state.log.min.isr: {{ .Values.broker.minInSync }}
+      default.replication.factor: {{ .Values.broker.replication }}
+      min.insync.replicas: {{ .Values.broker.minInSync }}
+      inter.broker.protocol.version: '3.6'
+      auto.create.topics.enable: {{ .Values.broker.topicsAutoCreation }}
+    storage:
+      type: persistent-claim
+      size: {{ .Values.broker.volumeSize }}
+      deleteClaim: false
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+    version: 3.6.0
+    replicas: {{ .Values.broker.nodes }}
+    {{- if eq .Values.broker.metricsEnabled true }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
+    {{- end }}
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  zookeeper:
+    storage:
+      type: persistent-claim
+      class: 10Gi
+    replicas: 3

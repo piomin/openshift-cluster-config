@@ -1,0 +1,16 @@
+{{- range .Values.topics }}
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: {{ .name }}
+  namespace: strimzi
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  partitions: 12
+  replicas: 3
+  config:
+    retention.ms: {{ .retention | default 7200000 }}
+    segment.bytes: 1000000
+{{- end }}

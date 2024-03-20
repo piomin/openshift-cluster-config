@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kafka
+spec:
+  goTemplate: true
+  generators:
+  - list:
+      elements:
+      - env: dev
+      - env: prod
+  template:
+    metadata:
+      name: kafka-{{ .env }}
+    spec:
+      destination:
+        namespace: kafka-{{ .env }}
+        server: 'https://kubernetes.default.svc'
+      project: kafka
+      source:
+        path: apps/kafka
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        targetRevision: HEAD
+        helm:
+          valueFiles:
+            - values-{{ .env }}.yaml
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
