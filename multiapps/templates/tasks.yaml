@@ -36,7 +36,7 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: nodejs-get-project-version
+  name: npm-get-project-version
 spec:
   params:
     - default: >-
