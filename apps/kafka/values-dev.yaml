@@ -8,6 +8,9 @@ broker:
 
 topics:
   - name: test-1
+    replicas: 1
   - name: test-2
+    replicas: 1
   - name: test-3
     retention: 360000
+    replicas: 1

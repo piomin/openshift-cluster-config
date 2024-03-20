@@ -8,7 +8,7 @@ metadata:
     strimzi.io/cluster: my-cluster
 spec:
   partitions: 12
-  replicas: 3
+  replicas: {{ .replicas }}
   config:
     retention.ms: {{ .retention | default 7200000 }}
     segment.bytes: 1000000
