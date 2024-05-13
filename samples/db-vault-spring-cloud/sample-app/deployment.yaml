@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: sample-app-db-vault
-          image: piomin/sample-app:1.0-gitops
+          image: piomin/sample-app:1.1-gitops
           ports:
             - containerPort: 8080
           env:
