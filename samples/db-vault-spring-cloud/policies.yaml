@@ -10,6 +10,6 @@ spec:
     path: kubernetes
     role: vault-admin
   policy: |
-    path "database/creds/database-engine-creds-role" {
+    path "database/creds/postgresql-default-role" {
       capabilities = ["read"]
     }
