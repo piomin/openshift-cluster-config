@@ -38,3 +38,18 @@ spec:
     app: sample-app-db-vault
   ports:
     - port: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: 'true'
+  name: sample-app-db-vault
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: sample-app-db-vault
+    weight: 100
+  wildcardPolicy: None

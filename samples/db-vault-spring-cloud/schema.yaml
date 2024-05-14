@@ -27,3 +27,4 @@ spec:
         age int,
         external_id int
       );
+  devURL: postgresql://dev:dev123@postgresql-dev.demo:5432/sampledb?sslmode=disable
