@@ -289,7 +289,7 @@ spec:
         - name: token-secret-name
           value: jira-token-secret
         - name: project-key
-          value: PIOM
+          value: SCRUM
         - name: username
           value: piotr.minkowski@gmail.com
         - name: url
