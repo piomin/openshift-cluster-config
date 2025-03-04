@@ -25,7 +25,8 @@ spec:
   background: true
   generateExisting: true
   rules:
-    - match:
+    - name: scaleUpDetect
+      match:
         any:
           - resources:
               kinds:
