@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  helm: circleci/helm@3.0.2
+  helm: circleci/helm@3.1.0
 
 jobs:
   build:
     docker:
-      - image: cimg/base:2024.06
+      - image: cimg/base:2025.03
     steps:
       - checkout
       - helm/install_helm_client
