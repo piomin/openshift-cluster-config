@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
-  channel: alpha
+  channel: stable-1.8
   installPlanApproval: Automatic
   name: skupper-operator
   source: redhat-operators
