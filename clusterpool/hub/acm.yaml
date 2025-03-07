@@ -58,7 +58,7 @@ metadata:
     region: us-east-1
     vendor: OpenShift
 spec:
-  baseDomain: sandbox656.opentlc.com
+  baseDomain: sandbox1433.opentlc.com
   imageSetRef:
     name: img4.15.46-multi-appsub
   installConfigSecretTemplateRef:
