@@ -74,7 +74,7 @@ spec:
             parameters:
               - name: appName
                 value: '{{ .Values.projectName }}'
-        - repoURL: 'https://github.com/piomin/argocd-showcase.git'
+        - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
           targetRevision: HEAD
           ref: values
       syncPolicy:
