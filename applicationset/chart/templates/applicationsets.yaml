@@ -31,6 +31,8 @@ spec:
             parameters:
               - name: appName
                 value: '{{ .Values.projectName }}'
+              - name: app.name
+                value: '{{`{{ index .path.segments 1 }}`}}'
         - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
           targetRevision: HEAD
           ref: values
