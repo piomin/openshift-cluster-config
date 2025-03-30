@@ -1,0 +1,9 @@
+stages:
+  - name: test
+    config:
+      quotas:
+        cpuRequest: 4
+  - name: uat
+    additionalObjects: {}
+  - name: prod
+    additionalObjects: {}

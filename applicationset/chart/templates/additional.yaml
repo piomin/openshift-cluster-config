@@ -1,0 +1,10 @@
+{{- range .Values.stages }}
+{{- if .additionalObjects.enabled }}
+{{- range .additionalObjects.list }}
+{{- if and .apiVersion .kind .metadata.name -}}
+---
+{{ toYaml . }}
+{{- end -}}
+{{- end }}
+{{- end }}
+{{- end }}
