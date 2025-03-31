@@ -24,7 +24,7 @@ spec:
       sources:
         - chart: spring-boot-openshift
           repoURL: 'https://piomin.github.io/helm-charts/'
-          targetRevision: 0.3.8
+          targetRevision: 0.3.9
           helm:
             valueFiles:
               - $values/applications/{{`{{ index .path.segments 1 }}`}}/{{`{{ index .path.segments 2 }}`}}/values.yaml
