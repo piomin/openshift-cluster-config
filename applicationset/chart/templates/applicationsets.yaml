@@ -22,7 +22,7 @@ spec:
         server: 'https://kubernetes.default.svc'
       project: '{{ .Values.projectName }}'
       sources:
-        - chart: spring-boot-api-app
+        - chart: spring-boot-openshift
           repoURL: 'https://piomin.github.io/helm-charts/'
           targetRevision: 0.3.8
           helm:
