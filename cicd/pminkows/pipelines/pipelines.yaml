@@ -568,8 +568,14 @@ spec:
         - name: userHome
           value: /tekton/home
       taskRef:
-        kind: Task
-        name: git-clone
+        resolver: cluster
+        params:
+          - name: kind
+            value: Task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
       workspaces:
         - name: output
           workspace: source-dir
@@ -608,8 +614,14 @@ spec:
       runAfter:
         - sonarqube-scanner
       taskRef:
-        kind: Task
-        name: s2i
+        resolver: cluster
+        params:
+          - name: kind
+            value: Task
+          - name: name
+            value: s2i-nodejs
+          - name: namespace
+            value: openshift-pipelines
       workspaces:
         - name: source
           workspace: source-dir
