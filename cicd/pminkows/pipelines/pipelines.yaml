@@ -568,7 +568,7 @@ spec:
         - name: userHome
           value: /tekton/home
       taskRef:
-        kind: ClusterTask
+        kind: Task
         name: git-clone
       workspaces:
         - name: output
@@ -608,8 +608,8 @@ spec:
       runAfter:
         - sonarqube-scanner
       taskRef:
-        kind: ClusterTask
-        name: s2i-nodejs
+        kind: Task
+        name: s2i
       workspaces:
         - name: source
           workspace: source-dir
