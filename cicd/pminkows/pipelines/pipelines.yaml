@@ -541,8 +541,6 @@ spec:
           value: "false"
         - name: REVISION
           value: master
-#        - name: userHome
-#          value: /tekton/home
       taskRef:
         resolver: cluster
         params:
@@ -573,14 +571,10 @@ spec:
           workspace: sonar-settings
     - name: s2i-nodejs
       params:
-#        - name: PATH_CONTEXT
-#          value: .
         - name: TLS_VERIFY
           value: "false"
         - name: IMAGE
           value: quay.io/pminkows/sample-node-react:$(params.APP_VERSION)
-#        - name: BUILDER_IMAGE
-#          value: registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
         - name: VERBOSE
           value: "true"
       runAfter:
@@ -640,4 +634,213 @@ spec:
         name: rhacs-image-check
   workspaces:
     - name: source-dir
+    - name: sonar-settings
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sample-kotlin-pipeline
+  namespace: pminkows-cicd
+spec:
+  params:
+    - description: branch
+      name: git-revision
+      type: string
+      default: s2i
+  tasks:
+    - name: git-clone
+      params:
+        - name: URL
+          value: https://github.com/piomin/sample-spring-kotlin-microservice.git
+        - name: SSL_VERIFY
+          value: "false"
+        - name: REVISION
+          value: $(params.git-revision)
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: maven
+      params:
+        - name: GOALS
+          value:
+            - test
+      runAfter:
+        - git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: maven
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+        - name: maven_settings
+          workspace: maven_settings
+    - name: s2i-java-preview
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.git-clone.results.commit)
+      runAfter:
+        - git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: s2i-nodejs
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: notin
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: sonarqube
+      params:
+        - name: SONAR_HOST_URL
+          value: 'https://sonarcloud.io'
+        - name: SONAR_PROJECT_KEY
+          value: sample-spring-kotlin
+      runAfter:
+        - maven
+      taskRef:
+        kind: Task
+        name: sonarqube-scanner
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source-dir
+          workspace: source-dir
+        - name: sonar-settings
+          workspace: sonar-settings
+    - name: get-version
+      params:
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - sonarqube
+      taskRef:
+        kind: Task
+        name: maven-get-project-version
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: s2i-java
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+      runAfter:
+        - get-version
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: s2i-nodejs
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: rhacs-image-scan
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+        - name: output_format
+          value: json
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - s2i-java
+      taskRef:
+        kind: Task
+        name: rhacs-image-scan
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: rhacs-image-check
+      params:
+        - name: rox_central_endpoint
+          value: rox-central-endpoint
+        - name: rox_api_token
+          value: rox-api-token
+        - name: rox_image
+          value: 'quay.io/stackrox-io/roxctl:3.71.0'
+        - name: image
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+        - name: output_format
+          value: table
+        - name: insecure-skip-tls-verify
+          value: 'true'
+      runAfter:
+        - rhacs-image-scan
+      taskRef:
+        kind: Task
+        name: rhacs-image-check
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+  workspaces:
+    - name: source-dir
+    - name: maven_settings
     - name: sonar-settings
