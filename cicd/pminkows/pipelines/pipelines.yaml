@@ -535,43 +535,17 @@ spec:
   tasks:
     - name: git-clone
       params:
-        - name: url
+        - name: URL
           value: https://github.com/piomin/sample-react-microfrontend.git
-        - name: revision
-          value: ""
-        - name: refspec
-          value: ""
-        - name: submodules
-          value: "true"
-        - name: depth
-          value: "1"
-        - name: sslVerify
+        - name: SSL_VERIFY
           value: "false"
-        - name: crtFileName
-          value: ca-bundle.crt
-        - name: subdirectory
-          value: ""
-        - name: sparseCheckoutDirectories
-          value: ""
-        - name: deleteExisting
-          value: "true"
-        - name: httpProxy
-          value: ""
-        - name: httpsProxy
-          value: ""
-        - name: noProxy
-          value: ""
-        - name: verbose
-          value: "true"
-        - name: gitInitImage
-          value: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:6c3980b3d28c8fb92b17466f5654d5f484ab893f1673ec8f29e49c0d03f8aca9
-        - name: userHome
-          value: /tekton/home
+#        - name: userHome
+#          value: /tekton/home
       taskRef:
         resolver: cluster
         params:
           - name: kind
-            value: Task
+            value: task
           - name: name
             value: git-clone
           - name: namespace
@@ -597,27 +571,23 @@ spec:
           workspace: sonar-settings
     - name: s2i-nodejs
       params:
-        - name: VERSION
-          value: latest
-        - name: PATH_CONTEXT
-          value: .
-        - name: TLSVERIFY
+#        - name: PATH_CONTEXT
+#          value: .
+        - name: TLS_VERIFY
           value: "false"
         - name: IMAGE
           value: quay.io/pminkows/sample-node-react:$(params.APP_VERSION)
-        - name: BUILDER_IMAGE
-          value: registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
-        - name: SKIP_PUSH
-          value: "false"
-        - name: ENV_VARS
-          value: []
+#        - name: BUILDER_IMAGE
+#          value: registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
+        - name: VERBOSE
+          value: "true"
       runAfter:
         - sonarqube-scanner
       taskRef:
         resolver: cluster
         params:
           - name: kind
-            value: Task
+            value: task
           - name: name
             value: s2i-nodejs
           - name: namespace
