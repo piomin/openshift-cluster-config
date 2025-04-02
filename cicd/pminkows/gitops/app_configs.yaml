@@ -28,6 +28,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: sample-dotnetcore-ex
+  namespace: pminkows-cicd
 spec:
   goTemplate: true
   generators:
