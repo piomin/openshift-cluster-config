@@ -539,6 +539,8 @@ spec:
           value: https://github.com/piomin/sample-react-microfrontend.git
         - name: SSL_VERIFY
           value: "false"
+        - name: REVISION
+          value: master
 #        - name: userHome
 #          value: /tekton/home
       taskRef:
