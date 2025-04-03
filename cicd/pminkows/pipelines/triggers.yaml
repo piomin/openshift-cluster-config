@@ -47,6 +47,12 @@ spec:
       name: trigger-1
       template:
         ref: sample-kotlin-spring-trigger-template
+    - bindings:
+        - kind: ClusterTriggerBinding
+          ref: github-pullreq
+      name: trigger-2
+      template:
+        ref: sample-kotlin-spring-trigger-template
 ---
 kind: Route
 apiVersion: route.openshift.io/v1

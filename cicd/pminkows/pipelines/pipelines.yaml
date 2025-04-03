@@ -709,7 +709,7 @@ spec:
           - name: kind
             value: task
           - name: name
-            value: s2i-nodejs
+            value: s2i-java
           - name: namespace
             value: openshift-pipelines
       when:
