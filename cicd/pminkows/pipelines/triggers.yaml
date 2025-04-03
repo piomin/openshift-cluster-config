@@ -31,7 +31,7 @@ spec:
               secretName: sonarqube-secret-token
           - configMap:
               name: maven-settings
-            name: maven-settings
+            name: maven_settings
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
