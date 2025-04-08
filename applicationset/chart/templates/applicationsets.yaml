@@ -12,7 +12,7 @@ spec:
               configMapRef: acm-placement
               labelSelector:
                 matchLabels:
-                  cluster.open-cluster-management.io/placement: interconnect
+                  cluster.open-cluster-management.io/placement: multi
               requeueAfterSeconds: 180
           - git:
               repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
@@ -23,11 +23,11 @@ spec:
                 {{- end }}
   template:
     metadata:
-      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}'
+      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}--{{`{{ .name }}`}}'
     spec:
       destination:
         namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
-        server: 'https://kubernetes.default.svc'
+        server: '{{`{{ .server }}`}}'
       project: '{{ .Values.projectName }}'
       sources:
         - chart: spring-boot-openshift
