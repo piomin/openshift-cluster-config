@@ -6,13 +6,21 @@ metadata:
 spec:
   goTemplate: true
   generators:
-    - git:
-        repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
-        revision: HEAD
-        directories:
-          {{- range .Values.stages }}
-          - path: applications/*/{{ .name }}
-          {{- end }}
+    - matrix:
+        generators:
+          - clusterDecisionResource:
+              configMapRef: acm-placement
+              labelSelector:
+                matchLabels:
+                  cluster.open-cluster-management.io/placement: interconnect
+              requeueAfterSeconds: 180
+          - git:
+              repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
+              revision: HEAD
+              directories:
+                {{- range .Values.stages }}
+                - path: applications/*/{{ .name }}
+                {{- end }}
   template:
     metadata:
       name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}'
@@ -37,47 +45,49 @@ spec:
           targetRevision: HEAD
           ref: values
       syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
         automated:
           prune: true
           selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: '{{ .Values.projectName }}-components-config'
-  namespace: {{ .Values.argoNamespace | default "argocd" }}
-spec:
-  goTemplate: true
-  generators:
-    - git:
-        repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
-        revision: HEAD
-        files:
-          {{- range .Values.stages }}
-          - path: components/*/{{ .name }}/config.yaml
-          {{- end }}
-  template:
-    metadata:
-      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}'
-    spec:
-      destination:
-        namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
-        server: 'https://kubernetes.default.svc'
-      project: '{{ .Values.projectName }}'
-      sources:
-        - chart: '{{`{{ .chart.name }}`}}'
-          repoURL: '{{`{{ .chart.repository }}`}}'
-          targetRevision: '{{`{{ .chart.version }}`}}'
-          helm:
-            valueFiles:
-              - $values/components/{{`{{ index .path.segments 1 }}`}}/{{`{{ index .path.segments 2 }}`}}/values.yaml
-            parameters:
-              - name: appName
-                value: '{{ .Values.projectName }}'
-        - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
-          targetRevision: HEAD
-          ref: values
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: ApplicationSet
+#metadata:
+#  name: '{{ .Values.projectName }}-components-config'
+#  namespace: {{ .Values.argoNamespace | default "argocd" }}
+#spec:
+#  goTemplate: true
+#  generators:
+#    - git:
+#        repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
+#        revision: HEAD
+#        files:
+#          {{- range .Values.stages }}
+#          - path: components/*/{{ .name }}/config.yaml
+#          {{- end }}
+#  template:
+#    metadata:
+#      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}'
+#    spec:
+#      destination:
+#        namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
+#        server: 'https://kubernetes.default.svc'
+#      project: '{{ .Values.projectName }}'
+#      sources:
+#        - chart: '{{`{{ .chart.name }}`}}'
+#          repoURL: '{{`{{ .chart.repository }}`}}'
+#          targetRevision: '{{`{{ .chart.version }}`}}'
+#          helm:
+#            valueFiles:
+#              - $values/components/{{`{{ index .path.segments 1 }}`}}/{{`{{ index .path.segments 2 }}`}}/values.yaml
+#            parameters:
+#              - name: appName
+#                value: '{{ .Values.projectName }}'
+#        - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
+#          targetRevision: HEAD
+#          ref: values
+#      syncPolicy:
+#        automated:
+#          prune: true
+#          selfHeal: true
