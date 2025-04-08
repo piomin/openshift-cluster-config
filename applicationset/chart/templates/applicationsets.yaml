@@ -23,7 +23,7 @@ spec:
                 {{- end }}
   template:
     metadata:
-      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}--{{`{{ .name }}`}}'
+      name: '{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}-{{`{{ .name }}`}}'
     spec:
       destination:
         namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
