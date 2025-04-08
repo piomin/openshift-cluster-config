@@ -12,11 +12,11 @@ spec:
           - path: applicationset/projects/*
   template:
     metadata:
-      name: '{{.path.basename}}-config'
+      name: '{{.path.basename}}-config-{{name}}'
     spec:
       destination:
         namespace: '{{.path.basename}}'
-        server: 'https://kubernetes.default.svc'
+        server: '{{server}}'
       project: default
       sources:
         - path: applicationset/chart
