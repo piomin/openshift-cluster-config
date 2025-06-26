@@ -91,7 +91,7 @@ spec:
       script: >
         #!/usr/bin/env bash
 
-        VERSION=$(cat package.json | jq -r '.version')
+        VERSION=$(npm pkg get version | tr -d '"')
 
         echo -n $VERSION | tee $(results.version.path)
       workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
