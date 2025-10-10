@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: global-config
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/piomin/openshift-cluster-config.git
+        revision: HEAD
+        directories:
+          - path: applicationset/projects/**
+  template:
+    metadata:
+      name: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-ns'
+    spec:
+      destination:
+        server: {{ index .path.segments 3 }}
+      project: default
+      sources:
+        - path: applicationset/chart2
+          repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+          targetRevision: HEAD
+          helm:
+            valueFiles:
+              - $values/applicationset/projects/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}/values.yaml
+            parameters:
+              - name: projectName
+                value: {{ index .path.segments 2 }}
+              - name: envName
+                value: {{ index .path.segments 3 }}
+        - repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+          targetRevision: HEAD
+          ref: values
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

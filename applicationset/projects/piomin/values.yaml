@@ -4,7 +4,10 @@ stages:
       quotas:
         cpuRequest: 4
     additionalObjects: {}
+    cluster: https://kubernetes.default.svc
   - name: uat
     additionalObjects: {}
+    cluster: https://kubernetes.default.svc
   - name: prod
     additionalObjects: {}
+    cluster: https://kubernetes.default.svc

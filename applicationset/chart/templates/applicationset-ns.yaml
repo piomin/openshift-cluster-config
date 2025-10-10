@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: '{{ .Values.projectName }}-ns-config'
+  namespace: {{ .Values.argoNamespace | default "argocd" }}
+spec:
+  goTemplate: true
+  generators:
+    - clusterDecisionResource:
+        configMapRef: acm-placement
+        labelSelector:
+          matchLabels:
+            cluster.open-cluster-management.io/placement: multi
+        requeueAfterSeconds: 180
+  template:
+    metadata:
+      name: '{{.Values.projectName }}-{{`{{ .name }}`}}'
+    spec:
+      destination:
+        server: '{{`{{ .cluster }}`}}'
+      project: '{{ .Values.projectName }}'
+      sources:
+        - path: applicationset/chart2
+          repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+          targetRevision: HEAD
+          helm:
+            valueFiles:
+              - $values/applicationset/projects/{{.path.basename}}/values.yaml
+            parameters:
+              - name: projectName
+                value: '{{.path.basename}}'
+              - name: argoNamespace
+                value: openshift-gitops
+        - repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+          targetRevision: HEAD
+          ref: values
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

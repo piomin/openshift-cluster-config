@@ -1,19 +1,18 @@
-{{- range .Values.stages }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ $.Values.projectName }}-{{ .name }}
+  name: {{ .Values.projectName }}-{{ .Values.envName }}
 ---
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: default-quota
-  namespace: {{ $.Values.projectName }}-{{ .name }}
+  namespace: {{ .Values.projectName }}-{{ .Values.envName }}
 spec:
   hard:
-    {{- if .config }}
-      {{- with .config.quotas }}
+    {{- if .Values.config }}
+      {{- with .Values.config.quotas }}
       pods: {{ .pods | default "10" }}
       requests.cpu: {{ .cpuRequest | default "2" }}
       requests.memory: {{ .memoryRequest | default "2Gi" }}
@@ -27,4 +26,3 @@ spec:
       limits.cpu: "8"
       limits.memory: "8Gi"
       {{- end }}
-{{- end }}
