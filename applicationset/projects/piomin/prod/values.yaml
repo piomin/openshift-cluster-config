@@ -2,4 +2,3 @@ config:
   quotas:
     cpuRequest: 4
 additionalObjects: {}
-cluster: https://kubernetes.default.svc
