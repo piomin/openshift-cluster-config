@@ -15,7 +15,7 @@ spec:
       name: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-ns'
     spec:
       destination:
-        server: '{{ index .path.segments 3 }}'
+        server: '{{ .cluster.name }}'
       project: default
       sources:
         - path: applicationset/chart2
