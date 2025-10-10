@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/piomin/openshift-cluster-config.git
-        revision: multi-new
+        revision: HEAD
         files:
           - path: applicationset/projects/**/**/config.json
   template:
@@ -15,12 +15,12 @@ spec:
       name: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-ns'
     spec:
       destination:
-        server: '{{ .cluster.name }}'
+        name: '{{ .cluster.name }}'
       project: default
       sources:
         - path: applicationset/chart2
           repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-          targetRevision: multi-new
+          targetRevision: HEAD
           helm:
             valueFiles:
               - $values/applicationset/projects/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}/values.yaml
@@ -30,7 +30,7 @@ spec:
               - name: envName
                 value: '{{ index .path.segments 3 }}'
         - repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-          targetRevision: multi-new
+          targetRevision: HEAD
           ref: values
       syncPolicy:
         automated:
