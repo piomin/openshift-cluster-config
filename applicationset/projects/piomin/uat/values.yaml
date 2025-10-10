@@ -1,2 +1,3 @@
 additionalObjects: {}
-cluster: https://kubernetes.default.svc
+cluster:
+  name: in-cluster

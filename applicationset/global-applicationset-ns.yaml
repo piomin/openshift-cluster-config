@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/piomin/openshift-cluster-config.git
         revision: HEAD
         files:
-          - path: applicationset/projects/**/**/config.json
+          - path: applicationset/projects/**/**/values.yaml
   template:
     metadata:
       name: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-ns'
