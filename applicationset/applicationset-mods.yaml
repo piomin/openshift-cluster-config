@@ -23,6 +23,12 @@ spec:
   template:
     metadata:
       name: '{{ index .global.path.segments 2 }}-{{ index .app.path.segments 1 }}-{{ index .app.path.segments 2 }}'
+      annotations:
+        apps.open-cluster-management.io/ocm-managed-cluster: '{{ default (index .global.path.segments 3) .cluster.name }}'
+        apps.open-cluster-management.io/ocm-managed-cluster-app-namespace: openshift-gitops
+        argocd.argoproj.io/skip-reconcile: 'true'
+      labels:
+        apps.open-cluster-management.io/pull-to-ocm-managed-cluster: 'true'
     spec:
       destination:
         namespace: '{{ index .global.path.segments 2 }}-{{ index .app.path.segments 2 }}'
@@ -36,7 +42,7 @@ spec:
           path: .
           repoURL: 'oci://quay.io/pminkows/helm-charts/frontex-app'
           targetRevision: 1.0.1
-        - repoURL: 'https://github.com/{{ index .global.path.segments 2 }}config-repo.git'
+        - repoURL: 'https://github.com/{{ index .global.path.segments 2 }}/config-repo.git'
           targetRevision: HEAD
           ref: values
       syncPolicy:

@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: global-config
+  namespace: openshift-gitops
 spec:
   goTemplate: true
   generators:
@@ -13,10 +14,16 @@ spec:
   template:
     metadata:
       name: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-ns'
+      annotations:
+        apps.open-cluster-management.io/ocm-managed-cluster: '{{ default (index .path.segments 3) .cluster.name }}'
+        apps.open-cluster-management.io/ocm-managed-cluster-app-namespace: openshift-gitops
+        argocd.argoproj.io/skip-reconcile: 'true'
+      labels:
+        apps.open-cluster-management.io/pull-to-ocm-managed-cluster: 'true'
     spec:
       destination:
         name: '{{ default (index .path.segments 3) .cluster.name }}'
-      project: default
+      project: global
       sources:
         - path: applicationset/chart2
           repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
