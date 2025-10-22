@@ -8,43 +8,88 @@ spec:
   generators:
     - matrix:
         generators:
-          - clusterDecisionResource:
-              configMapRef: acm-placement
-              labelSelector:
-                matchLabels:
-                  cluster.open-cluster-management.io/placement: multi
-              requeueAfterSeconds: 180
           - git:
-              repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
+              repoURL: https://github.com/piomin/openshift-cluster-config.git
+              revision: HEAD
+              files:
+                - path: applicationset/projects/**/**/values.yaml
+              pathParamPrefix: global
+          - git:
+              repoURL: https://github.com/{{ index .path.segments 2 }}/config-repo.git
               revision: HEAD
               directories:
-                {{- range .Values.stages }}
-                - path: applications/*/{{ .name }}
-                {{- end }}
+                - path: apps/*/{{ index .path.segments 3 }}
+              pathParamPrefix: app
   template:
     metadata:
-      name: '{{.Values.projectName }}-{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}-{{`{{ .name }}`}}'
+      name: '{{`{{ index global.path.segments 2 }}`}}-{{`{{ index app.path.segments 1 }}`}}-{{`{{ index app.path.segments 2 }}`}}'
     spec:
       destination:
-        namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
-        server: '{{`{{ .server }}`}}'
-      project: '{{ .Values.projectName }}'
+        namespace: '{{`{{ index global.path.segments 2 }}`}}-{{`{{ index app.path.segments 2 }}`}}'
+        server: '{{`{{ .cluster.name }}`}}'
+      project: '{{`{{ index global.path.segments 2 }}`}}'
       sources:
-        - chart: spring-boot-openshift
-          repoURL: 'https://piomin.github.io/helm-charts/'
-          targetRevision: 0.3.9
-          helm:
+        - helm:
             valueFiles:
-              - $values/applications/{{`{{ index .path.segments 1 }}`}}/{{`{{ index .path.segments 2 }}`}}/values.yaml
-            parameters:
-              - name: appName
-                value: '{{ .Values.projectName }}'
-              - name: app.name
-                value: '{{`{{ index .path.segments 1 }}`}}'
-        - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
+              - $values/apps/{{`{{ index app.path.segments 1 }}`}}/{{`{{ index app.path.segments 2 }}`}}/values.yaml
+          path: .
+          repoURL: 'oci://quay.io/pminkows/helm-charts/frontex-app'
+          targetRevision: 1.0.1
+        - repoURL: 'https://github.com/{{`{{ index global.path.segments 2 }}`}}config-repo.git'
           targetRevision: HEAD
           ref: values
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: ApplicationSet
+#metadata:
+#  name: '{{ .Values.projectName }}-applications-config'
+#  namespace: {{ .Values.argoNamespace | default "argocd" }}
+#spec:
+#  goTemplate: true
+#  generators:
+#    - matrix:
+#        generators:
+#          - clusterDecisionResource:
+#              configMapRef: acm-placement
+#              labelSelector:
+#                matchLabels:
+#                  cluster.open-cluster-management.io/placement: multi
+#              requeueAfterSeconds: 180
+#          - git:
+#              repoURL: https://github.com/{{ .Values.projectName }}/config-repo.git
+#              revision: HEAD
+#              directories:
+#                {{- range .Values.stages }}
+#                - path: applications/*/{{ .name }}
+#                {{- end }}
+#  template:
+#    metadata:
+#      name: '{{.Values.projectName }}-{{`{{ index .path.segments 1 }}`}}-{{`{{ index .path.segments 2 }}`}}-{{`{{ .name }}`}}'
+#    spec:
+#      destination:
+#        namespace: '{{ .Values.projectName }}-{{`{{ index .path.segments 2 }}`}}'
+#        server: '{{`{{ .server }}`}}'
+#      project: '{{ .Values.projectName }}'
+#      sources:
+#        - chart: spring-boot-openshift
+#          repoURL: 'https://piomin.github.io/helm-charts/'
+#          targetRevision: 0.3.9
+#          helm:
+#            valueFiles:
+#              - $values/applications/{{`{{ index .path.segments 1 }}`}}/{{`{{ index .path.segments 2 }}`}}/values.yaml
+#            parameters:
+#              - name: appName
+#                value: '{{ .Values.projectName }}'
+#              - name: app.name
+#                value: '{{`{{ index .path.segments 1 }}`}}'
+#        - repoURL: 'https://github.com/{{ .Values.projectName }}/config-repo.git'
+#          targetRevision: HEAD
+#          ref: values
+#      syncPolicy:
+#        automated:
+#          prune: true
+#          selfHeal: true
