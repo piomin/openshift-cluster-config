@@ -48,8 +48,8 @@ spec:
         cpu: '1'
         memory: 1Gi
       requests:
-        cpu: 250m
-        memory: 256Mi
+        cpu: 100m
+        memory: 128Mi
   sso:
     dex:
       openShiftOAuth: true
@@ -58,7 +58,7 @@ spec:
           cpu: 500m
           memory: 256Mi
         requests:
-          cpu: 250m
+          cpu: 100m
           memory: 128Mi
     provider: dex
   ha:
@@ -68,7 +68,7 @@ spec:
         cpu: 500m
         memory: 256Mi
       requests:
-        cpu: 250m
+        cpu: 100m
         memory: 128Mi
   tls:
     ca: {}
@@ -78,7 +78,7 @@ spec:
         cpu: 500m
         memory: 256Mi
       requests:
-        cpu: 250m
+        cpu: 100m
         memory: 128Mi
   controller:
     processors: {}
@@ -88,7 +88,7 @@ spec:
         memory: 2Gi
       requests:
         cpu: 250m
-        memory: 1Gi
+        memory: 128Mi
     sharding: {}
 ---
 kind: Secret
