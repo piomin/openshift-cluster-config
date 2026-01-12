@@ -72,26 +72,21 @@ spec:
   tasks:
     - name: git-clone
       params:
-        - name: url
-          value: 'https://github.com/piomin/s2i-dotnetcore-ex.git'
-        - name: revision
+        - name: URL
+          value: https://github.com/piomin/s2i-dotnetcore-ex.git
+        - name: SSL_VERIFY
+          value: "false"
+        - name: REVISION
           value: dotnet-5.0
-        - name: submodules
-          value: 'true'
-        - name: depth
-          value: '1'
-        - name: sslVerify
-          value: 'true'
-        - name: deleteExisting
-          value: 'true'
-        - name: verbose
-          value: 'true'
-        - name: gitInitImage
-          value: >-
-            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:afc5d3f9efe26c7042635d43b8ffd09d67936e3d0b6b901dc08a33e20313d361
       taskRef:
-        kind: ClusterTask
-        name: git-clone
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
       workspaces:
         - name: output
           workspace: shared-workspace
@@ -451,23 +446,21 @@ spec:
   tasks:
     - name: git-clone
       params:
-        - name: url
-          value: 'https://github.com/piomin/web-api-example.git'
-        - name: revision
+        - name: URL
+          value: https://github.com/piomin/web-api-example.git
+        - name: SSL_VERIFY
+          value: "false"
+        - name: REVISION
           value: master
-        - name: submodules
-          value: 'true'
-        - name: depth
-          value: '1'
-        - name: sslVerify
-          value: 'true'
-        - name: deleteExisting
-          value: 'true'
-        - name: verbose
-          value: 'true'
       taskRef:
-        kind: ClusterTask
-        name: git-clone
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
       workspaces:
         - name: output
           workspace: shared-workspace
