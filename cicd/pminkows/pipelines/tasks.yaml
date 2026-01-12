@@ -187,7 +187,7 @@ spec:
     - name: sonar-settings
 ---
 apiVersion: tekton.dev/v1beta1
-kind: ClusterTask
+kind: Task
 metadata:
   annotations:
     tekton.dev/displayName: s2i dotnet multiproj
@@ -599,7 +599,7 @@ spec:
     - name: source
 ---
 apiVersion: tekton.dev/v1beta1
-kind: ClusterTask
+kind: Task
 metadata:
   annotations:
     tekton.dev/tags: 's2i, java, workspace'
