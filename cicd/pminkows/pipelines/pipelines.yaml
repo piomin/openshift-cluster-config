@@ -391,7 +391,7 @@ spec:
     - name: git-clone
       params:
         - name: URL
-          value: https://github.com/piomin/sample-spring-kotlin-microservice.git
+          value: https://github.com/piomin/sample-spring-boot-web.git
         - name: SSL_VERIFY
           value: "false"
         - name: REVISION
