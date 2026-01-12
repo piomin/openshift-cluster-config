@@ -194,6 +194,7 @@ metadata:
     tekton.dev/pipelines.minVersion: '0.19'
     tekton.dev/tags: 's2i, dotnet, workspace'
   name: s2i-dotnet-multiproj
+  namespace: pminkows-cicd
   labels:
     app.kubernetes.io/version: '1.0'
     operator.tekton.dev/provider-type: piomin
@@ -604,6 +605,7 @@ metadata:
   annotations:
     tekton.dev/tags: 's2i, java, workspace'
   name: s2i-java-ext
+  namespace: pminkows-cicd
   labels:
     app.kubernetes.io/version: '1.0'
     operator.tekton.dev/operand-name: openshift-pipelines-addons
