@@ -584,3 +584,159 @@ spec:
     - name: source-dir
     - name: maven_settings
     - name: sonar-settings
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: simple-java-pipeline
+  namespace: pminkows-cicd
+spec:
+  params:
+    - description: branch
+      name: git-revision
+      type: string
+      default: master
+  tasks:
+    - name: git-clone
+      params:
+        - name: URL
+          value: https://github.com/piomin/sample-spring-kotlin-microservice.git
+        - name: SSL_VERIFY
+          value: "false"
+        - name: REVISION
+          value: $(params.git-revision)
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
+      workspaces:
+        - name: output
+          workspace: source-dir
+    - name: maven
+      params:
+        - name: GOALS
+          value:
+            - test
+      runAfter:
+        - git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: maven
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+        - name: maven_settings
+          workspace: maven_settings
+    - name: s2i-java-preview
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.git-clone.results.COMMIT)
+      runAfter:
+        - git-clone
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: s2i-java
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: notin
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: sonarqube
+      params:
+        - name: SONAR_HOST_URL
+          value: 'https://sonarcloud.io'
+        - name: SONAR_PROJECT_KEY
+          value: sample-spring-kotlin
+      runAfter:
+        - maven
+      taskRef:
+        kind: Task
+        name: sonarqube-scanner
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source-dir
+          workspace: source-dir
+        - name: sonar-settings
+          workspace: sonar-settings
+    - name: get-version
+      params:
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - sonarqube
+      taskRef:
+        kind: Task
+        name: maven-get-project-version
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+    - name: s2i-java
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: IMAGE
+          value: quay.io/pminkows/sample-kotlin-spring:$(tasks.get-version.results.version)
+      runAfter:
+        - get-version
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: s2i-java
+          - name: namespace
+            value: openshift-pipelines
+      when:
+        - input: $(params.git-revision)
+          operator: in
+          values:
+            - master
+            - s2i
+      workspaces:
+        - name: source
+          workspace: source-dir
+  workspaces:
+    - name: source-dir
+    - name: maven_settings
+    - name: sonar-settings
