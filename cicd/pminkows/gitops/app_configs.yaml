@@ -27,7 +27,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: sample-dotnetcore-ex
+  name: web-api-2
   namespace: pminkows-cicd
 spec:
   goTemplate: true
@@ -45,7 +45,7 @@ spec:
         autoSync: false
   template:
     metadata:
-      name: sample-dotnetcore-ex-{{ .env }}
+      name: web-api-2-{{ .env }}
     spec:
       destination:
         namespace: pminkows-{{ .env }}
@@ -57,15 +57,11 @@ spec:
         targetRevision: HEAD
         helm:
           valueFiles:
-            - values-sample-dotnetcore-ex-{{ .env }}.yaml
+            - values-web-api-2-{{ .env }}.yaml
   templatePatch: |
     spec:
       destination:
-      {{- if .local }}
         server: 'https://kubernetes.default.svc'
-      {{- else }}
-        server: 'https://api.piomin.eastus.aroapp.io:6443'
-      {{- end }}
     {{- if .autoSync }}
       syncPolicy:
         automated:
@@ -143,76 +139,6 @@ spec:
     helm:
       valueFiles:
         - values-sample-kotlin-spring-test.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: web-api-2-prod
-  namespace: pminkows-cicd
-  labels:
-    environment: prod
-    application: web-api-2
-spec:
-  destination:
-    namespace: pminkows-prod
-    server: 'https://api.emarq830.eastus.aroapp.io:6443'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-web-api-2-prod.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: web-api-2-stage
-  namespace: pminkows-cicd
-  labels:
-    environment: stage
-    application: web-api-2
-spec:
-  destination:
-    namespace: pminkows-stage
-    server: 'https://kubernetes.default.svc'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-web-api-2-stage.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: web-api-2-test
-  namespace: pminkows-cicd
-  labels:
-    environment: test
-    application: web-api-2
-spec:
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas
-  destination:
-    namespace: pminkows-test
-    server: 'https://kubernetes.default.svc'
-  project: default
-  syncPolicy:
-    automated: {}
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-web-api-2-test.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
