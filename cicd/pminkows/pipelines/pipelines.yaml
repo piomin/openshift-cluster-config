@@ -105,7 +105,7 @@ spec:
           value: 'false'
         - name: IMAGE
           value: >-
-            quay.io/pminkows/web-api-2:$(params.APP_VERSION)
+            quay.io/pminkows/web-api-2:$(tasks.get-version.results.version)
       runAfter:
         - get-version
       taskRef:
