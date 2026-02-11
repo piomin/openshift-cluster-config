@@ -146,7 +146,7 @@ spec:
         name: dotnet-get-project-version
       workspaces:
         - name: source
-          workspace: source-dir
+          workspace: shared-workspace
   workspaces:
     - name: shared-workspace
 ---
