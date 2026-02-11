@@ -107,7 +107,7 @@ spec:
           value: >-
             quay.io/pminkows/web-api-2:$(params.APP_VERSION)
       runAfter:
-        - dotnet-test
+        - get-version
       taskRef:
         resolver: cluster
         params:
@@ -135,6 +135,18 @@ spec:
       workspaces:
         - name: source
           workspace: shared-workspace
+    - name: get-version
+      params:
+        - name: CONTEXT_DIR
+          value: src/WebApi.App
+      runAfter:
+        - dotnet-test
+      taskRef:
+        kind: Task
+        name: dotnet-get-project-version
+      workspaces:
+        - name: source
+          workspace: source-dir
   workspaces:
     - name: shared-workspace
 ---
