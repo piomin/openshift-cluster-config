@@ -63,21 +63,24 @@ spec:
     - name: APP_VERSION
       description: Version number of application
       type: string
+      default: 1.0
     - name: DOTNET_VERSION
       description: Version of .NET framework
       type: string
+      default: latest
     - name: TESTS_DIR
       description: The name of the directory with unit tests
       type: string
+      default: tests/WebApi.App.Tests/WebApi.App.Tests.csproj
   tasks:
     - name: git-clone
       params:
         - name: URL
-          value: https://github.com/piomin/s2i-dotnetcore-ex.git
+          value: https://github.com/piomin/web-api-2.git
         - name: SSL_VERIFY
           value: "false"
         - name: REVISION
-          value: dotnet-5.0
+          value: dev
       taskRef:
         resolver: cluster
         params:
@@ -92,18 +95,17 @@ spec:
           workspace: shared-workspace
     - name: s2i-dotnet
       params:
-        - name: BUILDER_IMAGE
-          value: >-
-            registry.redhat.io/rhel8/buildah@sha256:6a68ece207bc5fd8db2dd5cc2d0b53136236fb5178eb5b71eebe5d07a3c33d13
         - name: VERSION
           value: $(params.DOTNET_VERSION)
-        - name: PATH_CONTEXT
+        - name: ENV_VARS
+          value: [DOTNET_STARTUP_PROJECT=src/WebApi.App/WebApi.App.csproj]
+        - name: CONTEXT
           value: .
-        - name: TLSVERIFY
+        - name: TLS_VERIFY
           value: 'false'
         - name: IMAGE
           value: >-
-            quay.io/pminkows/sample-dotnetcore-ex:$(params.APP_VERSION)
+            quay.io/pminkows/web-api-2:$(params.APP_VERSION)
       runAfter:
         - dotnet-test
       taskRef:
