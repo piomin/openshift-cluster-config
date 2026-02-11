@@ -63,7 +63,7 @@ spec:
     - name: APP_VERSION
       description: Version number of application
       type: string
-      default: 1.0
+      default: "1.0"
     - name: DOTNET_VERSION
       description: Version of .NET framework
       type: string
@@ -71,7 +71,7 @@ spec:
     - name: TESTS_DIR
       description: The name of the directory with unit tests
       type: string
-      default: tests/WebApi.App.Tests/WebApi.App.Tests.csproj
+      default: .
   tasks:
     - name: git-clone
       params:
@@ -154,19 +154,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: kotlin-pipeline-pvc
-  namespace: pminkows-cicd
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  volumeMode: Filesystem
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: dotnet-multiproj-pipeline-pvc
   namespace: pminkows-cicd
 spec:
   accessModes:
