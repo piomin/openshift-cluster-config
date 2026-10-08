@@ -69,76 +69,121 @@ spec:
 #          selfHeal: true
 #    {{- end }}
 #---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-spring-kotlin-prod
+#  namespace: pminkows-cicd
+#  labels:
+#    environment: prod
+#    application: sample-spring-kotlin
+#spec:
+#  destination:
+#    namespace: pminkows-prod
+#    server: 'https://api.emarq830.eastus.aroapp.io:6443'
+#  project: default
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-kotlin-spring-prod.yaml
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-spring-kotlin-stage
+#  namespace: pminkows-cicd
+#  labels:
+#    environment: stage
+#    application: sample-spring-kotlin
+#spec:
+#  destination:
+#    namespace: pminkows-stage
+#    server: 'https://kubernetes.default.svc'
+#  project: default
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-kotlin-spring-stage.yaml
+#---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: sample-spring-kotlin-test
+#  namespace: pminkows-cicd
+#  labels:
+#    environment: test
+#    application: sample-spring-kotlin
+#spec:
+#  ignoreDifferences:
+#    - group: apps
+#      kind: Deployment
+#      jsonPointers:
+#        - /spec/replicas
+#  destination:
+#    namespace: pminkows-test
+#    server: 'https://kubernetes.default.svc'
+#  project: default
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#  source:
+#    path: apps/pminkows
+#    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+#    targetRevision: HEAD
+#    helm:
+#      valueFiles:
+#        - values-sample-kotlin-spring-test.yaml
+#---
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: sample-spring-kotlin-prod
+  name: sample-spring-kotlin
   namespace: pminkows-cicd
-  labels:
-    environment: prod
-    application: sample-spring-kotlin
 spec:
-  destination:
-    namespace: pminkows-prod
-    server: 'https://api.emarq830.eastus.aroapp.io:6443'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-kotlin-spring-prod.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sample-spring-kotlin-stage
-  namespace: pminkows-cicd
-  labels:
-    environment: stage
-    application: sample-spring-kotlin
-spec:
-  destination:
-    namespace: pminkows-stage
-    server: 'https://kubernetes.default.svc'
-  project: default
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-kotlin-spring-stage.yaml
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sample-spring-kotlin-test
-  namespace: pminkows-cicd
-  labels:
-    environment: test
-    application: sample-spring-kotlin
-spec:
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas
-  destination:
-    namespace: pminkows-test
-    server: 'https://kubernetes.default.svc'
-  project: default
-  syncPolicy:
-    automated:
-      selfHeal: true
-  source:
-    path: apps/pminkows
-    repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sample-kotlin-spring-test.yaml
+  goTemplate: true
+  generators:
+  - list:
+      elements:
+      - env: test
+        local: true
+        autoSync: true
+      - env: stage
+        local: true
+        autoSync: false
+      - env: prod
+        local: false
+        autoSync: false
+  template:
+    metadata:
+      name: sample-spring-kotlin-{{ .env }}
+    spec:
+      destination:
+        namespace: pminkows-{{ .env }}
+        server: 'https://kubernetes.default.svc'
+      project: default
+      source:
+        path: apps/pminkows
+        repoURL: 'https://github.com/piomin/openshift-cluster-config.git'
+        targetRevision: HEAD
+        helm:
+          valueFiles:
+            - values-sample-kotlin-spring-{{ .env }}.yaml
+  templatePatch: |
+    spec:
+      destination:
+        server: 'https://kubernetes.default.svc'
+    {{- if .autoSync }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+    {{- end }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
