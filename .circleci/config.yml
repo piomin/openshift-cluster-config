@@ -6,10 +6,11 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/base:2025.12
+      - image: cimg/base:2026.03
     steps:
       - checkout
-      - helm/install_helm_client
+      - helm/install_helm_client:
+          version: v3.20.0
       - helm/install_helm_plugin:
           helm_plugin_url: https://github.com/helm-unittest/helm-unittest
       - run:
